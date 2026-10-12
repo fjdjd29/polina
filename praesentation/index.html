@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mein Webdesign-Business</title>
+<style>
+/* =========================================================
+   Farben & Grundlagen
+   ========================================================= */
+:root {
+  --bg: #070b1a;
+  --bg2: #0e1430;
+  --text: #eef1ff;
+  --muted: #a3abd1;
+  --accent: #7c5cff;
+  --accent2: #22d3ee;
+  --accent3: #f472b6;
+  --card: rgba(255,255,255,0.06);
+  --card-border: rgba(255,255,255,0.14);
+  --good: #34d399;
+  --radius: 22px;
+  --font: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: radial-gradient(1200px 800px at 70% 20%, #1a1550 0%, var(--bg) 60%) fixed, var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+#hintergrund { position: fixed; inset: 0; z-index: 0; }
+
+/* =========================================================
+   Bühne & Folien (3D)
+   ========================================================= */
+#buehne {
+  position: fixed; inset: 0; z-index: 1;
+  perspective: 1600px;
+  perspective-origin: 50% 50%;
+}
+#welt {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.25s ease-out;
+}
+.folie {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: min(1200px, 92vw);
+  height: min(700px, 84vh);
+  margin-left: calc(min(1200px, 92vw) / -2);
+  margin-top: calc(min(700px, 84vh) / -2);
+  padding: clamp(24px, 4vw, 56px);
+  border-radius: 32px;
+  background: linear-gradient(145deg, rgba(30,36,80,0.72), rgba(10,14,36,0.78));
+  border: 1px solid var(--card-border);
+  box-shadow: 0 40px 120px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex; flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 0.9s cubic-bezier(.2,.8,.2,1), opacity 0.9s ease;
+  overflow: hidden;
+}
+.folie.aktiv { opacity: 1; pointer-events: auto; transform: none; }
+.folie.davor  { transform: translateX(-60%) rotateY(55deg) translateZ(-500px); }
+.folie.danach { transform: translateX(60%) rotateY(-55deg) translateZ(-500px); }
+
+/* Übersichtsmodus (Taste O) */
+body.uebersicht .folie {
+  opacity: 1; pointer-events: auto; cursor: pointer;
+  transition: transform 0.8s cubic-bezier(.2,.8,.2,1);
+}
+body.uebersicht .folie .rein { opacity: 1; transform: none; transition: none; }
+body.uebersicht .folie:hover { box-shadow: 0 0 0 3px var(--accent2), 0 40px 120px rgba(0,0,0,0.55); }
+
+/* Elemente erscheinen nacheinander */
+.folie .rein { opacity: 0; transform: translateY(30px) translateZ(0); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.8,.2,1); }
+.folie.aktiv .rein { opacity: 1; transform: none; }
+.folie.aktiv .rein:nth-child(1) { transition-delay: .25s }
+.folie.aktiv .rein:nth-child(2) { transition-delay: .38s }
+.folie.aktiv .rein:nth-child(3) { transition-delay: .51s }
+.folie.aktiv .rein:nth-child(4) { transition-delay: .64s }
+.folie.aktiv .rein:nth-child(5) { transition-delay: .77s }
+.folie.aktiv .rein:nth-child(6) { transition-delay: .90s }
+.folie.aktiv .rein:nth-child(7) { transition-delay: 1.03s }
+
+/* =========================================================
+   Typografie
+   ========================================================= */
+.label {
+  display: inline-block;
+  font-size: 13px; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent2); font-weight: 700; margin-bottom: 10px;
+}
+h1 {
+  font-size: clamp(36px, 6vw, 76px); line-height: 1.02; font-weight: 800; letter-spacing: -0.02em;
+}
+h2 { font-size: clamp(26px, 3.4vw, 44px); line-height: 1.1; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 22px; }
+h3 { font-size: clamp(17px, 1.6vw, 21px); font-weight: 700; margin-bottom: 6px; }
+p, li { font-size: clamp(15px, 1.35vw, 19px); line-height: 1.5; color: var(--muted); }
+strong { color: var(--text); }
+.verlauf {
+  background: linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+
+/* =========================================================
+   Layout-Bausteine
+   ========================================================= */
+.raster { display: grid; gap: 18px; flex: 1; min-height: 0; align-content: center; align-items: stretch; }
+.raster-2 { grid-template-columns: 1fr 1fr; }
+.raster-3 { grid-template-columns: repeat(3, 1fr); }
+.raster-4 { grid-template-columns: repeat(4, 1fr); }
+.karte {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  padding: 22px;
+  transform-style: preserve-3d;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s;
+  will-change: transform;
+}
+.karte:hover { border-color: rgba(124,92,255,0.6); box-shadow: 0 20px 60px rgba(124,92,255,0.25); }
+.karte .icon { font-size: 30px; margin-bottom: 10px; display: block; transform: translateZ(40px); }
+.karte h3 { transform: translateZ(30px); }
+.haken { list-style: none; }
+.haken li { padding-left: 32px; position: relative; margin: 8px 0; }
+.haken li::before {
+  content: "✓"; position: absolute; left: 0; top: 1px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(52,211,153,0.18); color: var(--good);
+  font-size: 13px; font-weight: 800; display: grid; place-items: center;
+}
+
+/* =========================================================
+   Folie 1: Titel mit 3D-Würfel
+   ========================================================= */
+.titel-layout { display: grid; grid-template-columns: 1.3fr 1fr; align-items: center; gap: 30px; flex: 1; }
+.titel-layout .untertitel { font-size: clamp(17px, 1.8vw, 24px); margin-top: 18px; color: var(--muted); }
+.titel-layout .meta { margin-top: 30px; display: flex; gap: 12px; flex-wrap: wrap; }
+.chip {
+  padding: 8px 14px; border-radius: 999px; font-size: 14px;
+  background: rgba(255,255,255,0.07); border: 1px solid var(--card-border); color: var(--text);
+}
+.wuerfel-szene { width: 240px; height: 240px; margin: auto; perspective: 900px; }
+.wuerfel {
+  width: 100%; height: 100%; position: relative; transform-style: preserve-3d;
+  animation: drehen 16s linear infinite;
+}
+.wuerfel div {
+  position: absolute; inset: 0; border-radius: 18px;
+  display: grid; place-items: center; font-size: 46px; font-weight: 800;
+  background: linear-gradient(135deg, rgba(124,92,255,0.55), rgba(34,211,238,0.35));
+  border: 1px solid rgba(255,255,255,0.35);
+  box-shadow: inset 0 0 50px rgba(255,255,255,0.12);
+  color: white; text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.wuerfel div:nth-child(1) { transform: translateZ(120px); }
+.wuerfel div:nth-child(2) { transform: rotateY(180deg) translateZ(120px); }
+.wuerfel div:nth-child(3) { transform: rotateY(90deg) translateZ(120px); }
+.wuerfel div:nth-child(4) { transform: rotateY(-90deg) translateZ(120px); }
+.wuerfel div:nth-child(5) { transform: rotateX(90deg) translateZ(120px); }
+.wuerfel div:nth-child(6) { transform: rotateX(-90deg) translateZ(120px); }
+@keyframes drehen { from { transform: rotateX(-20deg) rotateY(0); } to { transform: rotateX(-20deg) rotateY(360deg); } }
+
+/* =========================================================
+   Folie 2: Über mich
+   ========================================================= */
+.ueber-layout { display: grid; grid-template-columns: 260px 1fr; gap: 40px; align-items: center; flex: 1; }
+.foto {
+  width: 260px; height: 260px; border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--accent2), var(--accent), var(--accent3), var(--accent2));
+  padding: 6px; animation: schweben 6s ease-in-out infinite;
+}
+.foto-innen {
+  width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
+  background: #151b3d center/cover no-repeat;
+  display: grid; place-items: center; font-size: 90px;
+}
+@keyframes schweben { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-12px) } }
+.zahlen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 26px; }
+.zahl { text-align: center; padding: 18px 10px; }
+.zahl b { display: block; font-size: clamp(32px, 4vw, 52px); font-weight: 800; }
+.zahl span { font-size: 14px; color: var(--muted); }
+
+/* =========================================================
+   Folie 4: Portfolio-Karussell (3D)
+   ========================================================= */
+.karussell-szene {
+  flex: 1; min-height: 0; position: relative;
+  perspective: 1400px;
+  display: grid; place-items: center;
+}
+.karussell {
+  width: 340px; height: 250px; position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(.2,.8,.2,1);
+}
+.projekt {
+  position: absolute; inset: 0;
+  border-radius: 16px; overflow: hidden; cursor: pointer;
+  background: #0b1030; border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+  transition: filter .4s, opacity .4s;
+  display: flex; flex-direction: column;
+}
+.projekt .browserleiste {
+  height: 26px; background: rgba(255,255,255,0.09);
+  display: flex; align-items: center; gap: 6px; padding: 0 10px; flex: none;
+}
+.projekt .browserleiste i { width: 9px; height: 9px; border-radius: 50%; background: #ff5f57; }
+.projekt .browserleiste i:nth-child(2) { background: #febc2e; }
+.projekt .browserleiste i:nth-child(3) { background: #28c840; }
+.projekt .browserleiste span {
+  margin-left: 8px; font-size: 11px; color: var(--muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.projekt .vorschau {
+  flex: 1; background-size: cover; background-position: top center;
+  display: grid; place-items: center; text-align: center; padding: 16px;
+}
+.projekt .vorschau b { font-size: 24px; color: white; text-shadow: 0 2px 14px rgba(0,0,0,0.5); }
+.projekt:not(.vorne) { filter: brightness(0.45) saturate(0.7); }
+.projekt-info { text-align: center; min-height: 92px; }
+.projekt-info h3 { font-size: clamp(20px, 2vw, 26px); }
+.projekt-info .tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+.projekt-info .tags span { font-size: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(34,211,238,0.12); color: var(--accent2); }
+.karussell-knopf {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid var(--card-border);
+  color: var(--text); font-size: 22px; cursor: pointer; z-index: 5;
+  transition: background .2s;
+}
+.karussell-knopf:hover { background: var(--accent); }
+.karussell-knopf.links { left: 0; } .karussell-knopf.rechts { right: 0; }
+
+/* Live-Vorschau-Fenster */
+#modal {
+  position: fixed; inset: 0; z-index: 50; display: none;
+  background: rgba(3,5,15,0.82); backdrop-filter: blur(8px);
+  align-items: center; justify-content: center; padding: 3vw;
+}
+#modal.offen { display: flex; }
+#modal .fenster {
+  width: min(1300px, 100%); height: min(820px, 100%);
+  background: #0b1030; border-radius: 18px; overflow: hidden;
+  border: 1px solid var(--card-border); display: flex; flex-direction: column;
+  animation: aufklappen .5s cubic-bezier(.2,.8,.2,1);
+}
+@keyframes aufklappen { from { transform: perspective(1200px) rotateX(18deg) scale(.85); opacity: 0 } }
+#modal .kopf { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(255,255,255,0.06); }
+#modal .kopf span { flex: 1; color: var(--muted); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#modal .kopf a, #modal .kopf button {
+  color: var(--text); background: rgba(255,255,255,0.08); border: 1px solid var(--card-border);
+  padding: 6px 12px; border-radius: 8px; font-size: 14px; cursor: pointer; text-decoration: none;
+}
+#modal iframe { flex: 1; border: 0; background: white; }
+
+/* =========================================================
+   Folie 5: Preise
+   ========================================================= */
+.paket { display: flex; flex-direction: column; }
+.paket .preis { font-size: clamp(30px, 3.4vw, 44px); font-weight: 800; color: var(--text); margin: 6px 0 12px; transform: translateZ(50px); }
+.paket .preis small { font-size: 15px; color: var(--muted); font-weight: 500; }
+.paket.highlight { background: linear-gradient(160deg, rgba(124,92,255,0.35), rgba(34,211,238,0.12)); border-color: rgba(124,92,255,0.7); }
+.paket .badge { align-self: flex-start; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--accent); color: white; margin-bottom: 8px; }
+
+/* =========================================================
+   Folie 7: Finanzen
+   ========================================================= */
+.balken-liste { display: flex; flex-direction: column; gap: 14px; }
+.balken-zeile { display: grid; grid-template-columns: 170px 1fr 90px; gap: 12px; align-items: center; font-size: 15px; color: var(--muted); }
+.balken { height: 14px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.balken i { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width 1.4s cubic-bezier(.2,.8,.2,1) .6s; }
+.folie.aktiv .balken i { width: var(--w); }
+.balken-zeile b { text-align: right; color: var(--text); }
+.summe { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--card-border); display: flex; justify-content: space-between; font-size: 18px; }
+
+/* =========================================================
+   Folie 9: Wochenplan
+   ========================================================= */
+.woche { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; flex: 1; min-height: 0; }
+.tag { display: flex; flex-direction: column; gap: 6px; }
+.tag > b { text-align: center; font-size: 15px; color: var(--text); }
+.tag .saeule { flex: 1; display: flex; flex-direction: column; gap: 4px; border-radius: 14px; overflow: hidden; }
+.block { border-radius: 8px; font-size: 11px; display: grid; place-items: center; color: white; text-align: center; padding: 2px; }
+.block.schule { background: rgba(148,163,184,0.35); }
+.block.lernen { background: rgba(250,204,21,0.45); color: #1a1a1a; }
+.block.business { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+.block.frei { background: rgba(52,211,153,0.3); }
+.legende { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 14px; font-size: 14px; color: var(--muted); }
+.legende span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; background: var(--c); }
+
+/* =========================================================
+   Folie 11: Zeitstrahl
+   ========================================================= */
+.zeitstrahl { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; flex: 1; align-items: start; padding-top: 30px; }
+.zeitstrahl::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 10px; height: 3px;
+  background: linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3)); border-radius: 3px;
+}
+.zeitstrahl .punkt { position: relative; }
+.zeitstrahl .punkt::before {
+  content: ""; position: absolute; top: -28px; left: 22px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--bg); border: 3px solid var(--accent2); box-shadow: 0 0 18px var(--accent2);
+}
+
+/* =========================================================
+   Schluss
+   ========================================================= */
+.schluss { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 22px; }
+.schluss blockquote {
+  max-width: 820px; font-size: clamp(18px, 2vw, 26px); line-height: 1.5; color: var(--text);
+  padding: 26px 32px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--card-border);
+}
+
+/* =========================================================
+   Steuerleiste, Fortschritt, Notizen
+   ========================================================= */
+#fortschritt { position: fixed; left: 0; top: 0; height: 4px; z-index: 20; background: linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3)); transition: width .6s ease; }
+#leiste {
+  position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 20;
+  display: flex; align-items: center; gap: 6px; padding: 6px;
+  background: rgba(10,14,36,0.75); border: 1px solid var(--card-border); border-radius: 999px;
+  backdrop-filter: blur(10px); opacity: .35; transition: opacity .3s;
+}
+#leiste:hover { opacity: 1; }
+#leiste button {
+  background: transparent; border: 0; color: var(--text); font-size: 15px;
+  min-width: 38px; height: 38px; padding: 0 10px; border-radius: 999px; cursor: pointer;
+}
+#leiste button:hover { background: rgba(255,255,255,0.1); }
+#leiste .zaehler { font-size: 14px; color: var(--muted); padding: 0 8px; font-variant-numeric: tabular-nums; }
+#notizen {
+  position: fixed; right: 16px; bottom: 76px; width: min(420px, calc(100vw - 32px)); z-index: 30;
+  background: rgba(10,14,36,0.95); border: 1px solid var(--accent); border-radius: 16px; padding: 18px;
+  display: none; font-size: 15px; line-height: 1.55; color: var(--text);
+}
+#notizen.offen { display: block; }
+#notizen h4 { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent2); margin-bottom: 8px; display: flex; justify-content: space-between; }
+#uhr { color: var(--muted); font-variant-numeric: tabular-nums; }
+.notiz { display: none; }
+
+/* =========================================================
+   Kleine Bildschirme
+   ========================================================= */
+@media (max-width: 860px) {
+  body { overflow: auto; }
+  .folie { height: 86vh; overflow-y: auto; }
+  .titel-layout, .ueber-layout, .raster-2, .raster-3, .raster-4 { grid-template-columns: 1fr; }
+  .wuerfel-szene { width: 160px; height: 160px; }
+  .wuerfel div { font-size: 30px; }
+  .wuerfel div:nth-child(1) { transform: translateZ(80px); }
+  .wuerfel div:nth-child(2) { transform: rotateY(180deg) translateZ(80px); }
+  .wuerfel div:nth-child(3) { transform: rotateY(90deg) translateZ(80px); }
+  .wuerfel div:nth-child(4) { transform: rotateY(-90deg) translateZ(80px); }
+  .wuerfel div:nth-child(5) { transform: rotateX(90deg) translateZ(80px); }
+  .wuerfel div:nth-child(6) { transform: rotateX(-90deg) translateZ(80px); }
+  .foto { width: 160px; height: 160px; margin: auto; }
+  .karussell { width: 240px; height: 180px; }
+  .woche { grid-template-columns: repeat(7, minmax(0,1fr)); gap: 4px; }
+  .block { font-size: 9px; }
+  .zeitstrahl { grid-template-columns: 1fr 1fr; }
+  .balken-zeile { grid-template-columns: 110px 1fr 70px; font-size: 13px; }
+}
+
+/* =========================================================
+   Druckversion (Handout fürs Gericht: Strg+P)
+   ========================================================= */
+@media print {
+  @page { size: A4 landscape; margin: 10mm; }
+  body { background: white; color: #111; overflow: visible; }
+  #hintergrund, #leiste, #fortschritt, #notizen, #modal, .karussell-knopf, .wuerfel-szene { display: none !important; }
+  #buehne, #welt { position: static; perspective: none; transform: none !important; }
+  .folie {
+    position: relative; left: auto; top: auto; margin: 0 0 0 0; width: 100%; height: auto; min-height: 180mm;
+    opacity: 1 !important; transform: none !important; page-break-after: always; break-after: page;
+    background: white; color: #111; box-shadow: none; border: 1px solid #ccc; backdrop-filter: none;
+  }
+  .folie .rein { opacity: 1 !important; transform: none !important; }
+  p, li, .balken-zeile, .zahl span { color: #333; }
+  strong, h1, h2, h3, .paket .preis, .zahl b, .balken-zeile b { color: #111; }
+  .verlauf { color: #4c2fd1; -webkit-text-fill-color: #4c2fd1; background: none; }
+  .karte { background: #f6f6fb; border-color: #ddd; transform: none !important; }
+  .balken i { width: var(--w) !important; }
+  .karussell-szene { display: block; perspective: none; }
+  .karussell { width: 100%; height: auto; transform: none !important; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .projekt { position: relative; transform: none !important; filter: none !important; height: 150px; }
+  .projekt-info { display: none; }
+
+}
+</style>
+</head>
+<body>
+
+<canvas id="hintergrund"></canvas>
+<div id="fortschritt"></div>
+
+<div id="buehne"><div id="welt">
+
+<!-- =========================================================
+     1 · TITEL
+     ========================================================= -->
+<section class="folie" data-titel="Titel">
+  <div class="titel-layout">
+    <div>
+      <div class="rein"><span class="label">Antrag nach § 112 BGB</span></div>
+      <h1 class="rein"><span data-feld="firma" class="verlauf">Meine Firma</span><br>Webdesign</h1>
+      <p class="rein untertitel">Moderne Websites für kleine Unternehmen, Vereine und Selbstständige – gestaltet von <strong data-feld="name">Polina</strong>.</p>
+      <div class="rein meta">
+        <span class="chip">👤 <span data-feld="name">Polina</span>, <span data-feld="alter">16</span> Jahre</span>
+        <span class="chip">📍 <span data-feld="ort">Stadt</span></span>
+        <span class="chip">📅 <span data-feld="termin">16.10.2026</span></span>
+      </div>
+    </div>
+    <div class="wuerfel-szene rein">
+      <div class="wuerfel">
+        <div>&lt;/&gt;</div><div>🎨</div><div>📱</div><div>🚀</div><div>✨</div><div>💡</div>
+      </div>
+    </div>
+  </div>
+  <div class="notiz">Guten Tag. Ich heiße [Name], bin [Alter] Jahre alt und möchte heute vorstellen, warum ich mein eigenes Webdesign-Gewerbe anmelden möchte – und warum ich mir das verantwortungsvoll zutraue. Ruhig atmen, langsam sprechen. 🙂</div>
+</section>
+
+<!-- =========================================================
+     2 · ÜBER MICH
+     ========================================================= -->
+<section class="folie" data-titel="Über mich">
+  <div class="rein"><span class="label">Über mich</span></div>
+  <div class="ueber-layout">
+    <div class="rein foto"><div class="foto-innen" id="foto">👩‍💻</div></div>
+    <div>
+      <h2 class="rein">Hallo, ich bin <span class="verlauf" data-feld="name">Polina</span>!</h2>
+      <p class="rein" data-feld="ueberMich">Ich bin 16 Jahre alt und gehe in die 10. Klasse. Seit ich 13 bin, programmiere ich Websites – zuerst aus Neugier, inzwischen mit echten Projekten für Menschen in meinem Umfeld. Mir macht es Spaß, aus einer Idee etwas zu bauen, das andere wirklich nutzen.</p>
+      <div class="zahlen">
+        <div class="rein karte zahl tilt"><b data-zahl="websites">0</b><span>Websites gebaut</span></div>
+        <div class="rein karte zahl tilt"><b data-zahl="jahre">0</b><span>Jahre Erfahrung</span></div>
+        <div class="rein karte zahl tilt"><b data-zahl="stunden">0</b><span>Stunden gelernt</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="notiz">Kurz erzählen: Wie bin ich zum Programmieren gekommen? Was war meine erste Website? Was kann ich besonders gut (z. B. Design, Handy-Ansicht)? Die Zahlen rechts zeigen, dass das kein spontaner Einfall ist.</div>
+</section>
+
+<!-- =========================================================
+     3 · DIE IDEE
+     ========================================================= -->
+<section class="folie" data-titel="Die Idee">
+  <div class="rein"><span class="label">Die Geschäftsidee</span></div>
+  <h2 class="rein">Viele kleine Betriebe haben <span class="verlauf">keine gute Website</span>.</h2>
+  <div class="raster raster-3">
+    <div class="rein karte tilt"><span class="icon">🔍</span><h3>Das Problem</h3><p>Friseure, Handwerker, Vereine und Cafés haben oft gar keine oder eine veraltete Website, die auf dem Handy nicht funktioniert.</p></div>
+    <div class="rein karte tilt"><span class="icon">🛠️</span><h3>Meine Lösung</h3><p>Ich gestalte moderne, schnelle Websites, die auf jedem Gerät gut aussehen – zu fairen Preisen und mit persönlicher Betreuung.</p></div>
+    <div class="rein karte tilt"><span class="icon">🎯</span><h3>Meine Kunden</h3><p>Kleine Unternehmen und Vereine aus <span data-feld="ort">meiner Region</span> – erste Kunden kommen über Empfehlungen aus meinem Umfeld.</p></div>
+  </div>
+  <div class="notiz">Wichtig fürs Gericht: Es ist eine kleine, überschaubare Tätigkeit ohne Laden, ohne Angestellte, ohne Lager. Ich arbeite von zu Hause am eigenen Laptop.</div>
+</section>
+
+<!-- =========================================================
+     4 · PORTFOLIO (3D-Karussell)
+     ========================================================= -->
+<section class="folie" data-titel="Meine Websites">
+  <div class="rein"><span class="label">Portfolio</span></div>
+  <h2 class="rein" style="margin-bottom:6px">Das habe ich <span class="verlauf">schon gebaut</span></h2>
+  <div class="karussell-szene rein">
+    <button class="karussell-knopf links" aria-label="Vorherige Website">‹</button>
+    <div class="karussell" id="karussell"></div>
+    <button class="karussell-knopf rechts" aria-label="Nächste Website">›</button>
+  </div>
+  <div class="projekt-info rein" id="projektInfo"></div>
+  <div class="notiz">Mit den Pfeilen links/rechts im Karussell drehen. Auf die vordere Website klicken → Live-Vorschau öffnet sich (nur mit Internet). Zu jeder Website sagen: Für wen? Was war die Herausforderung? Was habe ich dabei gelernt?</div>
+</section>
+
+<!-- =========================================================
+     5 · LEISTUNGEN & PREISE
+     ========================================================= -->
+<section class="folie" data-titel="Leistungen & Preise">
+  <div class="rein"><span class="label">Leistungen & Preise</span></div>
+  <h2 class="rein">Klare Pakete, <span class="verlauf">faire Preise</span></h2>
+  <div class="raster raster-3" id="pakete"></div>
+  <div class="notiz">Die Preise sind bewusst niedriger als bei Agenturen, weil ich am Anfang stehe. Jeder Auftrag bekommt ein schriftliches Angebot, und meine Eltern schauen mit drüber.</div>
+</section>
+
+<!-- =========================================================
+     6 · RECHT & STEUERN
+     ========================================================= -->
+<section class="folie" data-titel="Recht & Steuern">
+  <div class="rein"><span class="label">Verantwortung</span></div>
+  <h2 class="rein">Ich kenne <span class="verlauf">meine Pflichten</span></h2>
+  <div class="raster raster-2">
+    <div class="rein karte tilt">
+      <span class="icon">🏛️</span><h3>Anmeldung & Steuern</h3>
+      <ul class="haken">
+        <li>Gewerbeanmeldung beim Gewerbeamt</li>
+        <li>Fragebogen zur steuerlichen Erfassung beim Finanzamt (über ELSTER)</li>
+        <li>Kleinunternehmerregelung nach § 19 UStG – keine Umsatzsteuer, solange ich unter der Umsatzgrenze bleibe</li>
+        <li>Einnahmen-Überschuss-Rechnung (EÜR) &amp; Belege ordentlich sammeln</li>
+      </ul>
+    </div>
+    <div class="rein karte tilt">
+      <span class="icon">📜</span><h3>Verträge & Websites</h3>
+      <ul class="haken">
+        <li>Schriftliche Angebote und Aufträge – keine mündlichen Zusagen</li>
+        <li>Impressum und Datenschutzerklärung (DSGVO) auf jeder Kundenseite</li>
+        <li>Nur lizenzfreie oder vom Kunden gelieferte Bilder und Schriften</li>
+        <li>Rechnungen mit allen Pflichtangaben</li>
+      </ul>
+    </div>
+  </div>
+  <div class="notiz">Diese Folie zeigt Reife: Ich habe mich informiert und weiß, was auf mich zukommt. Falls gefragt: Ich lasse mich zusätzlich bei der IHK (Gründungsberatung) beraten.</div>
+</section>
+
+<!-- =========================================================
+     7 · FINANZEN
+     ========================================================= -->
+<section class="folie" data-titel="Finanzen">
+  <div class="rein"><span class="label">Finanzen</span></div>
+  <h2 class="rein">Kleiner Start, <span class="verlauf">kein Schuldenrisiko</span></h2>
+  <div class="raster raster-2">
+    <div class="rein karte">
+      <h3>Startkosten (einmalig & 1. Jahr)</h3>
+      <div class="balken-liste" id="kosten" style="margin-top:14px"></div>
+      <div class="summe"><span>Gesamt</span><strong id="kostenSumme">0 €</strong></div>
+    </div>
+    <div class="rein karte">
+      <h3>Vorsichtige Planung für das 1. Jahr</h3>
+      <div class="balken-liste" id="plan" style="margin-top:14px"></div>
+      <p style="margin-top:16px; font-size:15px">Die Startkosten bezahle ich von meinem <strong>Ersparten</strong>. Ich nehme <strong>keine Kredite</strong> auf und kaufe nichts auf Raten.</p>
+    </div>
+  </div>
+  <div class="notiz">Betonen: Das Risiko ist sehr klein – im schlimmsten Fall verliere ich die paar Euro Startkosten. Ein Laptop ist schon vorhanden.</div>
+</section>
+
+<!-- =========================================================
+     8 · RISIKO & SICHERHEIT
+     ========================================================= -->
+<section class="folie" data-titel="Sicherheit">
+  <div class="rein"><span class="label">Risiko</span></div>
+  <h2 class="rein">So halte ich das <span class="verlauf">Risiko gering</span></h2>
+  <div class="raster raster-4">
+    <div class="rein karte tilt"><span class="icon">🚫💳</span><h3>Keine Schulden</h3><p>Keine Kredite, keine Ratenkäufe, keine teuren Verträge.</p></div>
+    <div class="rein karte tilt"><span class="icon">🏦</span><h3>Eigenes Konto</h3><p>Geschäftliches getrennt vom Privaten – alles nachvollziehbar.</p></div>
+    <div class="rein karte tilt"><span class="icon">🐷</span><h3>Steuer-Rücklage</h3><p>Ein Teil jeder Einnahme wird für Steuern zurückgelegt.</p></div>
+    <div class="rein karte tilt"><span class="icon">👨‍👩‍👧</span><h3>Eltern im Boot</h3><p>Größere Aufträge bespreche ich vorher mit meinen Eltern.</p></div>
+  </div>
+  <div class="notiz">Hier geht es um die Sorge des Gerichts, dass ich mich finanziell übernehme. Ruhig sagen: Ich habe mir das gut überlegt.</div>
+</section>
+
+<!-- =========================================================
+     9 · SCHULE GEHT VOR
+     ========================================================= -->
+<section class="folie" data-titel="Schule geht vor">
+  <div class="rein"><span class="label">Zeitplanung</span></div>
+  <h2 class="rein"><span class="verlauf">Schule geht vor</span> – mein Wochenplan</h2>
+  <div class="woche rein" id="woche"></div>
+  <div class="legende rein">
+    <span style="--c: rgba(148,163,184,0.6)">Schule</span>
+    <span style="--c: rgba(250,204,21,0.7)">Hausaufgaben & Lernen</span>
+    <span style="--c: var(--accent)">Business (max. <b id="stundenMax">8</b> Std./Woche)</span>
+    <span style="--c: rgba(52,211,153,0.6)">Freizeit</span>
+  </div>
+  <div class="notiz">Klare Regel: Erst Hausaufgaben und Lernen, dann Business. Vor Klassenarbeiten und in Prüfungsphasen nehme ich keine neuen Aufträge an. Wenn meine Noten schlechter werden, fahre ich das Business sofort zurück.</div>
+</section>
+
+<!-- =========================================================
+     10 · UNTERSTÜTZUNG
+     ========================================================= -->
+<section class="folie" data-titel="Unterstützung">
+  <div class="rein"><span class="label">Unterstützung</span></div>
+  <h2 class="rein">Ich mache das <span class="verlauf">nicht allein</span></h2>
+  <div class="raster raster-3">
+    <div class="rein karte tilt"><span class="icon">✍️</span><h3>Meine Eltern</h3><p>Beide Elternteile sind einverstanden und haben den Antrag mit mir gemeinsam gestellt. Sie unterstützen mich bei Verträgen und Finanzen.</p></div>
+    <div class="rein karte tilt"><span class="icon">🧭</span><h3>Beratung</h3><p>Für Fragen zu Steuern und Recht nutze ich die Gründungsberatung der IHK und das Finanzamt.</p></div>
+    <div class="rein karte tilt"><span class="icon">📚</span><h3>Weiterlernen</h3><p>Ich bilde mich laufend weiter – Online-Kurse, Dokumentationen und eigene Projekte.</p></div>
+  </div>
+  <div class="notiz">Wenn die Eltern dabei sind, kurz auf sie zeigen. Das Gericht will sehen, dass die Eltern hinter dem Antrag stehen.</div>
+</section>
+
+<!-- =========================================================
+     11 · ZIELE
+     ========================================================= -->
+<section class="folie" data-titel="Ziele">
+  <div class="rein"><span class="label">Ausblick</span></div>
+  <h2 class="rein">Meine <span class="verlauf">Ziele</span></h2>
+  <div class="zeitstrahl">
+    <div class="rein punkt karte"><h3>Nach der Genehmigung</h3><p>Gewerbe anmelden, Finanzamt, Geschäftskonto eröffnen.</p></div>
+    <div class="rein punkt karte"><h3>In 3 Monaten</h3><p>Die ersten 2–3 zahlenden Kunden, eigene Firmen-Website online.</p></div>
+    <div class="rein punkt karte"><h3>In 1 Jahr</h3><p>Ein kleiner, zufriedener Kundenstamm und gute Bewertungen.</p></div>
+    <div class="rein punkt karte"><h3>Nach der Schule</h3><p>Erfahrung für Ausbildung oder Studium (z. B. Informatik / Mediendesign).</p></div>
+  </div>
+  <div class="notiz">Zeigen, dass ich langfristig denke und das Business auch meiner beruflichen Zukunft hilft.</div>
+</section>
+
+<!-- =========================================================
+     12 · SCHLUSS
+     ========================================================= -->
+<section class="folie" data-titel="Danke">
+  <div class="schluss">
+    <span class="label rein">Meine Bitte</span>
+    <blockquote class="rein">„Ich bitte das Gericht, die Ermächtigung meiner Eltern zum selbständigen Betrieb meines Webdesign-Gewerbes nach § 112 BGB zu genehmigen.“</blockquote>
+    <h1 class="rein">Vielen <span class="verlauf">Dank!</span></h1>
+    <p class="rein">Ich freue mich auf Ihre Fragen.</p>
+  </div>
+  <div class="notiz">Laut und deutlich die Bitte vorlesen. Danach lächeln und auf Fragen warten. Typische Fragen: Was machst du, wenn ein Kunde nicht zahlt? (→ Mahnung, Eltern helfen, nur kleine Anzahlung-Projekte). Was, wenn die Noten schlechter werden? (→ Business zurückfahren).</div>
+</section>
+
+</div></div>
+
+<!-- Live-Vorschau -->
+<div id="modal">
+  <div class="fenster">
+    <div class="kopf"><span id="modalUrl"></span><a id="modalLink" href="#" target="_blank" rel="noopener">In neuem Tab ↗</a><button id="modalZu">Schließen ✕</button></div>
+    <iframe id="modalFrame" title="Website-Vorschau"></iframe>
+  </div>
+</div>
+
+<!-- Steuerleiste -->
+<div id="leiste">
+  <button id="zurueck" title="Zurück (←)">←</button>
+  <span class="zaehler" id="zaehler">1 / 12</span>
+  <button id="weiter" title="Weiter (→)">→</button>
+  <button id="knopfUebersicht" title="Übersicht (O)">▦</button>
+  <button id="knopfNotizen" title="Sprechnotizen (N)">📝</button>
+  <button id="knopfVoll" title="Vollbild (F)">⛶</button>
+</div>
+<div id="notizen"><h4><span>Sprechnotizen</span><span id="uhr">00:00</span></h4><div id="notizText"></div></div>
+
+<script>
+/* =========================================================
+   ✏️  HIER DEINE DATEN EINTRAGEN
+   Alles in diesem Block kannst du einfach ändern.
+   ========================================================= */
+const DATEN = {
+  name: "Polina",
+  alter: 16,
+  ort: "Musterstadt",
+  firma: "Polina Design",
+  termin: "16.10.2026",
+  foto: "",            // z. B. "bilder/ich.jpg" – leer lassen = Emoji
+  ueberMich: "Ich bin 16 Jahre alt und gehe in die 10. Klasse. Seit ich 13 bin, programmiere ich Websites – zuerst aus Neugier, inzwischen mit echten Projekten für Menschen in meinem Umfeld. Mir macht es Spaß, aus einer Idee etwas zu bauen, das andere wirklich nutzen.",
+
+  // Zahlen auf der „Über mich“-Folie
+  zahlen: { websites: 5, jahre: 3, stunden: 500 },
+
+  // Deine Websites fürs 3D-Karussell.
+  // bild: Screenshot in den Ordner "bilder" legen, z. B. "bilder/website1.png"
+  websites: [
+    { titel: "Website 1", url: "https://example.com", beschreibung: "Kurz beschreiben: Für wen? Was kann die Seite?", bild: "", tags: ["HTML", "CSS"] },
+    { titel: "Website 2", url: "https://example.com", beschreibung: "Kurz beschreiben: Für wen? Was kann die Seite?", bild: "", tags: ["Responsive", "JavaScript"] },
+    { titel: "Website 3", url: "https://example.com", beschreibung: "Kurz beschreiben: Für wen? Was kann die Seite?", bild: "", tags: ["Design"] },
+    { titel: "Website 4", url: "https://example.com", beschreibung: "Kurz beschreiben: Für wen? Was kann die Seite?", bild: "", tags: ["Verein"] },
+    { titel: "Website 5", url: "https://example.com", beschreibung: "Kurz beschreiben: Für wen? Was kann die Seite?", bild: "", tags: ["Shop"] },
+  ],
+
+  pakete: [
+    { name: "Starter", preis: "ab 250 €", hinweis: "", punkte: ["Eine Seite (Onepager)", "Optimiert fürs Handy", "Kontaktformular", "Impressum & Datenschutz eingebunden"] },
+    { name: "Business", preis: "ab 550 €", hinweis: "Beliebt", punkte: ["Bis zu 5 Unterseiten", "Individuelles Design", "Google-Maps & Social Media", "Einweisung zum Selbst-Bearbeiten"] },
+    { name: "Betreuung", preis: "25 €", einheit: "/ Monat", hinweis: "", punkte: ["Kleine Änderungen & Updates", "Sicherheits-Updates", "Erreichbar per E-Mail", "Jederzeit kündbar"] },
+  ],
+
+  // Startkosten in Euro
+  kosten: [
+    { posten: "Domain & Hosting", betrag: 60 },
+    { posten: "Gewerbeanmeldung", betrag: 30 },
+    { posten: "Software & Schriften", betrag: 50 },
+    { posten: "Visitenkarten", betrag: 25 },
+  ],
+
+  // Vorsichtige Jahresplanung
+  plan: [
+    { posten: "Aufträge im Jahr", wert: 6, anzeige: "6" },
+    { posten: "Ø pro Auftrag", wert: 400, anzeige: "400 €" },
+    { posten: "Umsatz geplant", wert: 2400, anzeige: "2.400 €" },
+    { posten: "Steuer-Rücklage", wert: 600, anzeige: "600 €" },
+  ],
+
+  // Maximale Business-Stunden pro Woche
+  stundenProWoche: 8,
+};
+/* ========================================================= */
+
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+
+/* ---------- Daten einsetzen ---------- */
+$$("[data-feld]").forEach(el => { const v = DATEN[el.dataset.feld]; if (v !== undefined && v !== "") el.textContent = v; });
+if (DATEN.foto) { const f = $("#foto"); f.textContent = ""; f.style.backgroundImage = `url("${DATEN.foto}")`; }
+$("#stundenMax").textContent = DATEN.stundenProWoche;
+
+// Pakete
+$("#pakete").innerHTML = DATEN.pakete.map(p => `
+  <div class="rein karte paket tilt ${p.hinweis ? "highlight" : ""}">
+    ${p.hinweis ? `<span class="badge">${p.hinweis}</span>` : ""}
+    <h3>${p.name}</h3>
+    <div class="preis">${p.preis} <small>${p.einheit || ""}</small></div>
+    <ul class="haken">${p.punkte.map(x => `<li>${x}</li>`).join("")}</ul>
+  </div>`).join("");
+
+// Kosten & Plan
+const euro = n => n.toLocaleString("de-DE") + " €";
+const maxK = Math.max(...DATEN.kosten.map(k => k.betrag));
+$("#kosten").innerHTML = DATEN.kosten.map(k => `
+  <div class="balken-zeile"><span>${k.posten}</span><div class="balken"><i style="--w:${k.betrag / maxK * 100}%"></i></div><b>${euro(k.betrag)}</b></div>`).join("");
+$("#kostenSumme").textContent = euro(DATEN.kosten.reduce((s, k) => s + k.betrag, 0));
+const maxP = Math.max(...DATEN.plan.slice(1).map(p => p.wert));
+$("#plan").innerHTML = DATEN.plan.map((p, i) => `
+  <div class="balken-zeile"><span>${p.posten}</span><div class="balken"><i style="--w:${i === 0 ? 100 : p.wert / maxP * 100}%"></i></div><b>${p.anzeige}</b></div>`).join("");
+
+// Wochenplan (Stunden pro Block; Business-Stunden werden auf Nachmittage/Wochenende verteilt)
+(function wochenplan() {
+  const tage = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+  const bus = [1, 0, 1, 0, 1.5, 3, 1.5];
+  const faktor = DATEN.stundenProWoche / bus.reduce((a, b) => a + b, 0);
+  $("#woche").innerHTML = tage.map((t, i) => {
+    const we = i >= 5;
+    const b = Math.round(bus[i] * faktor * 2) / 2;
+    const bloecke = we
+      ? [["lernen", 2, "Lernen"], ["business", b, b ? b + " h" : ""], ["frei", 6, "Freizeit"]]
+      : [["schule", 6, "Schule"], ["lernen", 2, "Haus-<br>aufgaben"], ["business", b, b ? b + " h" : ""], ["frei", 3, "Freizeit"]];
+    return `<div class="tag"><b>${t}</b><div class="saeule">${bloecke.filter(x => x[1] > 0)
+      .map(([k, h, txt]) => `<div class="block ${k}" style="flex:${h}">${txt}</div>`).join("")}</div></div>`;
+  }).join("");
+})();
+
+/* ---------- 3D-Portfolio-Karussell ---------- */
+const karussell = $("#karussell");
+const n = DATEN.websites.length;
+const farben = [["#7c5cff", "#22d3ee"], ["#f472b6", "#7c5cff"], ["#22d3ee", "#34d399"], ["#f59e0b", "#f472b6"], ["#6366f1", "#06b6d4"]];
+let vorne = 0;
+function radius() { return Math.max(260, (karussell.offsetWidth / 2) / Math.tan(Math.PI / Math.max(n, 3)) + 40); }
+karussell.innerHTML = DATEN.websites.map((w, i) => {
+  const [a, b] = farben[i % farben.length];
+  const hg = w.bild ? `background-image:url('${w.bild}')` : `background:linear-gradient(135deg, ${a}, ${b})`;
+  return `<div class="projekt" data-i="${i}">
+    <div class="browserleiste"><i></i><i></i><i></i><span>${w.url.replace(/^https?:\/\//, "")}</span></div>
+    <div class="vorschau" style="${hg}">${w.bild ? "" : `<b>${w.titel}</b>`}</div>
+  </div>`;
+}).join("");
+function karussellAnordnen() {
+  const r = radius();
+  $$(".projekt", karussell).forEach((el, i) => {
+    el.style.transform = `rotateY(${i * 360 / n}deg) translateZ(${r}px)`;
+    el.classList.toggle("vorne", i === ((vorne % n) + n) % n);
+  });
+  karussell.style.transform = `translateZ(${-r}px) rotateY(${-vorne * 360 / n}deg)`;
+  const w = DATEN.websites[((vorne % n) + n) % n];
+  $("#projektInfo").innerHTML = `<h3>${w.titel}</h3><p>${w.beschreibung}</p><div class="tags">${(w.tags || []).map(t => `<span>${t}</span>`).join("")}</div>`;
+}
+$(".karussell-knopf.links").onclick = e => { e.stopPropagation(); vorne--; karussellAnordnen(); };
+$(".karussell-knopf.rechts").onclick = e => { e.stopPropagation(); vorne++; karussellAnordnen(); };
+karussell.addEventListener("click", e => {
+  const p = e.target.closest(".projekt"); if (!p) return;
+  const i = +p.dataset.i, aktuell = ((vorne % n) + n) % n;
+  if (i !== aktuell) { let d = i - aktuell; if (d > n / 2) d -= n; if (d < -n / 2) d += n; vorne += d; karussellAnordnen(); return; }
+  oeffneVorschau(DATEN.websites[i].url);
+});
+function oeffneVorschau(url) {
+  $("#modalUrl").textContent = url; $("#modalLink").href = url; $("#modalFrame").src = url;
+  $("#modal").classList.add("offen");
+}
+function schliesseVorschau() { $("#modal").classList.remove("offen"); $("#modalFrame").src = "about:blank"; }
+$("#modalZu").onclick = schliesseVorschau;
+$("#modal").addEventListener("click", e => { if (e.target.id === "modal") schliesseVorschau(); });
+karussellAnordnen();
+// Langsames automatisches Drehen, solange niemand klickt
+let autoDreh = setInterval(() => { if (aktuelleFolie().dataset.titel === "Meine Websites" && !$("#modal").classList.contains("offen")) { vorne++; karussellAnordnen(); } }, 5000);
+karussell.parentElement.addEventListener("pointerdown", () => clearInterval(autoDreh), { once: true });
+
+/* ---------- Folien-Navigation ---------- */
+const folien = $$(".folie");
+let index = 0;
+function aktuelleFolie() { return folien[index]; }
+function zeige(i) {
+  index = Math.max(0, Math.min(folien.length - 1, i));
+  document.body.classList.remove("uebersicht");
+  folien.forEach((f, j) => {
+    f.style.transform = "";
+    f.classList.toggle("aktiv", j === index);
+    f.classList.toggle("davor", j < index);
+    f.classList.toggle("danach", j > index);
+  });
+  $("#zaehler").textContent = `${index + 1} / ${folien.length}`;
+  $("#fortschritt").style.width = `${(index + 1) / folien.length * 100}%`;
+  $("#notizText").textContent = $(".notiz", folien[index])?.textContent || "";
+  history.replaceState(null, "", "#" + (index + 1));
+  if ($$("[data-zahl]", folien[index]).length) zaehleHoch(folien[index]);
+}
+$("#weiter").onclick = () => zeige(index + 1);
+$("#zurueck").onclick = () => zeige(index - 1);
+
+// Hochzählende Zahlen
+function zaehleHoch(folie) {
+  $$("[data-zahl]", folie).forEach(el => {
+    const ziel = DATEN.zahlen[el.dataset.zahl] || 0, start = performance.now(), dauer = 1600;
+    const schritt = t => {
+      const p = Math.min(1, (t - start) / dauer), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(ziel * e).toLocaleString("de-DE") + (p === 1 && el.dataset.zahl === "stunden" ? "+" : "");
+      if (p < 1) requestAnimationFrame(schritt);
+    };
+    requestAnimationFrame(schritt);
+  });
+}
+
+// Übersicht: alle Folien schweben als 3D-Raster
+function uebersicht() {
+  if (document.body.classList.toggle("uebersicht")) {
+    const spalten = innerWidth > innerHeight ? 4 : 2, zeilen = Math.ceil(folien.length / spalten);
+    const s = Math.min(innerWidth / (spalten * 1.1 * folien[0].offsetWidth), innerHeight / (zeilen * 1.1 * folien[0].offsetHeight)) * 0.92;
+    folien.forEach((f, j) => {
+      const x = (j % spalten - (spalten - 1) / 2) * 110, y = (Math.floor(j / spalten) - (zeilen - 1) / 2) * 110;
+      f.style.transform = `rotateX(8deg) scale(${s}) translate(${x}%, ${y}%)`;
+    });
+  } else zeige(index);
+}
+folien.forEach((f, j) => f.addEventListener("click", () => { if (document.body.classList.contains("uebersicht")) zeige(j); }));
+$("#knopfUebersicht").onclick = uebersicht;
+
+// Notizen & Stoppuhr
+let startZeit = null;
+function notizen() {
+  $("#notizen").classList.toggle("offen");
+  if (!startZeit) startZeit = Date.now();
+}
+setInterval(() => {
+  if (!startZeit) return;
+  const s = Math.floor((Date.now() - startZeit) / 1000);
+  $("#uhr").textContent = String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+}, 1000);
+$("#knopfNotizen").onclick = notizen;
+
+function vollbild() { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); }
+$("#knopfVoll").onclick = vollbild;
+
+document.addEventListener("keydown", e => {
+  if ($("#modal").classList.contains("offen")) { if (e.key === "Escape") schliesseVorschau(); return; }
+  if (["ArrowRight", "PageDown", " ", "Enter"].includes(e.key)) { e.preventDefault(); zeige(index + 1); }
+  else if (["ArrowLeft", "PageUp", "Backspace"].includes(e.key)) { e.preventDefault(); zeige(index - 1); }
+  else if (e.key === "Home") zeige(0);
+  else if (e.key === "End") zeige(folien.length - 1);
+  else if (e.key.toLowerCase() === "o" || e.key === "Escape") uebersicht();
+  else if (e.key.toLowerCase() === "n") notizen();
+  else if (e.key.toLowerCase() === "f") vollbild();
+});
+
+// Wischen auf Tablet/Handy
+let touchX = null;
+document.addEventListener("touchstart", e => { touchX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener("touchend", e => {
+  if (touchX === null || e.target.closest(".karussell-szene")) return;
+  const dx = e.changedTouches[0].clientX - touchX;
+  if (Math.abs(dx) > 60) zeige(index + (dx < 0 ? 1 : -1));
+  touchX = null;
+});
+
+/* ---------- 3D-Neigung: ganze Bühne & einzelne Karten ---------- */
+const welt = $("#welt");
+const ruhig = matchMedia("(prefers-reduced-motion: reduce)").matches;
+document.addEventListener("mousemove", e => {
+  if (ruhig || document.body.classList.contains("uebersicht")) return;
+  const x = e.clientX / innerWidth - 0.5, y = e.clientY / innerHeight - 0.5;
+  welt.style.transform = `rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
+});
+document.addEventListener("mousemove", e => {
+  const k = e.target.closest(".tilt");
+  $$(".tilt").forEach(t => { if (t !== k) t.style.transform = ""; });
+  if (!k || ruhig) return;
+  const r = k.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+  k.style.transform = `rotateY(${x * 16}deg) rotateX(${-y * 16}deg) translateZ(20px)`;
+});
+
+/* ---------- 3D-Hintergrund: schwebende Sterne & Gitter ---------- */
+(function hintergrund() {
+  const c = $("#hintergrund"), ctx = c.getContext("2d");
+  let w, h, punkte = [];
+  function groesse() {
+    w = c.width = innerWidth * devicePixelRatio; h = c.height = innerHeight * devicePixelRatio;
+    c.style.width = innerWidth + "px"; c.style.height = innerHeight + "px";
+  }
+  groesse(); addEventListener("resize", () => { groesse(); karussellAnordnen(); });
+  for (let i = 0; i < 260; i++) punkte.push({ x: (Math.random() - .5) * 2000, y: (Math.random() - .5) * 1200, z: Math.random() * 2000 });
+  let maus = { x: 0, y: 0 };
+  addEventListener("mousemove", e => { maus.x = e.clientX / innerWidth - .5; maus.y = e.clientY / innerHeight - .5; });
+  let zeit = 0;
+  function bild() {
+    zeit += 1;
+    ctx.clearRect(0, 0, w, h);
+    const f = 700 * devicePixelRatio, cx = w / 2 - maus.x * 60 * devicePixelRatio, cy = h / 2 - maus.y * 60 * devicePixelRatio;
+    // Perspektivisches Gitter am Boden
+    ctx.strokeStyle = "rgba(124,92,255,0.14)"; ctx.lineWidth = 1 * devicePixelRatio;
+    const boden = 420, versatz = (zeit * 2) % 120;
+    for (let z = 2000 - versatz; z > 60; z -= 120) {
+      const s = f / z, y = cy + boden * s;
+      if (y > h) continue;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    }
+    for (let x = -3000; x <= 3000; x += 200) {
+      ctx.beginPath(); ctx.moveTo(cx + x * f / 2000, cy + boden * f / 2000); ctx.lineTo(cx + x * f / 60, cy + boden * f / 60); ctx.stroke();
+    }
+    // Sterne, die auf uns zufliegen
+    for (const p of punkte) {
+      if (!ruhig) p.z -= 2.2;
+      if (p.z < 1) { p.z = 2000; p.x = (Math.random() - .5) * 2000; p.y = (Math.random() - .5) * 1200; }
+      const s = f / p.z, x = cx + p.x * s, y = cy + p.y * s;
+      const a = Math.min(1, (2000 - p.z) / 1200);
+      ctx.fillStyle = `rgba(${p.x > 0 ? "34,211,238" : "196,181,253"},${a * 0.8})`;
+      ctx.beginPath(); ctx.arc(x, y, Math.max(0.4, s * 1.6) * devicePixelRatio * 0.6, 0, Math.PI * 2); ctx.fill();
+    }
+    requestAnimationFrame(bild);
+  }
+  bild();
+})();
+
+/* ---------- Start ---------- */
+zeige((parseInt(location.hash.slice(1)) || 1) - 1);
+</script>
+</body>
+</html>
