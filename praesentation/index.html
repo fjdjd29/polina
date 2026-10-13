@@ -267,6 +267,11 @@ strong { color: var(--text); }
 /* =========================================================
    Folie 7: Finanzen
    ========================================================= */
+.finanzen .karte { display: flex; flex-direction: column; justify-content: center; }
+.start-karte { background: linear-gradient(160deg, rgba(124,92,255,0.30), rgba(34,211,238,0.10)); border-color: rgba(124,92,255,0.6); }
+.start-karte small { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent2); font-weight: 700; }
+.start-karte .gross { font-size: clamp(48px, 6vw, 80px); font-weight: 800; line-height: 1.05; margin: 6px 0 8px; background: linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.start-karte ul { margin-top: 14px; }
 .balken-liste { display: flex; flex-direction: column; gap: 14px; }
 .balken-zeile { display: grid; grid-template-columns: 170px 1fr 90px; gap: 12px; align-items: center; font-size: 15px; color: var(--muted); }
 .balken { height: 14px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
@@ -294,12 +299,12 @@ strong { color: var(--text); }
 /* =========================================================
    Folie 11: Zeitstrahl
    ========================================================= */
-.zeitstrahl { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; flex: 1; align-items: start; padding-top: 30px; }
+.zeitstrahl { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; flex: 1; align-items: start; padding-top: 30px; }
 .zeitstrahl::before {
   content: ""; position: absolute; left: 0; right: 0; top: 10px; height: 3px;
   background: linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3)); border-radius: 3px;
 }
-.zeitstrahl .punkt { position: relative; }
+.zeitstrahl .punkt { position: relative; hyphens: manual; }
 .zeitstrahl .punkt::before {
   content: ""; position: absolute; top: -28px; left: 22px; width: 16px; height: 16px; border-radius: 50%;
   background: var(--bg); border: 3px solid var(--accent2); box-shadow: 0 0 18px var(--accent2);
@@ -517,19 +522,28 @@ strong { color: var(--text); }
 <section class="folie" data-titel="Finanzen">
   <div class="rein"><span class="label">Finanzen</span></div>
   <h2 class="rein">Kleiner Start, <span class="verlauf">kein Schuldenrisiko</span></h2>
-  <div class="raster raster-2">
-    <div class="rein karte">
-      <h3>Startkosten (einmalig & 1. Jahr)</h3>
-      <div class="balken-liste" id="kosten" style="margin-top:14px"></div>
-      <div class="summe"><span>Gesamt</span><strong id="kostenSumme">0 €</strong></div>
+  <div class="raster raster-2 finanzen">
+    <div class="rein karte tilt start-karte">
+      <small>Startkosten</small>
+      <div class="gross">ca. 30 €</div>
+      <p>für die <strong>Gewerbeanmeldung</strong> – mehr braucht es zum Start nicht.</p>
+      <ul class="haken">
+        <li>Laptop und Programme habe ich schon</li>
+        <li>Domain &amp; Hosting kosten nur wenige Euro</li>
+        <li>Kein Laden, keine Mitarbeiter, kein Lager</li>
+      </ul>
     </div>
-    <div class="rein karte">
-      <h3>Vorsichtige Planung für das 1. Jahr</h3>
-      <div class="balken-liste" id="plan" style="margin-top:14px"></div>
-      <p style="margin-top:16px; font-size:15px">Die Startkosten bezahle ich von meinem <strong>Ersparten</strong>. Ich nehme <strong>keine Kredite</strong> auf und kaufe nichts auf Raten.</p>
+    <div class="rein karte tilt">
+      <span class="icon">🛡️</span><h3>Kein Schuldenrisiko</h3>
+      <ul class="haken">
+        <li><strong>Keine Kredite</strong></li>
+        <li><strong>Keine Ratenkäufe</strong></li>
+        <li>Keine teuren Verträge oder Abos</li>
+        <li>Die Kosten bezahle ich von meinem <strong>Ersparten</strong></li>
+      </ul>
     </div>
   </div>
-  <div class="notiz">Betonen: Das Risiko ist sehr klein – im schlimmsten Fall verliere ich die paar Euro Startkosten. Ein Laptop ist schon vorhanden.</div>
+  <div class="notiz">Betonen: Zum Start brauche ich nur die Gewerbeanmeldung (ca. 30 €). Laptop und Programme habe ich schon. Ich nehme keine Kredite auf – im schlimmsten Fall verliere ich also nur diese paar Euro.</div>
 </section>
 
 <!-- =========================================================
@@ -589,12 +603,12 @@ strong { color: var(--text); }
   <div class="rein"><span class="label">Ausblick</span></div>
   <h2 class="rein">Meine <span class="verlauf">Ziele</span></h2>
   <div class="zeitstrahl">
-    <div class="rein punkt karte"><h3>Nach der Genehmigung</h3><p>Gewerbe anmelden, Finanzamt, Geschäftskonto eröffnen.</p></div>
-    <div class="rein punkt karte"><h3>In 3 Monaten</h3><p>Die ersten 2–3 zahlenden Kunden, eigene Firmen-Website online.</p></div>
-    <div class="rein punkt karte"><h3>In 1 Jahr</h3><p>Ein kleiner, zufriedener Kundenstamm und gute Bewertungen.</p></div>
-    <div class="rein punkt karte"><h3>Nach der Schule</h3><p>Erfahrung für Ausbildung oder Studium (z. B. Informatik / Mediendesign).</p></div>
+    <div class="rein punkt karte"><h3>Jetzt</h3><p>Mit Genehmigung als Minderjährige ein Klein&shy;unternehmen anmelden – mit der Klein&shy;unternehmer&shy;regelung (§&nbsp;19&nbsp;UStG).</p></div>
+    <div class="rein punkt karte"><h3>Die ersten Monate</h3><p>Erste Kunden gewinnen, Erfahrung sammeln und mein Portfolio erweitern.</p></div>
+    <div class="rein punkt karte"><h3>Die nächsten Jahre</h3><p>Einen festen Kundenstamm aufbauen und Schritt für Schritt wachsen.</p></div>
+    <div class="rein punkt karte"><h3>Langfristig</h3><p>Wenn es gut läuft: ein „richtiges“ Unternehmen ohne Klein&shy;unternehmer&shy;regelung – mit ganz normaler Umsatzsteuer.</p></div>
   </div>
-  <div class="notiz">Zeigen, dass ich langfristig denke und das Business auch meiner beruflichen Zukunft hilft.</div>
+  <div class="notiz">Ich fange klein an, als Kleinunternehmerin. Wenn das Geschäft in ein paar Jahren gut läuft, möchte ich daraus ein richtiges Unternehmen machen – dann ohne Klein&shy;unternehmer&shy;regelung, mit Umsatzsteuer. Das zeigt: Ich denke langfristig und plane Schritt für Schritt.</div>
 </section>
 
 <!-- =========================================================
@@ -657,22 +671,6 @@ const DATEN = {
     { name: "Betreuung", preis: "25 €", einheit: "/ Monat", hinweis: "", punkte: ["Kleine Änderungen & Updates", "Sicherheits-Updates", "Erreichbar per E-Mail", "Jederzeit kündbar"] },
   ],
 
-  // Startkosten in Euro
-  kosten: [
-    { posten: "Domain & Hosting", betrag: 60 },
-    { posten: "Gewerbeanmeldung", betrag: 30 },
-    { posten: "Software & Schriften", betrag: 50 },
-    { posten: "Visitenkarten", betrag: 25 },
-  ],
-
-  // Vorsichtige Jahresplanung
-  plan: [
-    { posten: "Aufträge im Jahr", wert: 6, anzeige: "6" },
-    { posten: "Ø pro Auftrag", wert: 400, anzeige: "400 €" },
-    { posten: "Umsatz geplant", wert: 2400, anzeige: "2.400 €" },
-    { posten: "Steuer-Rücklage", wert: 600, anzeige: "600 €" },
-  ],
-
   // Maximale Business-Stunden pro Woche
   stundenProWoche: 8,
 };
@@ -694,16 +692,6 @@ $("#pakete").innerHTML = DATEN.pakete.map(p => `
     <div class="preis">${p.preis} <small>${p.einheit || ""}</small></div>
     <ul class="haken">${p.punkte.map(x => `<li>${x}</li>`).join("")}</ul>
   </div>`).join("");
-
-// Kosten & Plan
-const euro = n => n.toLocaleString("de-DE") + " €";
-const maxK = Math.max(...DATEN.kosten.map(k => k.betrag));
-$("#kosten").innerHTML = DATEN.kosten.map(k => `
-  <div class="balken-zeile"><span>${k.posten}</span><div class="balken"><i style="--w:${k.betrag / maxK * 100}%"></i></div><b>${euro(k.betrag)}</b></div>`).join("");
-$("#kostenSumme").textContent = euro(DATEN.kosten.reduce((s, k) => s + k.betrag, 0));
-const maxP = Math.max(...DATEN.plan.slice(1).map(p => p.wert));
-$("#plan").innerHTML = DATEN.plan.map((p, i) => `
-  <div class="balken-zeile"><span>${p.posten}</span><div class="balken"><i style="--w:${i === 0 ? 100 : p.wert / maxP * 100}%"></i></div><b>${p.anzeige}</b></div>`).join("");
 
 // Wochenplan (Stunden pro Block; Business-Stunden werden auf Nachmittage/Wochenende verteilt)
 (function wochenplan() {
