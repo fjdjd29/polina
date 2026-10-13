@@ -273,6 +273,7 @@ strong { color: var(--text); }
 .block.lernen { background: rgba(250,204,21,0.45); color: #1a1a1a; }
 .block.business { background: linear-gradient(135deg, var(--accent), var(--accent2)); }
 .block.frei { background: rgba(52,211,153,0.3); }
+.fakten { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
 .legende { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 14px; font-size: 14px; color: var(--muted); }
 .legende span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; background: var(--c); }
 
@@ -389,9 +390,10 @@ strong { color: var(--text); }
     <div>
       <div class="rein"><span class="label">Antrag nach § 112 BGB</span></div>
       <h1 class="rein"><span data-feld="firma" class="verlauf">Meine Firma</span><br>Webdesign</h1>
-      <p class="rein untertitel">Moderne Websites für kleine Unternehmen, Vereine und Selbstständige – gestaltet von <strong data-feld="name">Polina</strong>.</p>
+      <p class="rein untertitel">Moderne Websites für kleine Unternehmen, Vereine und Selbstständige – gestaltet von <strong data-feld="name">Polina Jeske</strong>.</p>
       <div class="rein meta">
-        <span class="chip">👤 <span data-feld="name">Polina</span>, <span data-feld="alter">16</span> Jahre</span>
+        <span class="chip">👤 <span data-feld="name">Polina Jeske</span>, <span data-feld="alter">16</span> Jahre</span>
+        <span class="chip">🏫 <span data-feld="schule">Artland-Gymnasium</span></span>
         <span class="chip">📍 <span data-feld="ort">Stadt</span></span>
         <span class="chip">📅 <span data-feld="termin">16.10.2026</span></span>
       </div>
@@ -402,7 +404,7 @@ strong { color: var(--text); }
       </div>
     </div>
   </div>
-  <div class="notiz">Guten Tag. Ich heiße [Name], bin [Alter] Jahre alt und möchte heute vorstellen, warum ich mein eigenes Webdesign-Gewerbe anmelden möchte – und warum ich mir das verantwortungsvoll zutraue. Ruhig atmen, langsam sprechen. 🙂</div>
+  <div class="notiz">Guten Tag. Ich heiße Polina Jeske, bin 16 Jahre alt, gehe in die 11. Klasse des Artland-Gymnasiums in Quakenbrück und möchte heute vorstellen, warum ich mein eigenes Webdesign-Gewerbe anmelden möchte – und warum ich mir das verantwortungsvoll zutraue. Ruhig atmen, langsam sprechen. 🙂</div>
 </section>
 
 <!-- =========================================================
@@ -413,16 +415,16 @@ strong { color: var(--text); }
   <div class="ueber-layout">
     <div class="rein foto"><div class="foto-innen" id="foto">👩‍💻</div></div>
     <div>
-      <h2 class="rein">Hallo, ich bin <span class="verlauf" data-feld="name">Polina</span>!</h2>
-      <p class="rein" data-feld="ueberMich">Ich bin 16 Jahre alt und gehe in die 10. Klasse. Seit ich 13 bin, programmiere ich Websites – zuerst aus Neugier, inzwischen mit echten Projekten für Menschen in meinem Umfeld. Mir macht es Spaß, aus einer Idee etwas zu bauen, das andere wirklich nutzen.</p>
+      <h2 class="rein">Hallo, ich bin <span class="verlauf" data-feld="vorname">Polina</span>!</h2>
+      <p class="rein" data-feld="ueberMich">Ich bin 16 Jahre alt und gehe in die 11. Klasse des Artland-Gymnasiums in Quakenbrück. Meinen Realschulabschluss habe ich mit einem Schnitt von 1,7 gemacht. Webdesign habe ich in einem umfangreichen Online-Kurs gelernt – und seitdem schon vier Websites gebaut. Mir macht es Spaß, aus einer Idee etwas zu bauen, das andere wirklich nutzen.</p>
       <div class="zahlen">
         <div class="rein karte zahl tilt"><b data-zahl="websites">0</b><span>Websites gebaut</span></div>
-        <div class="rein karte zahl tilt"><b data-zahl="jahre">0</b><span>Jahre Erfahrung</span></div>
-        <div class="rein karte zahl tilt"><b data-zahl="stunden">0</b><span>Stunden gelernt</span></div>
+        <div class="rein karte zahl tilt"><b data-zahl="schnitt" data-dez="1">0</b><span>Schnitt im Realschulabschluss</span></div>
+        <div class="rein karte zahl tilt"><b data-zahl="kurs" data-suffix=" €">0</b><span>in meine Ausbildung investiert</span></div>
       </div>
     </div>
   </div>
-  <div class="notiz">Kurz erzählen: Wie bin ich zum Programmieren gekommen? Was war meine erste Website? Was kann ich besonders gut (z. B. Design, Handy-Ansicht)? Die Zahlen rechts zeigen, dass das kein spontaner Einfall ist.</div>
+  <div class="notiz">Kurz erzählen: Warum Webdesign? Was habe ich im Online-Kurs gelernt? Die 2.400 € für den Kurs zeigen: Ich meine es ernst und habe in meine Ausbildung investiert. Der Schnitt von 1,7 zeigt: Schule und Lernen klappen bei mir.</div>
 </section>
 
 <!-- =========================================================
@@ -461,7 +463,7 @@ strong { color: var(--text); }
   <div class="rein"><span class="label">Leistungen & Preise</span></div>
   <h2 class="rein">Klare Pakete, <span class="verlauf">faire Preise</span></h2>
   <div class="raster raster-3" id="pakete"></div>
-  <div class="notiz">Die Preise sind bewusst niedriger als bei Agenturen, weil ich am Anfang stehe. Jeder Auftrag bekommt ein schriftliches Angebot, und meine Eltern schauen mit drüber.</div>
+  <div class="notiz">Die Preise sind bewusst niedriger als bei Agenturen, weil ich am Anfang stehe. Jeder Auftrag bekommt ein schriftliches Angebot, und meine Mutter (Steuerfachangestellte) prüft es mit mir.</div>
 </section>
 
 <!-- =========================================================
@@ -490,7 +492,7 @@ strong { color: var(--text); }
       </ul>
     </div>
   </div>
-  <div class="notiz">Diese Folie zeigt Reife: Ich habe mich informiert und weiß, was auf mich zukommt. Falls gefragt: Ich lasse mich zusätzlich bei der IHK (Gründungsberatung) beraten.</div>
+  <div class="notiz">Diese Folie zeigt Reife: Ich habe mich informiert und weiß, was auf mich zukommt. Meine Mutter arbeitet als Steuerfachangestellte in einer Steuerkanzlei und prüft meine Rechnungen, Verträge und die Steuerunterlagen. Zusätzlich kann ich die Gründungsberatung der IHK nutzen.</div>
 </section>
 
 <!-- =========================================================
@@ -524,7 +526,7 @@ strong { color: var(--text); }
     <div class="rein karte tilt"><span class="icon">🚫💳</span><h3>Keine Schulden</h3><p>Keine Kredite, keine Ratenkäufe, keine teuren Verträge.</p></div>
     <div class="rein karte tilt"><span class="icon">🏦</span><h3>Eigenes Konto</h3><p>Geschäftliches getrennt vom Privaten – alles nachvollziehbar.</p></div>
     <div class="rein karte tilt"><span class="icon">🐷</span><h3>Steuer-Rücklage</h3><p>Ein Teil jeder Einnahme wird für Steuern zurückgelegt.</p></div>
-    <div class="rein karte tilt"><span class="icon">👨‍👩‍👧</span><h3>Eltern im Boot</h3><p>Größere Aufträge bespreche ich vorher mit meinen Eltern.</p></div>
+    <div class="rein karte tilt"><span class="icon">🧾</span><h3>Profi an meiner Seite</h3><p>Meine Mutter ist Steuerfachangestellte und prüft Rechnungen, Verträge und Steuern.</p></div>
   </div>
   <div class="notiz">Hier geht es um die Sorge des Gerichts, dass ich mich finanziell übernehme. Ruhig sagen: Ich habe mir das gut überlegt.</div>
 </section>
@@ -534,7 +536,12 @@ strong { color: var(--text); }
      ========================================================= -->
 <section class="folie" data-titel="Schule geht vor">
   <div class="rein"><span class="label">Zeitplanung</span></div>
-  <h2 class="rein"><span class="verlauf">Schule geht vor</span> – mein Wochenplan</h2>
+  <h2 class="rein" style="margin-bottom:12px"><span class="verlauf">Schule geht vor</span> – mein Wochenplan</h2>
+  <div class="rein fakten">
+    <span class="chip">🎓 Realschulabschluss mit Schnitt <b>1,7</b></span>
+    <span class="chip">🏫 11. Klasse, Artland-Gymnasium Quakenbrück</span>
+    <span class="chip">⏰ 6 Schulstunden pro Tag – nachmittags Zeit</span>
+  </div>
   <div class="woche rein" id="woche"></div>
   <div class="legende rein">
     <span style="--c: rgba(148,163,184,0.6)">Schule</span>
@@ -542,7 +549,7 @@ strong { color: var(--text); }
     <span style="--c: var(--accent)">Business (max. <b id="stundenMax">8</b> Std./Woche)</span>
     <span style="--c: rgba(52,211,153,0.6)">Freizeit</span>
   </div>
-  <div class="notiz">Klare Regel: Erst Hausaufgaben und Lernen, dann Business. Vor Klassenarbeiten und in Prüfungsphasen nehme ich keine neuen Aufträge an. Wenn meine Noten schlechter werden, fahre ich das Business sofort zurück.</div>
+  <div class="notiz">Ich habe jeden Tag 6 Schulstunden, danach bleibt genug Zeit. Meinen Realschulabschluss habe ich mit 1,7 gemacht. Klare Regel: Erst Hausaufgaben und Lernen, dann Business. Vor Klassenarbeiten und in Prüfungsphasen nehme ich keine neuen Aufträge an. Wenn meine Noten schlechter werden, fahre ich das Business sofort zurück.</div>
 </section>
 
 <!-- =========================================================
@@ -552,11 +559,11 @@ strong { color: var(--text); }
   <div class="rein"><span class="label">Unterstützung</span></div>
   <h2 class="rein">Ich mache das <span class="verlauf">nicht allein</span></h2>
   <div class="raster raster-3">
-    <div class="rein karte tilt"><span class="icon">✍️</span><h3>Meine Eltern</h3><p>Beide Elternteile sind einverstanden und haben den Antrag mit mir gemeinsam gestellt. Sie unterstützen mich bei Verträgen und Finanzen.</p></div>
-    <div class="rein karte tilt"><span class="icon">🧭</span><h3>Beratung</h3><p>Für Fragen zu Steuern und Recht nutze ich die Gründungsberatung der IHK und das Finanzamt.</p></div>
-    <div class="rein karte tilt"><span class="icon">📚</span><h3>Weiterlernen</h3><p>Ich bilde mich laufend weiter – Online-Kurse, Dokumentationen und eigene Projekte.</p></div>
+    <div class="rein karte tilt"><span class="icon">🧾</span><h3>Meine Mutter</h3><p>Sie ist Steuerfachangestellte in einer Steuerkanzlei. Sie prüft meine Verträge, Rechnungen und die Steuerunterlagen – so vermeide ich Fehler bei Steuern und Finanzamt.</p></div>
+    <div class="rein karte tilt"><span class="icon">✍️</span><h3>Meine Eltern</h3><p>Meine Eltern sind mit dem Antrag einverstanden und unterstützen mich. Größere Aufträge bespreche ich vorher mit ihnen.</p></div>
+    <div class="rein karte tilt"><span class="icon">📚</span><h3>Mein Online-Kurs</h3><p>Webdesign habe ich in einem umfangreichen Online-Kurs (2.400 €) gelernt. Dort habe ich weiterhin Zugang zu allen Lerninhalten.</p></div>
   </div>
-  <div class="notiz">Wenn die Eltern dabei sind, kurz auf sie zeigen. Das Gericht will sehen, dass die Eltern hinter dem Antrag stehen.</div>
+  <div class="notiz">Wenn meine Mutter dabei ist, kurz auf sie zeigen. Wichtig: Ich schreibe Angebote und Rechnungen selbst, meine Mutter prüft sie. So zeige ich, dass ich es selbst kann und trotzdem abgesichert bin.</div>
 </section>
 
 <!-- =========================================================
@@ -606,16 +613,18 @@ strong { color: var(--text); }
    Alles in diesem Block kannst du einfach ändern.
    ========================================================= */
 const DATEN = {
-  name: "Polina",
+  name: "Polina Jeske",
+  vorname: "Polina",
+  schule: "Artland-Gymnasium",
   alter: 16,
-  ort: "Musterstadt",
+  ort: "Quakenbrück",
   firma: "Polina Design",
   termin: "16.10.2026",
   foto: "",            // z. B. "bilder/ich.jpg" – leer lassen = Emoji
-  ueberMich: "Ich bin 16 Jahre alt und gehe in die 10. Klasse. Seit ich 13 bin, programmiere ich Websites – zuerst aus Neugier, inzwischen mit echten Projekten für Menschen in meinem Umfeld. Mir macht es Spaß, aus einer Idee etwas zu bauen, das andere wirklich nutzen.",
+  ueberMich: "Ich bin 16 Jahre alt und gehe in die 11. Klasse des Artland-Gymnasiums in Quakenbrück. Meinen Realschulabschluss habe ich mit einem Schnitt von 1,7 gemacht. Webdesign habe ich in einem umfangreichen Online-Kurs gelernt – und seitdem schon vier Websites gebaut. Mir macht es Spaß, aus einer Idee etwas zu bauen, das andere wirklich nutzen.",
 
   // Zahlen auf der „Über mich“-Folie
-  zahlen: { websites: 4, jahre: 3, stunden: 500 },
+  zahlen: { websites: 4, schnitt: 1.7, kurs: 2400 },
 
   // Deine Websites fürs 3D-Karussell.
   // bild: Screenshot in den Ordner "bilder" legen, z. B. "bilder/website1.png"
@@ -761,7 +770,8 @@ function zaehleHoch(folie) {
     const ziel = DATEN.zahlen[el.dataset.zahl] || 0, start = performance.now(), dauer = 1600;
     const schritt = t => {
       const p = Math.min(1, (t - start) / dauer), e = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(ziel * e).toLocaleString("de-DE") + (p === 1 && el.dataset.zahl === "stunden" ? "+" : "");
+      const dez = +(el.dataset.dez || 0);
+      el.textContent = (ziel * e).toLocaleString("de-DE", { minimumFractionDigits: dez, maximumFractionDigits: dez }) + (el.dataset.suffix || "");
       if (p < 1) requestAnimationFrame(schritt);
     };
     requestAnimationFrame(schritt);
