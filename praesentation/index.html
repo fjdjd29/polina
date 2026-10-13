@@ -182,6 +182,11 @@ strong { color: var(--text); }
   display: grid; place-items: center; font-size: 90px;
 }
 @keyframes schweben { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-12px) } }
+.steckbrief { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+.steckbrief .karte { display: flex; align-items: center; gap: 14px; padding: 16px 18px; }
+.steckbrief .karte > span { font-size: 28px; }
+.steckbrief small { display: block; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent2); }
+.steckbrief b { font-size: clamp(15px, 1.4vw, 18px); color: var(--text); }
 .zahlen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 26px; }
 .zahl { text-align: center; padding: 18px 10px; }
 .zahl b { display: block; font-size: clamp(32px, 4vw, 52px); font-weight: 800; }
@@ -196,7 +201,7 @@ strong { color: var(--text); }
   display: grid; place-items: center;
 }
 .karussell {
-  width: 340px; height: 250px; position: relative;
+  width: 340px; height: 250px; position: absolute; left: 50%; top: 50%; margin: -125px 0 0 -170px;
   transform-style: preserve-3d;
   transition: transform 1s cubic-bezier(.2,.8,.2,1);
 }
@@ -226,7 +231,16 @@ strong { color: var(--text); }
 }
 .projekt .vorschau b { font-size: 24px; color: white; text-shadow: 0 2px 14px rgba(0,0,0,0.5); }
 .projekt:not(.vorne) { filter: brightness(0.45) saturate(0.7); }
+.projekt { pointer-events: none; }
+.vorne-link { position: absolute; left: 50%; top: 50%; z-index: 4; border-radius: 16px; transform: translate(-50%, -50%); }
+.vorne-link:hover { box-shadow: 0 0 0 3px var(--accent2); }
+.projekt { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.oeffnen { display: inline-block; margin-top: 10px; padding: 8px 18px; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--accent2)); color: white; font-weight: 700; font-size: 15px; text-decoration: none; }
+.oeffnen:hover { filter: brightness(1.1); }
+.projekt-info { position: relative; z-index: 2; }
+.karussell-szene { overflow: visible; }
 .projekt-info { text-align: center; min-height: 92px; }
+.projekt-info p { font-size: clamp(14px, 1.2vw, 17px); }
 .projekt-info h3 { font-size: clamp(20px, 2vw, 26px); }
 .projekt-info .tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
 .projekt-info .tags span { font-size: 12px; padding: 4px 10px; border-radius: 999px; background: rgba(34,211,238,0.12); color: var(--accent2); }
@@ -343,7 +357,7 @@ strong { color: var(--text); }
   .wuerfel div:nth-child(5) { transform: rotateX(90deg) translateZ(80px); }
   .wuerfel div:nth-child(6) { transform: rotateX(-90deg) translateZ(80px); }
   .foto { width: 160px; height: 160px; margin: auto; }
-  .karussell { width: 240px; height: 180px; }
+  .karussell { width: 240px; height: 180px; margin: -90px 0 0 -120px; }
   .woche { grid-template-columns: repeat(7, minmax(0,1fr)); gap: 4px; }
   .block { font-size: 9px; }
   .zeitstrahl { grid-template-columns: 1fr 1fr; }
@@ -356,7 +370,7 @@ strong { color: var(--text); }
 @media print {
   @page { size: A4 landscape; margin: 10mm; }
   body { background: white; color: #111; overflow: visible; }
-  #hintergrund, #leiste, #fortschritt, #notizen, .karussell-knopf, .wuerfel-szene { display: none !important; }
+  #hintergrund, #leiste, #fortschritt, #notizen, .karussell-knopf, .vorne-link, .wuerfel-szene { display: none !important; }
   #buehne, #welt { position: static; perspective: none; transform: none !important; }
   .folie {
     position: relative; left: auto; top: auto; margin: 0 0 0 0; width: 100%; height: auto; min-height: 180mm;
@@ -370,7 +384,7 @@ strong { color: var(--text); }
   .karte { background: #f6f6fb; border-color: #ddd; transform: none !important; }
   .balken i { width: var(--w) !important; }
   .karussell-szene { display: block; perspective: none; }
-  .karussell { width: 100%; height: auto; transform: none !important; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .karussell { position: static; margin: 0; width: 100%; height: auto; transform: none !important; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .projekt { position: relative; transform: none !important; filter: none !important; height: 150px; }
   .projekt-info { display: none; }
 
@@ -416,15 +430,16 @@ strong { color: var(--text); }
     <div class="rein foto"><div class="foto-innen" id="foto">👩‍💻</div></div>
     <div>
       <h2 class="rein">Hallo, ich bin <span class="verlauf" data-feld="vorname">Polina</span>!</h2>
-      <p class="rein" data-feld="ueberMich">Ich bin 16 Jahre alt und gehe in die 11. Klasse des Artland-Gymnasiums in Quakenbrück. Meinen Realschulabschluss habe ich mit einem Schnitt von 1,7 gemacht. Webdesign habe ich in einem umfangreichen Online-Kurs gelernt – und seitdem schon vier Websites gebaut. Mir macht es Spaß, aus einer Idee etwas zu bauen, das andere wirklich nutzen.</p>
-      <div class="zahlen">
-        <div class="rein karte zahl tilt"><b data-zahl="websites">0</b><span>Websites gebaut</span></div>
-        <div class="rein karte zahl tilt"><b data-zahl="schnitt" data-dez="1">0</b><span>Schnitt im Realschulabschluss</span></div>
-        <div class="rein karte zahl tilt"><b data-zahl="kurs" data-suffix=" €">0</b><span>in meine Ausbildung investiert</span></div>
+      <p class="rein" data-feld="ueberMich">Ich bin Polina, 16 Jahre alt, und wohne in Quakenbrück. Ich gehe in die 11. Klasse des Artland-Gymnasiums. Mich begeistert, wenn Design und Technik zusammenkommen – und genau das ist Webdesign. Deshalb habe ich das Handwerk in einem Online-Kurs gelernt und inzwischen meine ersten Websites gebaut. Jetzt möchte ich daraus ein kleines eigenes Business machen.</p>
+      <div class="steckbrief">
+        <div class="rein karte tilt"><span>🎂</span><div><small>Alter</small><b data-feld="alter">16</b> Jahre</div></div>
+        <div class="rein karte tilt"><span>📍</span><div><small>Wohnort</small><b data-feld="ort">Quakenbrück</b></div></div>
+        <div class="rein karte tilt"><span>🏫</span><div><small>Schule</small><b>11. Klasse, Artland-Gymnasium</b></div></div>
+        <div class="rein karte tilt"><span>💻</span><div><small>Leidenschaft</small><b>Webdesign</b></div></div>
       </div>
     </div>
   </div>
-  <div class="notiz">Kurz erzählen: Warum Webdesign? Was habe ich im Online-Kurs gelernt? Die 2.400 € für den Kurs zeigen: Ich meine es ernst und habe in meine Ausbildung investiert. Der Schnitt von 1,7 zeigt: Schule und Lernen klappen bei mir.</div>
+  <div class="notiz">Locker und persönlich erzählen: Wer bin ich, was mache ich gern, wie bin ich zum Webdesign gekommen? Noten und Kurs kommen später – hier geht es nur um mich als Person.</div>
 </section>
 
 <!-- =========================================================
@@ -450,10 +465,11 @@ strong { color: var(--text); }
   <div class="karussell-szene rein">
     <button class="karussell-knopf links" aria-label="Vorherige Website">‹</button>
     <div class="karussell" id="karussell"></div>
+    <a class="vorne-link" id="vorneLink" href="#" target="_blank" rel="noopener" aria-label="Website öffnen"></a>
     <button class="karussell-knopf rechts" aria-label="Nächste Website">›</button>
   </div>
   <div class="projekt-info rein" id="projektInfo"></div>
-  <div class="notiz">Mit den Pfeilen links/rechts im Karussell drehen. Auf die vordere Website klicken → sie öffnet sich in einem neuen Tab. Zu jeder Website sagen: Für wen? Was war die Herausforderung? Was habe ich dabei gelernt?</div>
+  <div class="notiz">Mit den Pfeilen links/rechts im Karussell drehen. Auf die vordere Website oder auf „Website öffnen ↗“ tippen → sie öffnet sich in einem neuen Tab. Zu jeder Website sagen: Für wen? Was war die Herausforderung? Was habe ich dabei gelernt?</div>
 </section>
 
 <!-- =========================================================
@@ -621,7 +637,7 @@ const DATEN = {
   firma: "Polina Design",
   termin: "16.10.2026",
   foto: "",            // z. B. "bilder/ich.jpg" – leer lassen = Emoji
-  ueberMich: "Ich bin 16 Jahre alt und gehe in die 11. Klasse des Artland-Gymnasiums in Quakenbrück. Meinen Realschulabschluss habe ich mit einem Schnitt von 1,7 gemacht. Webdesign habe ich in einem umfangreichen Online-Kurs gelernt – und seitdem schon vier Websites gebaut. Mir macht es Spaß, aus einer Idee etwas zu bauen, das andere wirklich nutzen.",
+  ueberMich: "Ich bin Polina, 16 Jahre alt, und wohne in Quakenbrück. Ich gehe in die 11. Klasse des Artland-Gymnasiums. Mich begeistert, wenn Design und Technik zusammenkommen – und genau das ist Webdesign. Deshalb habe ich das Handwerk in einem Online-Kurs gelernt und inzwischen meine ersten Websites gebaut. Jetzt möchte ich daraus ein kleines eigenes Business machen.",
 
   // Zahlen auf der „Über mich“-Folie
   zahlen: { websites: 4, schnitt: 1.7, kurs: 2400 },
@@ -714,10 +730,10 @@ function radius() { return Math.max(260, (karussell.offsetWidth / 2) / Math.tan(
 karussell.innerHTML = DATEN.websites.map((w, i) => {
   const [a, b] = farben[i % farben.length];
   const hg = w.bild ? `background-image:url('${w.bild}')` : `background:linear-gradient(135deg, ${a}, ${b})`;
-  return `<a class="projekt" data-i="${i}" href="${w.url}" target="_blank" rel="noopener">
+  return `<div class="projekt" data-i="${i}">
     <div class="browserleiste"><i></i><i></i><i></i><span>${w.url.replace(/^https?:\/\//, "")}</span></div>
     <div class="vorschau" style="${hg}">${w.bild ? "" : `<b>${w.titel}</b>`}</div>
-  </a>`;
+  </div>`;
 }).join("");
 function karussellAnordnen() {
   const r = radius();
@@ -725,21 +741,21 @@ function karussellAnordnen() {
     el.style.transform = `rotateY(${i * 360 / n}deg) translateZ(${r}px)`;
     el.classList.toggle("vorne", i === ((vorne % n) + n) % n);
   });
-  karussell.style.transform = `translateZ(${-r}px) rotateY(${-vorne * 360 / n}deg)`;
+  const szene = karussell.parentElement;
+  const skala = Math.max(0.4, Math.min(1, (szene.clientHeight - 16) / karussell.offsetHeight, (szene.clientWidth - 150) / (karussell.offsetWidth * 1.7)));
+  karussell.style.transform = `scale(${skala}) translateZ(${-r}px) rotateY(${-vorne * 360 / n}deg)`;
   const w = DATEN.websites[((vorne % n) + n) % n];
-  $("#projektInfo").innerHTML = `<h3>${w.titel}</h3><p>${w.beschreibung}</p><div class="tags">${(w.tags || []).map(t => `<span>${t}</span>`).join("")}</div>`;
+  const vl = $("#vorneLink");
+  vl.href = w.url; vl.style.width = karussell.offsetWidth * skala + "px"; vl.style.height = karussell.offsetHeight * skala + "px";
+  vl.setAttribute("aria-label", w.titel + " öffnen");
+  $("#projektInfo").innerHTML = `<h3>${w.titel}</h3><p>${w.beschreibung}</p><div class="tags">${(w.tags || []).map(t => `<span>${t}</span>`).join("")}</div><a class="oeffnen" href="${w.url}" target="_blank" rel="noopener">Website öffnen ↗</a>`;
 }
 $(".karussell-knopf.links").onclick = e => { e.stopPropagation(); vorne--; karussellAnordnen(); };
 $(".karussell-knopf.rechts").onclick = e => { e.stopPropagation(); vorne++; karussellAnordnen(); };
-karussell.addEventListener("click", e => {
-  const p = e.target.closest(".projekt"); if (!p) return;
-  const i = +p.dataset.i, aktuell = ((vorne % n) + n) % n;
-  if (i !== aktuell) { e.preventDefault(); let d = i - aktuell; if (d > n / 2) d -= n; if (d < -n / 2) d += n; vorne += d; karussellAnordnen(); }
-});
 karussellAnordnen();
 // Langsames automatisches Drehen, solange niemand klickt
 let autoDreh = setInterval(() => { if (aktuelleFolie().dataset.titel === "Meine Websites") { vorne++; karussellAnordnen(); } }, 8000);
-karussell.parentElement.addEventListener("pointerdown", () => clearInterval(autoDreh), { once: true });
+$("#projektInfo").parentElement.addEventListener("pointerdown", () => clearInterval(autoDreh));
 
 /* ---------- Folien-Navigation ---------- */
 const folien = $$(".folie");
