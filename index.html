@@ -664,6 +664,38 @@ function submitBooking() {
   var msg = document.getElementById('bookingMessage').value.trim();
   if (!selectedDay || !selectedSlot || !name || !email) return;
 
+  var dateObj = new Date(selectedDay);
+  var dateStr = dayNames[dateObj.getDay()] + ', ' + dateObj.getDate() + '. ' + monthNames[dateObj.getMonth()] + ' ' + dateObj.getFullYear();
+  var termin = dateStr + ' um ' + selectedSlot + ' Uhr';
+
+  var btn = document.getElementById('bookingSubmit');
+  btn.disabled = true;
+  btn.textContent = 'Wird gesendet...';
+
+  var formData = new FormData();
+  formData.append('Name', name);
+  formData.append('E-Mail Kunde', email);
+  if (phone) formData.append('Telefon', phone);
+  formData.append('Wunschtermin', termin);
+  if (msg) formData.append('Nachricht', msg);
+  formData.append('_subject', 'Neue Terminanfrage: ' + name + ' – ' + termin);
+  formData.append('_template', 'table');
+  formData.append('_captcha', 'false');
+
+  fetch('https://formsubmit.co/ajax/polina.jeske@gymbsb.net', {
+    method: 'POST',
+    body: formData
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    showBookingConfirm();
+  })
+  .catch(function() {
+    showBookingConfirm();
+  });
+}
+
+function showBookingConfirm() {
   document.getElementById('bookingFormWrap').classList.add('hidden');
   document.getElementById('bookingConfirm').classList.add('active');
 }
