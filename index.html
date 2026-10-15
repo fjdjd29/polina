@@ -186,12 +186,13 @@
     .value-tag { padding: 0.4rem 0.9rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-dim); transition: all 0.2s; }
     .value-tag:hover { border-color: var(--accent); color: var(--accent); }
     .about-visual { position: relative; height: 400px; display: flex; align-items: center; justify-content: center; perspective: 800px; }
-    .about-sphere { width: 220px; height: 220px; border-radius: 50%; position: relative; background: radial-gradient(circle at 30% 30%, rgba(252,176,47,0.3), rgba(255,107,53,0.15) 40%, rgba(168,85,247,0.1) 70%, transparent 100%); box-shadow: 0 0 80px rgba(252,176,47,0.15), inset 0 0 60px rgba(252,176,47,0.05); animation: sphere-rotate 20s linear infinite; }
-    .about-sphere::before { content: ''; position: absolute; top: -30px; left: -30px; right: -30px; bottom: -30px; border-radius: 50%; border: 1px solid rgba(252,176,47,0.1); animation: ring-spin 15s linear infinite reverse; }
-    .about-sphere::after { content: ''; position: absolute; top: -60px; left: -60px; right: -60px; bottom: -60px; border-radius: 50%; border: 1px solid rgba(168,85,247,0.08); animation: ring-spin 25s linear infinite; }
+    .about-sphere { width: 220px; height: 220px; border-radius: 50%; position: relative; background: radial-gradient(circle at 30% 30%, rgba(252,176,47,0.4), rgba(255,107,53,0.25) 40%, rgba(168,85,247,0.2) 70%, transparent 100%); box-shadow: 0 0 100px rgba(252,176,47,0.25), 0 0 60px rgba(168,85,247,0.15), inset 0 0 60px rgba(252,176,47,0.1); animation: sphere-rotate 6s linear infinite; }
+    .about-sphere::before { content: ''; position: absolute; top: -30px; left: -30px; right: -30px; bottom: -30px; border-radius: 50%; border: 1.5px solid rgba(252,176,47,0.15); animation: ring-spin 5s linear infinite reverse; }
+    .about-sphere::after { content: ''; position: absolute; top: -60px; left: -60px; right: -60px; bottom: -60px; border-radius: 50%; border: 1.5px solid rgba(168,85,247,0.12); animation: ring-spin 8s linear infinite; }
     @keyframes sphere-rotate { 0% { transform: rotateY(0deg) rotateX(5deg); } 100% { transform: rotateY(360deg) rotateX(5deg); } }
     @keyframes ring-spin { 0% { transform: rotateX(60deg) rotateZ(0deg); } 100% { transform: rotateX(60deg) rotateZ(360deg); } }
-    .about-sphere-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.1rem; font-weight: 900; letter-spacing: -0.03em; color: var(--accent); opacity: 0.9; white-space: nowrap; }
+    .about-sphere-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.3rem; font-weight: 900; letter-spacing: -0.03em; white-space: nowrap; background: linear-gradient(135deg, #FCB02F, #ff6b35, #a855f7, #FCB02F); background-size: 300% 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: label-glow 3s ease-in-out infinite; filter: drop-shadow(0 0 12px rgba(252,176,47,0.5)); }
+    @keyframes label-glow { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 
     /* ── CTA ── */
     .cta-section { text-align: center; padding: 6rem 2rem; position: relative; }
@@ -313,7 +314,6 @@
     <div class="hero-float float-tri"></div>
 
     <div class="hero-inner">
-      <div class="hero-badge"><div class="hero-badge-dot"></div>KI-gestützte Webentwicklung</div>
       <h1>
         <span class="hero-line-1">Wir erschaffen</span>
         <span class="hero-line-2" id="heroAnimText"></span>
@@ -663,25 +663,6 @@ function submitBooking() {
   var phone = document.getElementById('bookingPhone').value.trim();
   var msg = document.getElementById('bookingMessage').value.trim();
   if (!selectedDay || !selectedSlot || !name || !email) return;
-
-  var dateObj = new Date(selectedDay);
-  var dateStr = dayNames[dateObj.getDay()] + ', ' + dateObj.getDate() + '. ' + monthNames[dateObj.getMonth()] + ' ' + dateObj.getFullYear();
-
-  var subject = encodeURIComponent('Terminanfrage – ' + name + ' – ' + dateStr + ' ' + selectedSlot + ' Uhr');
-  var body = 'Neue Terminanfrage über paluna.ai\n\n';
-  body += 'Name: ' + name + '\n';
-  body += 'E-Mail: ' + email + '\n';
-  if (phone) body += 'Telefon: ' + phone + '\n';
-  body += 'Wunschtermin: ' + dateStr + ' um ' + selectedSlot + ' Uhr\n';
-  if (msg) body += '\nNachricht:\n' + msg + '\n';
-
-  var mailtoLink = 'mailto:polina.jeske@gymbsb.net?subject=' + subject + '&body=' + encodeURIComponent(body);
-  var a = document.createElement('a');
-  a.href = mailtoLink;
-  a.style.display = 'none';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
 
   document.getElementById('bookingFormWrap').classList.add('hidden');
   document.getElementById('bookingConfirm').classList.add('active');
