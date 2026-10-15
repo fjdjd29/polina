@@ -30,318 +30,152 @@
 
     body {
       font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-      line-height: 1.6;
+      background: var(--bg); color: var(--text);
+      overflow-x: hidden; line-height: 1.6;
     }
 
-    canvas#galaxy {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%; z-index: 0; pointer-events: none;
-    }
-
+    canvas#galaxy { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
     .content { position: relative; z-index: 1; }
 
     /* ── Nav ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 1rem 2rem;
-      display: flex; align-items: center; justify-content: space-between;
-      backdrop-filter: blur(20px);
-      background: rgba(7, 7, 12, 0.6);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.3s;
-    }
-    nav.scrolled { background: rgba(7, 7, 12, 0.95); }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(20px); background: rgba(7,7,12,0.6); border-bottom: 1px solid var(--border); transition: background 0.3s; }
+    nav.scrolled { background: rgba(7,7,12,0.95); }
     .nav-logo { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.03em; color: var(--text); }
     .nav-logo span { color: var(--accent); }
     .nav-links { display: flex; gap: 2rem; align-items: center; }
-    .nav-links a {
-      color: var(--text-dim); text-decoration: none;
-      font-size: 0.875rem; font-weight: 500; transition: color 0.2s;
-    }
+    .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; cursor: pointer; }
     .nav-links a:hover { color: var(--text); }
-    .nav-cta {
-      background: var(--accent) !important; color: var(--bg) !important;
-      padding: 0.5rem 1.25rem; border-radius: 8px;
-      font-weight: 600 !important; transition: all 0.2s !important; cursor: pointer;
-    }
+    .nav-cta { background: var(--accent) !important; color: var(--bg) !important; padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600 !important; transition: all 0.2s !important; cursor: pointer; }
     .nav-cta:hover { box-shadow: 0 0 20px var(--accent-glow); transform: translateY(-1px); }
     .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
     .menu-toggle span { display: block; width: 24px; height: 2px; background: var(--text); margin: 5px 0; transition: all 0.3s; }
 
     /* ── Hero ── */
-    .hero {
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      text-align: center; padding: 8rem 2rem 4rem;
-      position: relative; overflow: hidden;
-    }
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 4rem; position: relative; overflow: hidden; }
     .hero-inner { max-width: 800px; position: relative; z-index: 2; }
 
-    canvas#heroTorus {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 100%; height: 100%;
-      pointer-events: none; z-index: 0;
-    }
+    canvas#heroTorus { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 
-    .hero-float {
-      position: absolute; pointer-events: none; z-index: 1;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count: infinite;
-    }
+    .hero-float { position: absolute; pointer-events: none; z-index: 1; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
+    .float-ring { width: 120px; height: 120px; border-radius: 50%; border: 2px solid rgba(252,176,47,0.15); animation: float-drift-1 18s infinite, ring-tilt 12s linear infinite; top: 12%; left: 8%; }
+    .float-ring::after { content: ''; position: absolute; inset: 8px; border-radius: 50%; border: 1px solid rgba(252,176,47,0.08); }
+    .float-cube { width: 60px; height: 60px; border: 1.5px solid rgba(168,85,247,0.2); animation: float-drift-2 22s infinite, cube-spin 15s linear infinite; top: 20%; right: 10%; transform-style: preserve-3d; }
+    .float-diamond { width: 40px; height: 40px; border: 1.5px solid rgba(252,176,47,0.2); animation: float-drift-3 16s infinite; bottom: 25%; left: 12%; transform: rotate(45deg); }
+    .float-circle-sm { width: 20px; height: 20px; border-radius: 50%; background: radial-gradient(circle, rgba(252,176,47,0.3), transparent); animation: float-drift-1 14s infinite reverse; bottom: 30%; right: 15%; }
+    .float-hexagon { width: 80px; height: 80px; position: absolute; top: 65%; left: 5%; animation: float-drift-2 20s infinite reverse; }
+    .float-hexagon::before { content: ''; position: absolute; inset: 0; background: rgba(168,85,247,0.06); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+    .float-tri { width: 0; height: 0; border-left: 25px solid transparent; border-right: 25px solid transparent; border-bottom: 43px solid rgba(255,107,53,0.08); top: 70%; right: 8%; animation: float-drift-3 24s infinite, tri-spin 20s linear infinite; }
 
-    .float-ring {
-      width: 120px; height: 120px; border-radius: 50%;
-      border: 2px solid rgba(252,176,47,0.15);
-      animation: float-drift-1 18s infinite, ring-tilt 12s linear infinite;
-      top: 12%; left: 8%;
-    }
-    .float-ring::after {
-      content: ''; position: absolute; inset: 8px; border-radius: 50%;
-      border: 1px solid rgba(252,176,47,0.08);
-    }
-
-    .float-cube {
-      width: 60px; height: 60px;
-      border: 1.5px solid rgba(168,85,247,0.2);
-      animation: float-drift-2 22s infinite, cube-spin 15s linear infinite;
-      top: 20%; right: 10%; transform-style: preserve-3d;
-    }
-
-    .float-diamond {
-      width: 40px; height: 40px;
-      border: 1.5px solid rgba(252,176,47,0.2);
-      animation: float-drift-3 16s infinite;
-      bottom: 25%; left: 12%;
-      transform: rotate(45deg);
-    }
-
-    .float-circle-sm {
-      width: 20px; height: 20px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(252,176,47,0.3), transparent);
-      animation: float-drift-1 14s infinite reverse;
-      bottom: 30%; right: 15%;
-    }
-
-    .float-hexagon {
-      width: 80px; height: 80px; position: absolute;
-      top: 65%; left: 5%;
-      animation: float-drift-2 20s infinite reverse;
-    }
-    .float-hexagon::before {
-      content: ''; position: absolute; inset: 0;
-      background: rgba(168,85,247,0.06);
-      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-      border: 1px solid rgba(168,85,247,0.12);
-    }
-
-    .float-tri {
-      width: 0; height: 0;
-      border-left: 25px solid transparent; border-right: 25px solid transparent;
-      border-bottom: 43px solid rgba(255,107,53,0.08);
-      top: 70%; right: 8%;
-      animation: float-drift-3 24s infinite, tri-spin 20s linear infinite;
-    }
-
-    @keyframes float-drift-1 {
-      0%, 100% { transform: translateY(0) translateX(0); }
-      25% { transform: translateY(-30px) translateX(15px); }
-      50% { transform: translateY(-10px) translateX(-10px); }
-      75% { transform: translateY(-40px) translateX(5px); }
-    }
-    @keyframes float-drift-2 {
-      0%, 100% { transform: translateY(0) translateX(0); }
-      33% { transform: translateY(-25px) translateX(-20px); }
-      66% { transform: translateY(-45px) translateX(10px); }
-    }
-    @keyframes float-drift-3 {
-      0%, 100% { transform: translateY(0) rotate(45deg); }
-      50% { transform: translateY(-35px) rotate(45deg); }
-    }
-    @keyframes ring-tilt {
-      0% { transform: rotateX(0deg) rotateY(0deg); }
-      100% { transform: rotateX(360deg) rotateY(180deg); }
-    }
-    @keyframes cube-spin {
-      0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-      100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg); }
-    }
+    @keyframes float-drift-1 { 0%,100% { transform: translateY(0) translateX(0); } 25% { transform: translateY(-30px) translateX(15px); } 50% { transform: translateY(-10px) translateX(-10px); } 75% { transform: translateY(-40px) translateX(5px); } }
+    @keyframes float-drift-2 { 0%,100% { transform: translateY(0) translateX(0); } 33% { transform: translateY(-25px) translateX(-20px); } 66% { transform: translateY(-45px) translateX(10px); } }
+    @keyframes float-drift-3 { 0%,100% { transform: translateY(0) rotate(45deg); } 50% { transform: translateY(-35px) rotate(45deg); } }
+    @keyframes ring-tilt { 0% { transform: rotateX(0deg) rotateY(0deg); } 100% { transform: rotateX(360deg) rotateY(180deg); } }
+    @keyframes cube-spin { 0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); } 100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg); } }
     @keyframes tri-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.4rem 1rem; border: 1px solid var(--border);
-      border-radius: 100px; font-size: 0.8rem; color: var(--text-dim);
-      margin-bottom: 2rem; background: var(--bg-card); backdrop-filter: blur(10px);
-      opacity: 0; animation: hero-fade-in 0.8s 0.3s forwards;
-    }
-    .hero-badge-dot {
-      width: 6px; height: 6px; background: var(--accent);
-      border-radius: 50%; animation: pulse-dot 2s infinite;
-    }
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; border: 1px solid var(--border); border-radius: 100px; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 2rem; background: var(--bg-card); backdrop-filter: blur(10px); opacity: 0; animation: hero-fade-in 0.8s 0.2s forwards; }
+    .hero-badge-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse-dot 2s infinite; }
     @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-    .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800;
-      letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1.5rem;
-      opacity: 0; animation: hero-rise 1s 0.5s forwards;
-    }
-    .hero h1 .gradient {
+    .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1.5rem; perspective: 600px; }
+    .hero-line-1 { display: block; opacity: 0; animation: hero-fade-in 0.8s 0.4s forwards; }
+    .hero-line-2 { display: block; }
+    .hero-char {
+      display: inline-block;
+      opacity: 0;
+      transform: rotateX(90deg) translateY(30px);
+      transform-origin: bottom center;
       background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: char-rise 0.5s forwards;
     }
-    .hero p {
-      font-size: 1.125rem; color: var(--text-dim);
-      max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7;
-      opacity: 0; animation: hero-fade-in 0.8s 0.9s forwards;
-    }
-    .hero-buttons {
-      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-      opacity: 0; animation: hero-fade-in 0.8s 1.1s forwards;
+    .hero-char.space { width: 0.25em; }
+    @keyframes char-rise {
+      0% { opacity: 0; transform: rotateX(90deg) translateY(30px); }
+      60% { opacity: 1; transform: rotateX(-10deg) translateY(-5px); }
+      100% { opacity: 1; transform: rotateX(0deg) translateY(0); }
     }
 
-    @keyframes hero-rise {
-      from { opacity: 0; transform: translateY(40px) rotateX(8deg); }
-      to { opacity: 1; transform: translateY(0) rotateX(0deg); }
-    }
-    @keyframes hero-fade-in {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .hero p { font-size: 1.125rem; color: var(--text-dim); max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7; opacity: 0; animation: hero-fade-in 0.8s 2s forwards; }
+    .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; opacity: 0; animation: hero-fade-in 0.8s 2.2s forwards; }
+
+    @keyframes hero-fade-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ── Buttons ── */
-    .btn-primary {
-      background: var(--accent); color: var(--bg);
-      padding: 0.875rem 2rem; border-radius: 12px;
-      font-weight: 700; font-size: 0.95rem; text-decoration: none;
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      transition: all 0.25s; border: none; cursor: pointer; font-family: inherit;
-    }
+    .btn-primary { background: var(--accent); color: var(--bg); padding: 0.875rem 2rem; border-radius: 12px; font-weight: 700; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.25s; border: none; cursor: pointer; font-family: inherit; }
     .btn-primary:hover { box-shadow: 0 0 30px var(--accent-glow), 0 8px 32px rgba(0,0,0,0.3); transform: translateY(-2px); }
-
-    .btn-secondary {
-      background: var(--bg-card); color: var(--text);
-      padding: 0.875rem 2rem; border-radius: 12px;
-      font-weight: 600; font-size: 0.95rem; text-decoration: none;
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      border: 1px solid var(--border); transition: all 0.25s;
-    }
+    .btn-secondary { background: var(--bg-card); color: var(--text); padding: 0.875rem 2rem; border-radius: 12px; font-weight: 600; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; border: 1px solid var(--border); transition: all 0.25s; }
     .btn-secondary:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
 
     /* ── Sections ── */
     section { padding: 6rem 2rem; max-width: 1100px; margin: 0 auto; }
     .section-header { text-align: center; margin-bottom: 4rem; }
-    .section-tag {
-      font-size: 0.75rem; font-weight: 600; color: var(--accent);
-      text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem; display: block;
-    }
-    .section-title {
-      font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800;
-      letter-spacing: -0.03em; margin-bottom: 1rem;
-    }
+    .section-tag { font-size: 0.75rem; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem; display: block; }
+    .section-title { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; }
     .section-desc { color: var(--text-dim); max-width: 560px; margin: 0 auto; font-size: 1rem; }
 
     /* ── Scroll animations ── */
-    .scroll-3d {
-      opacity: 0; transform: translateY(60px) rotateX(10deg);
-      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-      transform-style: preserve-3d; perspective: 1000px;
-    }
+    .scroll-3d { opacity: 0; transform: translateY(60px) rotateX(10deg); transition: all 0.9s cubic-bezier(0.16,1,0.3,1); transform-style: preserve-3d; perspective: 1000px; }
     .scroll-3d.visible { opacity: 1; transform: translateY(0) rotateX(0deg); }
-    .scroll-left {
-      opacity: 0; transform: translateX(-80px) rotateY(8deg);
-      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+    .scroll-left { opacity: 0; transform: translateX(-80px) rotateY(8deg); transition: all 0.9s cubic-bezier(0.16,1,0.3,1); }
     .scroll-left.visible { opacity: 1; transform: translateX(0) rotateY(0deg); }
-    .scroll-right {
-      opacity: 0; transform: translateX(80px) rotateY(-8deg);
-      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+    .scroll-right { opacity: 0; transform: translateX(80px) rotateY(-8deg); transition: all 0.9s cubic-bezier(0.16,1,0.3,1); }
     .scroll-right.visible { opacity: 1; transform: translateX(0) rotateY(0deg); }
-    .scroll-scale {
-      opacity: 0; transform: scale(0.8) rotateX(5deg);
-      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+    .scroll-scale { opacity: 0; transform: scale(0.8) rotateX(5deg); transition: all 1s cubic-bezier(0.16,1,0.3,1); }
     .scroll-scale.visible { opacity: 1; transform: scale(1) rotateX(0deg); }
-
-    .scroll-flip {
-      opacity: 0; transform: perspective(800px) rotateY(-60deg);
-      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-      transform-origin: left center;
-    }
+    .scroll-flip { opacity: 0; transform: perspective(800px) rotateY(-60deg); transition: all 1s cubic-bezier(0.16,1,0.3,1); transform-origin: left center; }
     .scroll-flip.visible { opacity: 1; transform: perspective(800px) rotateY(0deg); }
-
-    .scroll-flip-right {
-      opacity: 0; transform: perspective(800px) rotateY(60deg);
-      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-      transform-origin: right center;
-    }
+    .scroll-flip-right { opacity: 0; transform: perspective(800px) rotateY(60deg); transition: all 1s cubic-bezier(0.16,1,0.3,1); transform-origin: right center; }
     .scroll-flip-right.visible { opacity: 1; transform: perspective(800px) rotateY(0deg); }
 
-    /* ── USP Grid ── */
+    /* ── USP ── */
     .usp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-    .usp-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 2rem; transition: all 0.4s ease;
-      position: relative; overflow: hidden; transform-style: preserve-3d;
-    }
-    .usp-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0; transition: opacity 0.35s;
-    }
-    .usp-card:hover {
-      border-color: var(--border-hover); background: var(--bg-card-hover);
-      transform: translateY(-8px) rotateX(2deg);
-      box-shadow: 0 20px 40px rgba(252,176,47,0.05), 0 0 60px rgba(252,176,47,0.03);
-    }
+    .usp-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; transition: all 0.4s ease; position: relative; overflow: hidden; }
+    .usp-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0; transition: opacity 0.35s; }
+    .usp-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); transform: translateY(-8px) rotateX(2deg); box-shadow: 0 20px 40px rgba(252,176,47,0.05); }
     .usp-card:hover::before { opacity: 1; }
-    .usp-icon {
-      width: 48px; height: 48px; border-radius: 12px;
-      background: rgba(252, 176, 47, 0.1);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem; margin-bottom: 1.25rem;
-      color: var(--accent); font-weight: 700;
-    }
+    .usp-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(252,176,47,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 1.25rem; color: var(--accent); font-weight: 700; }
     .usp-card h3 { font-size: 1.125rem; font-weight: 700; margin-bottom: 0.75rem; }
     .usp-card p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; }
+
+    /* ── Portfolio Carousel ── */
+    .portfolio-section { padding: 6rem 0; max-width: 100%; overflow: hidden; }
+    .portfolio-section .section-header { padding: 0 2rem; max-width: 1100px; margin: 0 auto 3rem; }
+    .carousel-wrap { position: relative; overflow: hidden; mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent); }
+    .carousel-track { display: flex; gap: 1.5rem; animation: carousel-scroll 30s linear infinite; width: max-content; }
+    .carousel-track:hover { animation-play-state: paused; }
+    @keyframes carousel-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .portfolio-card { width: 320px; min-width: 320px; height: 220px; border-radius: 16px; overflow: hidden; position: relative; border: 1px solid var(--border); transition: all 0.4s; cursor: pointer; }
+    .portfolio-card:hover { border-color: var(--border-hover); transform: scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+    .portfolio-card-bg { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+    .portfolio-card-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem 1.25rem; background: linear-gradient(transparent, rgba(7,7,12,0.9)); }
+    .portfolio-card-label h4 { font-size: 0.9rem; font-weight: 700; }
+    .portfolio-card-label p { font-size: 0.75rem; color: var(--text-dim); }
+
+    .placeholder-1 { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); }
+    .placeholder-2 { background: linear-gradient(135deg, #2d1b69, #11998e, #38ef7d); }
+    .placeholder-3 { background: linear-gradient(135deg, #1a1a2e, #e94560, #533483); }
+    .placeholder-4 { background: linear-gradient(135deg, #0c0c1d, #FCB02F, #ff6b35); }
+    .placeholder-5 { background: linear-gradient(135deg, #141e30, #243b55, #a855f7); }
+    .placeholder-6 { background: linear-gradient(135deg, #1f1c2c, #928dab, #f0f0f5); }
+
+    .placeholder-text { font-size: 1.5rem; font-weight: 800; color: rgba(255,255,255,0.15); letter-spacing: -0.03em; }
 
     /* ── Steps ── */
     .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
     .step { text-align: center; }
-    .step-number {
-      width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--accent);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem; font-weight: 800; color: var(--accent);
-      margin: 0 auto 1.25rem; transition: all 0.4s;
-    }
-    .step:hover .step-number {
-      background: var(--accent); color: var(--bg);
-      box-shadow: 0 0 30px var(--accent-glow); transform: scale(1.1);
-    }
+    .step-number { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 800; color: var(--accent); margin: 0 auto 1.25rem; transition: all 0.4s; }
+    .step:hover .step-number { background: var(--accent); color: var(--bg); box-shadow: 0 0 30px var(--accent-glow); transform: scale(1.1); }
     .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
     .step p { color: var(--text-dim); font-size: 0.875rem; line-height: 1.6; }
 
     /* ── Space Divider ── */
-    .space-divider {
-      position: relative; height: 200px; overflow: hidden;
-      display: flex; align-items: center; justify-content: center; margin: 2rem 0;
-    }
-    .space-ring {
-      position: absolute; border-radius: 50%;
-      border: 1px solid rgba(252,176,47,0.08);
-      animation: ring-expand 12s ease-in-out infinite;
-    }
+    .space-divider { position: relative; height: 160px; overflow: hidden; display: flex; align-items: center; justify-content: center; margin: 2rem 0; }
+    .space-ring { position: absolute; border-radius: 50%; border: 1px solid rgba(252,176,47,0.08); animation: ring-expand 12s ease-in-out infinite; }
     .space-ring:nth-child(1) { width: 200px; height: 200px; animation-delay: 0s; }
     .space-ring:nth-child(2) { width: 350px; height: 350px; animation-delay: -4s; }
     .space-ring:nth-child(3) { width: 500px; height: 500px; animation-delay: -8s; }
-    @keyframes ring-expand {
-      0%,100% { transform: scale(0.9) rotate(0deg); opacity: 0.3; }
-      50% { transform: scale(1.1) rotate(180deg); opacity: 0.8; }
-    }
+    @keyframes ring-expand { 0%,100% { transform: scale(0.9) rotate(0deg); opacity: 0.3; } 50% { transform: scale(1.1) rotate(180deg); opacity: 0.8; } }
 
     /* ── About ── */
     .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
@@ -349,49 +183,19 @@
     .about-text p { color: var(--text-dim); margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.7; }
     .about-text strong { color: var(--text); font-weight: 600; }
     .about-values { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
-    .value-tag {
-      padding: 0.4rem 0.9rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600;
-      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-dim); transition: all 0.2s;
-    }
+    .value-tag { padding: 0.4rem 0.9rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-dim); transition: all 0.2s; }
     .value-tag:hover { border-color: var(--accent); color: var(--accent); }
-
-    .about-visual {
-      position: relative; height: 400px;
-      display: flex; align-items: center; justify-content: center; perspective: 800px;
-    }
-    .about-sphere {
-      width: 220px; height: 220px; border-radius: 50%; position: relative;
-      background: radial-gradient(circle at 30% 30%, rgba(252,176,47,0.3), rgba(255,107,53,0.15) 40%, rgba(168,85,247,0.1) 70%, transparent 100%);
-      box-shadow: 0 0 80px rgba(252,176,47,0.15), inset 0 0 60px rgba(252,176,47,0.05);
-      animation: sphere-rotate 20s linear infinite;
-    }
-    .about-sphere::before {
-      content: ''; position: absolute; top: -30px; left: -30px; right: -30px; bottom: -30px;
-      border-radius: 50%; border: 1px solid rgba(252,176,47,0.1);
-      animation: ring-spin 15s linear infinite reverse;
-    }
-    .about-sphere::after {
-      content: ''; position: absolute; top: -60px; left: -60px; right: -60px; bottom: -60px;
-      border-radius: 50%; border: 1px solid rgba(168,85,247,0.08);
-      animation: ring-spin 25s linear infinite;
-    }
+    .about-visual { position: relative; height: 400px; display: flex; align-items: center; justify-content: center; perspective: 800px; }
+    .about-sphere { width: 220px; height: 220px; border-radius: 50%; position: relative; background: radial-gradient(circle at 30% 30%, rgba(252,176,47,0.3), rgba(255,107,53,0.15) 40%, rgba(168,85,247,0.1) 70%, transparent 100%); box-shadow: 0 0 80px rgba(252,176,47,0.15), inset 0 0 60px rgba(252,176,47,0.05); animation: sphere-rotate 20s linear infinite; }
+    .about-sphere::before { content: ''; position: absolute; top: -30px; left: -30px; right: -30px; bottom: -30px; border-radius: 50%; border: 1px solid rgba(252,176,47,0.1); animation: ring-spin 15s linear infinite reverse; }
+    .about-sphere::after { content: ''; position: absolute; top: -60px; left: -60px; right: -60px; bottom: -60px; border-radius: 50%; border: 1px solid rgba(168,85,247,0.08); animation: ring-spin 25s linear infinite; }
     @keyframes sphere-rotate { 0% { transform: rotateY(0deg) rotateX(5deg); } 100% { transform: rotateY(360deg) rotateX(5deg); } }
     @keyframes ring-spin { 0% { transform: rotateX(60deg) rotateZ(0deg); } 100% { transform: rotateX(60deg) rotateZ(360deg); } }
-
-    .about-sphere-label {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      font-size: 1.1rem; font-weight: 900; letter-spacing: -0.03em; color: var(--accent); opacity: 0.9;
-      white-space: nowrap;
-    }
+    .about-sphere-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.1rem; font-weight: 900; letter-spacing: -0.03em; color: var(--accent); opacity: 0.9; white-space: nowrap; }
 
     /* ── CTA ── */
     .cta-section { text-align: center; padding: 6rem 2rem; position: relative; }
-    .cta-section::before {
-      content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      width: 600px; height: 600px; max-width: 100%;
-      background: radial-gradient(circle, var(--accent-glow), transparent 70%);
-      opacity: 0.12; pointer-events: none;
-    }
+    .cta-section::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; max-width: 100%; background: radial-gradient(circle, var(--accent-glow), transparent 70%); opacity: 0.12; pointer-events: none; }
     .cta-section h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; }
     .cta-section p { color: var(--text-dim); margin-bottom: 2rem; font-size: 1.05rem; }
 
@@ -407,91 +211,60 @@
     .footer-col a:hover { color: var(--text); }
     .footer-bottom { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--text-dim); text-align: center; }
 
-    /* ── Legal & Booking Overlays ── */
-    .legal-page, .booking-page {
-      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      z-index: 200; background: var(--bg); overflow-y: auto; padding: 6rem 2rem 4rem;
-    }
-    .legal-page.active, .booking-page.active { display: block; }
+    /* ── Overlays (Legal + Booking) ── */
+    .overlay-page { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 200; background: var(--bg); overflow-y: auto; padding: 6rem 2rem 4rem; }
+    .overlay-page.active { display: block; }
+    .overlay-close { position: fixed; top: 1.5rem; right: 2rem; z-index: 201; background: var(--bg-card); border: 1px solid var(--border); color: var(--text); width: 40px; height: 40px; border-radius: 50%; font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .overlay-close:hover { border-color: var(--accent); }
     .legal-content { max-width: 720px; margin: 0 auto; }
     .legal-content h1 { font-size: 2rem; font-weight: 800; margin-bottom: 2rem; }
     .legal-content h2 { font-size: 1.25rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem; }
     .legal-content p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.7; margin-bottom: 0.75rem; }
-    .legal-close, .booking-close {
-      position: fixed; top: 1.5rem; right: 2rem; z-index: 201;
-      background: var(--bg-card); border: 1px solid var(--border);
-      color: var(--text); width: 40px; height: 40px; border-radius: 50%;
-      font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-    }
-    .legal-close:hover, .booking-close:hover { border-color: var(--accent); }
 
     /* ── Booking Page ── */
-    .booking-inner {
-      max-width: 640px; margin: 0 auto; text-align: center;
-      position: relative;
-    }
-    .booking-inner h1 {
-      font-size: clamp(2rem, 5vw, 3rem); font-weight: 800;
-      letter-spacing: -0.03em; margin-bottom: 1rem;
-    }
-    .booking-inner h1 .gradient {
-      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .booking-inner > p {
-      color: var(--text-dim); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2.5rem;
-    }
-    .booking-steps {
-      display: grid; grid-template-columns: 1fr; gap: 1.25rem;
-      text-align: left; margin-bottom: 3rem;
-    }
-    .booking-step {
-      display: flex; gap: 1.25rem; align-items: flex-start;
-      padding: 1.25rem 1.5rem; border-radius: 12px;
-      background: var(--bg-card); border: 1px solid var(--border);
-      transition: all 0.3s;
-    }
-    .booking-step:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
-    .booking-step-num {
-      width: 36px; height: 36px; min-width: 36px; border-radius: 50%;
-      border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center;
-      font-size: 0.85rem; font-weight: 800; color: var(--accent);
-    }
-    .booking-step-text h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
-    .booking-step-text p { color: var(--text-dim); font-size: 0.875rem; line-height: 1.5; margin: 0; }
-    .booking-email-box {
-      background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
-      padding: 2rem; margin-bottom: 2rem; position: relative; overflow: hidden;
-    }
-    .booking-email-box::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at 50% 0%, rgba(252,176,47,0.06), transparent 60%);
-      pointer-events: none;
-    }
-    .booking-email-box p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1rem; position: relative; }
-    .booking-email-link {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-size: 1.15rem; font-weight: 700; color: var(--accent);
-      text-decoration: none; position: relative; transition: all 0.2s;
-    }
-    .booking-email-link:hover { text-shadow: 0 0 20px var(--accent-glow); }
-    .booking-hint { color: var(--text-dim); font-size: 0.8rem; margin-top: 1rem; }
+    .booking-inner { max-width: 600px; margin: 0 auto; position: relative; }
+    .booking-inner h1 { font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.5rem; text-align: center; }
+    .booking-inner h1 .gradient { background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .booking-subtitle { text-align: center; color: var(--text-dim); font-size: 1rem; margin-bottom: 2.5rem; }
 
-    .booking-glow {
-      position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
-      width: 400px; height: 400px;
-      background: radial-gradient(circle, rgba(252,176,47,0.08), transparent 70%);
-      pointer-events: none;
-    }
+    .booking-days { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.25rem; }
+    .booking-day { flex: 1; min-width: 80px; padding: 0.75rem 0.5rem; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-card); text-align: center; cursor: pointer; transition: all 0.2s; }
+    .booking-day:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+    .booking-day.selected { border-color: var(--accent); background: rgba(252,176,47,0.08); }
+    .booking-day-name { font-size: 0.7rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+    .booking-day-num { font-size: 1.25rem; font-weight: 800; margin-top: 0.25rem; }
+    .booking-day-month { font-size: 0.65rem; color: var(--text-dim); }
+
+    .booking-slots-label { font-size: 0.8rem; font-weight: 600; color: var(--text-dim); margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .booking-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 2rem; }
+    .booking-slot { padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-card); text-align: center; cursor: pointer; font-size: 0.9rem; font-weight: 600; transition: all 0.2s; }
+    .booking-slot:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+    .booking-slot.selected { border-color: var(--accent); background: rgba(252,176,47,0.1); color: var(--accent); }
+
+    .booking-form { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .booking-input { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 1rem; color: var(--text); font-family: inherit; font-size: 0.9rem; transition: border-color 0.2s; outline: none; }
+    .booking-input::placeholder { color: var(--text-dim); }
+    .booking-input:focus { border-color: var(--accent); }
+
+    .booking-submit { width: 100%; padding: 1rem; border-radius: 12px; background: var(--accent); color: var(--bg); font-family: inherit; font-size: 1rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.25s; }
+    .booking-submit:hover { box-shadow: 0 0 30px var(--accent-glow); transform: translateY(-1px); }
+    .booking-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .booking-confirm { display: none; text-align: center; padding: 2rem 0; }
+    .booking-confirm.active { display: block; }
+    .booking-confirm-icon { width: 64px; height: 64px; border-radius: 50%; background: rgba(252,176,47,0.1); border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 1.5rem; color: var(--accent); }
+    .booking-confirm h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.75rem; }
+    .booking-confirm p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.6; }
+
+    .booking-form-wrap { transition: opacity 0.3s; }
+    .booking-form-wrap.hidden { display: none; }
+
+    .booking-glow { position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(252,176,47,0.06), transparent 70%); pointer-events: none; }
 
     /* ── Mobile ── */
     @media (max-width: 768px) {
       nav { padding: 1rem; }
-      .nav-links {
-        display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(7, 7, 12, 0.98); flex-direction: column;
-        align-items: center; justify-content: center; gap: 2rem; z-index: 99;
-      }
+      .nav-links { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(7,7,12,0.98); flex-direction: column; align-items: center; justify-content: center; gap: 2rem; z-index: 99; }
       .nav-links.open { display: flex; }
       .nav-links a { font-size: 1.25rem; }
       .menu-toggle { display: block; z-index: 101; }
@@ -504,7 +277,10 @@
       .float-cube { width: 35px; height: 35px; right: 5%; }
       .float-diamond { width: 25px; height: 25px; }
       .float-hexagon { width: 50px; height: 50px; }
-      .booking-steps { gap: 1rem; }
+      .booking-days { gap: 0.35rem; }
+      .booking-day { min-width: 60px; padding: 0.6rem 0.3rem; }
+      .booking-slots { grid-template-columns: repeat(2, 1fr); }
+      .portfolio-card { width: 260px; min-width: 260px; height: 180px; }
     }
   </style>
 </head>
@@ -518,9 +294,9 @@
     <div class="nav-logo">paluna<span>.ai</span></div>
     <div class="nav-links" id="navLinks">
       <a href="#leistungen">Leistungen</a>
-      <a href="#ablauf">Ablauf</a>
-      <a href="#ueber">Über uns</a>
-      <a href="#" onclick="openBooking(); return false;" class="nav-cta">Erstgespräch buchen</a>
+      <a href="#portfolio">Projekte</a>
+      <a href="#ueber">Über mich</a>
+      <a onclick="openBooking()" class="nav-cta">Erstgespräch buchen</a>
     </div>
     <button class="menu-toggle" id="menuToggle" aria-label="Menü">
       <span></span><span></span><span></span>
@@ -529,7 +305,6 @@
 
   <section class="hero" id="start">
     <canvas id="heroTorus"></canvas>
-
     <div class="hero-float float-ring"></div>
     <div class="hero-float float-cube"></div>
     <div class="hero-float float-diamond"></div>
@@ -538,41 +313,54 @@
     <div class="hero-float float-tri"></div>
 
     <div class="hero-inner">
-      <div class="hero-badge">
-        <div class="hero-badge-dot"></div>
-        KI-gestützte Webentwicklung
-      </div>
-      <h1>Deine Webseite.<br><span class="gradient">Professionell. Individuell. Mit KI.</span></h1>
-      <p>Wir entwickeln hochwertige Webseiten mit modernster KI-Technologie – maßgeschneidert für dein Business, mit Design das beeindruckt.</p>
+      <div class="hero-badge"><div class="hero-badge-dot"></div>KI-gestützte Webentwicklung</div>
+      <h1>
+        <span class="hero-line-1">Wir erschaffen</span>
+        <span class="hero-line-2" id="heroAnimText"></span>
+      </h1>
+      <p>Webseiten mit Wow-Effekt – maßgeschneidert mit KI-Technologie, designed für dein Business.</p>
       <div class="hero-buttons">
-        <button onclick="openBooking()" class="btn-primary">
-          Kostenloses Erstgespräch
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+        <button onclick="openBooking()" class="btn-primary">Termin vereinbaren <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <a href="#leistungen" class="btn-secondary">Mehr erfahren</a>
       </div>
     </div>
   </section>
 
   <div class="space-divider scroll-scale">
-    <div class="space-ring"></div>
-    <div class="space-ring"></div>
-    <div class="space-ring"></div>
+    <div class="space-ring"></div><div class="space-ring"></div><div class="space-ring"></div>
   </div>
 
   <section id="leistungen">
     <div class="section-header scroll-3d">
       <span class="section-tag">Was wir machen</span>
       <h2 class="section-title">Webseiten, die beeindrucken</h2>
-      <p class="section-desc">Von der Idee bis zum Launch – wir bauen Webseiten, die dein Business auf das nächste Level bringen.</p>
+      <p class="section-desc">Von der Idee bis zur fertigen Seite – wir bauen Webseiten, die dein Business auf das nächste Level bringen.</p>
     </div>
     <div class="usp-grid">
       <div class="usp-card scroll-flip" style="transition-delay:0s"><div class="usp-icon">01</div><h3>Individuelles Design</h3><p>Jede Webseite wird maßgeschneidert für dich entwickelt. Kein Template, kein Standard – nur deine Vision, professionell umgesetzt.</p></div>
       <div class="usp-card scroll-flip-right" style="transition-delay:0.1s"><div class="usp-icon">02</div><h3>KI-Technologie</h3><p>Durch den Einsatz von KI entwickeln wir effizienter – das bedeutet mehr Qualität und mehr Möglichkeiten für dein Projekt.</p></div>
       <div class="usp-card scroll-flip" style="transition-delay:0.2s"><div class="usp-icon">03</div><h3>3D & Animationen</h3><p>Beeindruckende 3D-Elemente, flüssige Animationen und interaktive Designs, die deine Besucher fesseln.</p></div>
       <div class="usp-card scroll-flip-right" style="transition-delay:0.3s"><div class="usp-icon">04</div><h3>Automatisierung</h3><p>Intelligente Funktionen direkt in deine Webseite integriert – von Kontaktformularen bis zu automatisierten Workflows.</p></div>
-      <div class="usp-card scroll-flip" style="transition-delay:0.4s"><div class="usp-icon">05</div><h3>Laufende Betreuung</h3><p>Wir lassen dich nach dem Launch nicht allein. Updates, Änderungen, Support – wir sind immer für dich da.</p></div>
+      <div class="usp-card scroll-flip" style="transition-delay:0.4s"><div class="usp-icon">05</div><h3>Laufende Betreuung</h3><p>Wir lassen dich nach dem Go-Live nicht allein. Updates, Änderungen, Support – wir sind immer für dich da.</p></div>
       <div class="usp-card scroll-flip-right" style="transition-delay:0.5s"><div class="usp-icon">06</div><h3>Responsive</h3><p>Perfekt auf jedem Gerät. Smartphone, Tablet, Desktop – deine Webseite sieht überall großartig aus.</p></div>
+    </div>
+  </section>
+
+  <section id="portfolio" class="portfolio-section">
+    <div class="section-header scroll-3d">
+      <span class="section-tag">Unsere Projekte</span>
+      <h2 class="section-title">Was wir bereits gebaut haben</h2>
+      <p class="section-desc">Ein Blick auf unsere bisherigen Arbeiten – jedes Projekt ist einzigartig.</p>
+    </div>
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="carouselTrack">
+        <div class="portfolio-card"><div class="portfolio-card-bg placeholder-1"><span class="placeholder-text">paluna.ai</span></div><div class="portfolio-card-label"><h4>Projekt kommt bald</h4><p>Webseite &middot; 3D Design</p></div></div>
+        <div class="portfolio-card"><div class="portfolio-card-bg placeholder-2"><span class="placeholder-text">paluna.ai</span></div><div class="portfolio-card-label"><h4>Projekt kommt bald</h4><p>Webseite &middot; Branding</p></div></div>
+        <div class="portfolio-card"><div class="portfolio-card-bg placeholder-3"><span class="placeholder-text">paluna.ai</span></div><div class="portfolio-card-label"><h4>Projekt kommt bald</h4><p>Webseite &middot; Animation</p></div></div>
+        <div class="portfolio-card"><div class="portfolio-card-bg placeholder-4"><span class="placeholder-text">paluna.ai</span></div><div class="portfolio-card-label"><h4>Projekt kommt bald</h4><p>Webseite &middot; E-Commerce</p></div></div>
+        <div class="portfolio-card"><div class="portfolio-card-bg placeholder-5"><span class="placeholder-text">paluna.ai</span></div><div class="portfolio-card-label"><h4>Projekt kommt bald</h4><p>Webseite &middot; Portfolio</p></div></div>
+        <div class="portfolio-card"><div class="portfolio-card-bg placeholder-6"><span class="placeholder-text">paluna.ai</span></div><div class="portfolio-card-label"><h4>Projekt kommt bald</h4><p>Webseite &middot; Minimal</p></div></div>
+      </div>
     </div>
   </section>
 
@@ -586,7 +374,7 @@
       <div class="step scroll-left"><div class="step-number">1</div><h3>Erstgespräch</h3><p>Kostenlos und unverbindlich. Wir lernen dich und dein Projekt kennen und besprechen deine Vorstellungen.</p></div>
       <div class="step scroll-3d"><div class="step-number">2</div><h3>Konzept & Design</h3><p>Wir erstellen ein individuelles Konzept und Design, das perfekt zu dir und deiner Marke passt.</p></div>
       <div class="step scroll-3d"><div class="step-number">3</div><h3>Entwicklung</h3><p>Deine Webseite wird mit KI-Unterstützung professionell umgesetzt – mit allen Features die du brauchst.</p></div>
-      <div class="step scroll-right"><div class="step-number">4</div><h3>Launch & Betreuung</h3><p>Wir bringen deine Seite online und betreuen sie langfristig. Du konzentrierst dich auf dein Business.</p></div>
+      <div class="step scroll-right"><div class="step-number">4</div><h3>Fertig & Betreuung</h3><p>Wir bringen deine Seite online und betreuen sie langfristig. Du konzentrierst dich auf dein Business.</p></div>
     </div>
   </section>
 
@@ -600,7 +388,7 @@
         <h3>Webentwicklung, neu gedacht.</h3>
         <p>Hallo, mein Name ist <strong>Polina Jeske</strong>. Zusammen mit meiner Mutter habe ich paluna.ai gegründet – ein KI-Unternehmen, das Webentwicklung auf ein neues Level hebt.</p>
         <p>Wir sind Teil von <strong>Akquise und Heartbeat</strong> von Tim Krasenbrink. Dort verbinde ich unternehmerisches Know-how mit modernster Technologie. Ich glaube, dass jedes Unternehmen eine beeindruckende Webpräsenz verdient – egal wie groß oder klein.</p>
-        <p>Mein Ansatz: Persönliche Beratung, individuelle Umsetzung und langfristige Betreuung. Ich bin immer erreichbar und begleite dich vom ersten Gespräch bis weit über den Launch hinaus.</p>
+        <p>Du hast Fragen? Du brauchst Änderungen? <strong>Ich bin persönlich für dich da</strong> – direkt, ohne Warteschleife, ohne Umwege. Nicht nur bis deine Seite steht, sondern so lange du mich brauchst.</p>
         <div class="about-values">
           <span class="value-tag">Konkretheit</span><span class="value-tag">Produktivität</span>
           <span class="value-tag">Proaktivität</span><span class="value-tag">Hilfsbereitschaft</span>
@@ -608,9 +396,7 @@
         </div>
       </div>
       <div class="about-visual scroll-right">
-        <div class="about-sphere">
-          <div class="about-sphere-label">paluna.ai</div>
-        </div>
+        <div class="about-sphere"><div class="about-sphere-label">paluna.ai</div></div>
       </div>
     </div>
   </section>
@@ -618,22 +404,16 @@
   <section class="cta-section" id="kontakt">
     <h2 class="scroll-3d">Bereit für deine neue Webseite?</h2>
     <p class="scroll-3d">Lass uns reden – kostenloses Erstgespräch, ganz unverbindlich.</p>
-    <button onclick="openBooking()" class="btn-primary scroll-scale" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
-      Erstgespräch vereinbaren
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
+    <button onclick="openBooking()" class="btn-primary scroll-scale" style="font-size: 1.1rem; padding: 1rem 2.5rem;">Termin vereinbaren <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   </section>
 
   <footer>
     <div class="footer-content">
-      <div>
-        <div class="footer-brand">paluna<span>.ai</span></div>
-        <p>KI-Webseiten für dein Business.</p>
-      </div>
+      <div><div class="footer-brand">paluna<span>.ai</span></div><p>KI-Webseiten für dein Business.</p></div>
       <div class="footer-links">
-        <div class="footer-col"><h4>Navigation</h4><a href="#leistungen">Leistungen</a><a href="#ablauf">Ablauf</a><a href="#ueber">Über mich</a></div>
+        <div class="footer-col"><h4>Navigation</h4><a href="#leistungen">Leistungen</a><a href="#portfolio">Projekte</a><a href="#ueber">Über mich</a></div>
         <div class="footer-col"><h4>Kontakt</h4><a onclick="openBooking()">Erstgespräch buchen</a></div>
-        <div class="footer-col"><h4>Rechtliches</h4><a onclick="openLegal('impressum')">Impressum</a><a onclick="openLegal('datenschutz')">Datenschutz</a></div>
+        <div class="footer-col"><h4>Rechtliches</h4><a onclick="openOverlay('impressum')">Impressum</a><a onclick="openOverlay('datenschutz')">Datenschutz</a></div>
       </div>
     </div>
     <div class="footer-bottom">&copy; 2024 paluna.ai – Alle Rechte vorbehalten.</div>
@@ -641,51 +421,39 @@
 </div>
 
 <!-- Booking Overlay -->
-<div class="booking-page" id="booking">
-  <button class="booking-close" onclick="closeBooking()">&times;</button>
+<div class="overlay-page" id="booking">
+  <button class="overlay-close" onclick="closeOverlay('booking')">&times;</button>
   <div class="booking-glow"></div>
   <div class="booking-inner">
-    <h1>Lass uns <span class="gradient">reden.</span></h1>
-    <p>Dein kostenloses Erstgespräch ist der erste Schritt zu deiner neuen Webseite. Wir lernen uns kennen, ich höre mir deine Ideen an und wir schauen gemeinsam, wie ich dir helfen kann.</p>
+    <h1>Termin <span class="gradient">vereinbaren</span></h1>
+    <p class="booking-subtitle">Wähle einen Wunschtermin für dein kostenloses Erstgespräch.</p>
 
-    <div class="booking-steps">
-      <div class="booking-step">
-        <div class="booking-step-num">1</div>
-        <div class="booking-step-text">
-          <h3>Du schreibst mir</h3>
-          <p>Schick mir einfach eine E-Mail – erzähl mir kurz, wer du bist und was du vorhast.</p>
-        </div>
+    <div class="booking-form-wrap" id="bookingFormWrap">
+      <div class="booking-days" id="bookingDays"></div>
+      <div class="booking-slots-label">Verfügbare Uhrzeiten</div>
+      <div class="booking-slots" id="bookingSlots"></div>
+
+      <div class="booking-form">
+        <input type="text" class="booking-input" id="bookingName" placeholder="Dein Name" required>
+        <input type="email" class="booking-input" id="bookingEmail" placeholder="Deine E-Mail-Adresse" required>
+        <input type="tel" class="booking-input" id="bookingPhone" placeholder="Telefonnummer (optional)">
+        <textarea class="booking-input" id="bookingMessage" placeholder="Erzähl mir kurz von deinem Projekt... (optional)" rows="3" style="resize:vertical;min-height:80px"></textarea>
       </div>
-      <div class="booking-step">
-        <div class="booking-step-num">2</div>
-        <div class="booking-step-text">
-          <h3>Wir telefonieren</h3>
-          <p>Ich melde mich bei dir und wir besprechen alles in Ruhe. Kostenlos und unverbindlich.</p>
-        </div>
-      </div>
-      <div class="booking-step">
-        <div class="booking-step-num">3</div>
-        <div class="booking-step-text">
-          <h3>Ich lege los</h3>
-          <p>Wenn es passt, starte ich direkt mit dem Konzept. Du lehnst dich zurück.</p>
-        </div>
-      </div>
+      <button class="booking-submit" id="bookingSubmit" onclick="submitBooking()" disabled>Anfrage senden</button>
     </div>
 
-    <div class="booking-email-box">
-      <p>Schreib mir direkt an:</p>
-      <a href="mailto:polina.jeske@gymbsb.net?subject=Erstgespr%C3%A4ch%20%E2%80%93%20paluna.ai" class="booking-email-link">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 5l8 5 8-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="3" width="18" height="14" rx="3" stroke="currentColor" stroke-width="1.5"/></svg>
-        polina.jeske@gymbsb.net
-      </a>
-      <p class="booking-hint">Ich antworte in der Regel innerhalb von 24 Stunden.</p>
+    <div class="booking-confirm" id="bookingConfirm">
+      <div class="booking-confirm-icon">&#10003;</div>
+      <h2>Anfrage gesendet!</h2>
+      <p>Vielen Dank für deine Anfrage. Ich melde mich innerhalb von 24 Stunden bei dir.</p>
+      <p style="margin-top:1.5rem"><button onclick="closeOverlay('booking')" class="btn-secondary">Zurück zur Seite</button></p>
     </div>
   </div>
 </div>
 
-<!-- Legal overlays -->
-<div class="legal-page" id="impressum">
-  <button class="legal-close" onclick="closeLegal('impressum')">&times;</button>
+<!-- Legal Overlays -->
+<div class="overlay-page" id="impressum">
+  <button class="overlay-close" onclick="closeOverlay('impressum')">&times;</button>
   <div class="legal-content">
     <h1>Impressum</h1>
     <h2>Angaben gemäß § 5 TMG</h2>
@@ -701,8 +469,8 @@
   </div>
 </div>
 
-<div class="legal-page" id="datenschutz">
-  <button class="legal-close" onclick="closeLegal('datenschutz')">&times;</button>
+<div class="overlay-page" id="datenschutz">
+  <button class="overlay-close" onclick="closeOverlay('datenschutz')">&times;</button>
   <div class="legal-content">
     <h1>Datenschutzerklärung</h1>
     <h2>1. Datenschutz auf einen Blick</h2>
@@ -721,196 +489,211 @@
 <script>
 // ── Galaxy Background ──
 (function() {
-  var canvas = document.getElementById('galaxy');
-  var ctx = canvas.getContext('2d');
+  var c = document.getElementById('galaxy'), ctx = c.getContext('2d');
   var w, h, particles, scrollSpeed = 0, lastScroll = 0;
-
-  function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-
-  function Particle() {
-    this.x = Math.random() * w; this.y = Math.random() * h;
-    this.z = Math.random() * 3 + 0.5; this.size = Math.random() * 1.5 + 0.3;
-    this.baseSpeed = Math.random() * 0.2 + 0.05; this.opacity = Math.random() * 0.5 + 0.1;
-    this.hue = Math.random() > 0.85 ? 38 : Math.random() > 0.5 ? 270 : 220;
-    this.sat = this.hue === 38 ? 95 : 60;
-    this.drift = (Math.random() - 0.5) * 0.2; this.trail = 0;
+  function resize() { w = c.width = window.innerWidth; h = c.height = window.innerHeight; }
+  function P() {
+    this.x = Math.random()*w; this.y = Math.random()*h;
+    this.z = Math.random()*3+0.5; this.size = Math.random()*1.5+0.3;
+    this.baseSpeed = Math.random()*0.2+0.05; this.opacity = Math.random()*0.5+0.1;
+    this.hue = Math.random()>0.85?38:Math.random()>0.5?270:220;
+    this.sat = this.hue===38?95:60;
+    this.drift = (Math.random()-0.5)*0.2; this.trail = 0;
   }
-  Particle.prototype.update = function() {
-    var wf = 1 + scrollSpeed * 8;
-    this.y -= this.baseSpeed * this.z * wf; this.x += this.drift;
-    this.trail = Math.min(scrollSpeed * this.z * 15, 30);
-    this.opacity += (Math.random() - 0.5) * 0.008;
-    this.opacity = Math.max(0.05, Math.min(0.6, this.opacity));
-    if (this.y < -20) { this.y = h + 20; this.x = Math.random() * w; }
-    if (this.x < -20 || this.x > w + 20) { this.x = Math.random() * w; this.y = h + 20; }
+  P.prototype.update = function() {
+    var wf=1+scrollSpeed*8; this.y-=this.baseSpeed*this.z*wf; this.x+=this.drift;
+    this.trail=Math.min(scrollSpeed*this.z*15,30);
+    this.opacity+=(Math.random()-0.5)*0.008;
+    this.opacity=Math.max(0.05,Math.min(0.6,this.opacity));
+    if(this.y<-20){this.y=h+20;this.x=Math.random()*w;}
+    if(this.x<-20||this.x>w+20){this.x=Math.random()*w;this.y=h+20;}
   };
-  Particle.prototype.draw = function() {
-    if (this.trail > 1) {
-      ctx.beginPath(); ctx.moveTo(this.x, this.y);
-      ctx.lineTo(this.x - this.drift * 2, this.y + this.trail);
-      ctx.strokeStyle = 'hsla(' + this.hue + ',' + this.sat + '%,70%,' + (this.opacity * 0.4) + ')';
-      ctx.lineWidth = this.size * this.z * 0.5; ctx.stroke();
-    }
-    ctx.beginPath(); ctx.arc(this.x, this.y, this.size * this.z, 0, Math.PI * 2);
-    ctx.fillStyle = 'hsla(' + this.hue + ',' + this.sat + '%,70%,' + this.opacity + ')'; ctx.fill();
+  P.prototype.draw = function() {
+    if(this.trail>1){ctx.beginPath();ctx.moveTo(this.x,this.y);ctx.lineTo(this.x-this.drift*2,this.y+this.trail);ctx.strokeStyle='hsla('+this.hue+','+this.sat+'%,70%,'+(this.opacity*0.4)+')';ctx.lineWidth=this.size*this.z*0.5;ctx.stroke();}
+    ctx.beginPath();ctx.arc(this.x,this.y,this.size*this.z,0,Math.PI*2);ctx.fillStyle='hsla('+this.hue+','+this.sat+'%,70%,'+this.opacity+')';ctx.fill();
   };
-
-  function init() {
-    resize();
-    var count = Math.min(250, Math.floor((w * h) / 6000));
-    particles = [];
-    for (var i = 0; i < count; i++) particles.push(new Particle());
-  }
-  function drawConnections() {
-    if (scrollSpeed > 0.3) return;
-    for (var i = 0; i < particles.length; i++) {
-      for (var j = i + 1; j < particles.length; j++) {
-        var dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
-        var dist = dx * dx + dy * dy;
-        if (dist < 14400) {
-          ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = 'rgba(252,176,47,' + (0.025 * (1 - Math.sqrt(dist) / 120)) + ')';
-          ctx.lineWidth = 0.5; ctx.stroke();
-        }
-      }
-    }
-  }
-  window.addEventListener('scroll', function() {
-    var curr = window.scrollY || window.pageYOffset;
-    scrollSpeed = Math.min(Math.abs(curr - lastScroll) / 50, 1);
-    lastScroll = curr;
-  });
-  function animate() {
-    ctx.clearRect(0, 0, w, h);
-    for (var i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); }
-    drawConnections(); scrollSpeed *= 0.92; requestAnimationFrame(animate);
-  }
-  window.addEventListener('resize', resize);
-  init(); animate();
+  function init(){resize();var n=Math.min(250,Math.floor((w*h)/6000));particles=[];for(var i=0;i<n;i++)particles.push(new P());}
+  function conns(){if(scrollSpeed>0.3)return;for(var i=0;i<particles.length;i++)for(var j=i+1;j<particles.length;j++){var dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,d=dx*dx+dy*dy;if(d<14400){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle='rgba(252,176,47,'+(0.025*(1-Math.sqrt(d)/120))+')';ctx.lineWidth=0.5;ctx.stroke();}}}
+  window.addEventListener('scroll',function(){var curr=window.scrollY||window.pageYOffset;scrollSpeed=Math.min(Math.abs(curr-lastScroll)/50,1);lastScroll=curr;});
+  function anim(){ctx.clearRect(0,0,w,h);for(var i=0;i<particles.length;i++){particles[i].update();particles[i].draw();}conns();scrollSpeed*=0.92;requestAnimationFrame(anim);}
+  window.addEventListener('resize',resize);init();anim();
 })();
 
-// ── 3D Wireframe Torus in Hero ──
+// ── 3D Wireframe Torus ──
 (function() {
-  var c = document.getElementById('heroTorus');
-  var ctx = c.getContext('2d');
-  var R = 160, r = 55, segsR = 32, segsr = 16;
-  var angleX = 0.4, angleY = 0, angleZ = 0.15;
-  var w, h;
+  var c=document.getElementById('heroTorus'),ctx=c.getContext('2d');
+  var R=160,r=55,sR=32,sr=16,aX=0.4,aY=0,aZ=0.15,w,h;
+  function resize(){var rect=c.parentElement.getBoundingClientRect();c.width=w=rect.width;c.height=h=rect.height;}
+  function proj(x,y,z){var d=600,s=d/(d+z);return{x:x*s+w/2,y:y*s+h/2,s:s};}
+  function rot(x,y,z){var cX=Math.cos(aX),sX=Math.sin(aX),y1=y*cX-z*sX,z1=y*sX+z*cX,cY=Math.cos(aY),sY=Math.sin(aY),x1=x*cY+z1*sY,z2=-x*sY+z1*cY,cZ=Math.cos(aZ),sZ=Math.sin(aZ);return{x:x1*cZ-y1*sZ,y:x1*sZ+y1*cZ,z:z2};}
+  function draw(){ctx.clearRect(0,0,w,h);aY+=0.004;aX+=0.001;
+    for(var i=0;i<sR;i++){var t=(i/sR)*Math.PI*2,tn=((i+1)/sR)*Math.PI*2;
+      for(var j=0;j<sr;j++){var p=(j/sr)*Math.PI*2,pn=((j+1)/sr)*Math.PI*2;
+        var x0=(R+r*Math.cos(p))*Math.cos(t),y0=(R+r*Math.cos(p))*Math.sin(t),z0=r*Math.sin(p);
+        var x1=(R+r*Math.cos(pn))*Math.cos(t),y1=(R+r*Math.cos(pn))*Math.sin(t),z1=r*Math.sin(pn);
+        var x2=(R+r*Math.cos(p))*Math.cos(tn),y2=(R+r*Math.cos(p))*Math.sin(tn),z2=r*Math.sin(p);
+        var p0=rot(x0,y0,z0),p1=rot(x1,y1,z1),p2=rot(x2,y2,z2);
+        var s0=proj(p0.x,p0.y,p0.z),s1=proj(p1.x,p1.y,p1.z),s2=proj(p2.x,p2.y,p2.z);
+        var a=0.08+s0.s*0.12;
+        ctx.beginPath();ctx.moveTo(s0.x,s0.y);ctx.lineTo(s1.x,s1.y);ctx.strokeStyle='rgba(252,176,47,'+a+')';ctx.lineWidth=0.6;ctx.stroke();
+        ctx.beginPath();ctx.moveTo(s0.x,s0.y);ctx.lineTo(s2.x,s2.y);ctx.strokeStyle='rgba(168,85,247,'+(a*0.6)+')';ctx.lineWidth=0.4;ctx.stroke();
+      }}requestAnimationFrame(draw);}
+  resize();window.addEventListener('resize',resize);draw();
+})();
 
-  function resize() {
-    var rect = c.parentElement.getBoundingClientRect();
-    c.width = w = rect.width; c.height = h = rect.height;
-  }
-
-  function project(x, y, z) {
-    var d = 600;
-    var scale = d / (d + z);
-    return { x: x * scale + w / 2, y: y * scale + h / 2, s: scale };
-  }
-
-  function rotatePoint(x, y, z) {
-    var cosX = Math.cos(angleX), sinX = Math.sin(angleX);
-    var y1 = y * cosX - z * sinX, z1 = y * sinX + z * cosX;
-    var cosY = Math.cos(angleY), sinY = Math.sin(angleY);
-    var x1 = x * cosY + z1 * sinY, z2 = -x * sinY + z1 * cosY;
-    var cosZ = Math.cos(angleZ), sinZ = Math.sin(angleZ);
-    var x2 = x1 * cosZ - y1 * sinZ, y2 = x1 * sinZ + y1 * cosZ;
-    return { x: x2, y: y2, z: z2 };
-  }
-
-  function draw() {
-    ctx.clearRect(0, 0, w, h);
-    angleY += 0.004;
-    angleX += 0.001;
-
-    for (var i = 0; i < segsR; i++) {
-      var theta = (i / segsR) * Math.PI * 2;
-      var thetaNext = ((i + 1) / segsR) * Math.PI * 2;
-
-      for (var j = 0; j < segsr; j++) {
-        var phi = (j / segsr) * Math.PI * 2;
-        var phiNext = ((j + 1) / segsr) * Math.PI * 2;
-
-        var x0 = (R + r * Math.cos(phi)) * Math.cos(theta);
-        var y0 = (R + r * Math.cos(phi)) * Math.sin(theta);
-        var z0 = r * Math.sin(phi);
-
-        var x1 = (R + r * Math.cos(phiNext)) * Math.cos(theta);
-        var y1 = (R + r * Math.cos(phiNext)) * Math.sin(theta);
-        var z1 = r * Math.sin(phiNext);
-
-        var x2 = (R + r * Math.cos(phi)) * Math.cos(thetaNext);
-        var y2 = (R + r * Math.cos(phi)) * Math.sin(thetaNext);
-        var z2 = r * Math.sin(phi);
-
-        var p0 = rotatePoint(x0, y0, z0);
-        var p1 = rotatePoint(x1, y1, z1);
-        var p2 = rotatePoint(x2, y2, z2);
-
-        var s0 = project(p0.x, p0.y, p0.z);
-        var s1 = project(p1.x, p1.y, p1.z);
-        var s2 = project(p2.x, p2.y, p2.z);
-
-        var alpha = 0.08 + s0.s * 0.12;
-
-        ctx.beginPath();
-        ctx.moveTo(s0.x, s0.y);
-        ctx.lineTo(s1.x, s1.y);
-        ctx.strokeStyle = 'rgba(252,176,47,' + alpha + ')';
-        ctx.lineWidth = 0.6;
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.moveTo(s0.x, s0.y);
-        ctx.lineTo(s2.x, s2.y);
-        ctx.strokeStyle = 'rgba(168,85,247,' + (alpha * 0.6) + ')';
-        ctx.lineWidth = 0.4;
-        ctx.stroke();
-      }
+// ── 3D Hero Text Animation ──
+(function() {
+  var text = 'digitale Erlebnisse.';
+  var el = document.getElementById('heroAnimText');
+  var html = '';
+  var baseDelay = 0.7;
+  for (var i = 0; i < text.length; i++) {
+    var ch = text[i];
+    if (ch === ' ') {
+      html += '<span class="hero-char space" style="animation-delay:' + (baseDelay + i * 0.045) + 's">&nbsp;</span>';
+    } else {
+      html += '<span class="hero-char" style="animation-delay:' + (baseDelay + i * 0.045) + 's">' + ch + '</span>';
     }
-    requestAnimationFrame(draw);
   }
+  el.innerHTML = html;
+})();
 
-  resize();
-  window.addEventListener('resize', resize);
-  draw();
+// ── Duplicate carousel for seamless loop ──
+(function() {
+  var track = document.getElementById('carouselTrack');
+  var items = track.innerHTML;
+  track.innerHTML = items + items;
 })();
 
 // ── Nav ──
 var nav = document.getElementById('nav');
 window.addEventListener('scroll', function() { nav.classList.toggle('scrolled', window.scrollY > 50); });
-
 var menuToggle = document.getElementById('menuToggle');
 var navLinks = document.getElementById('navLinks');
 menuToggle.addEventListener('click', function() { navLinks.classList.toggle('open'); });
 navLinks.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', function() { navLinks.classList.remove('open'); }); });
 
 // ── Scroll animations ──
-var scrollEls = document.querySelectorAll('.scroll-3d, .scroll-left, .scroll-right, .scroll-scale, .scroll-flip, .scroll-flip-right');
-var observer = new IntersectionObserver(function(entries) {
-  entries.forEach(function(entry) {
-    if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
-  });
+var scrollEls = document.querySelectorAll('.scroll-3d,.scroll-left,.scroll-right,.scroll-scale,.scroll-flip,.scroll-flip-right');
+var obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-scrollEls.forEach(function(el) { observer.observe(el); });
+scrollEls.forEach(function(el) { obs.observe(el); });
 
-// ── Overlay functions ──
-function openLegal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
-function closeLegal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
-function openBooking() { document.getElementById('booking').classList.add('active'); document.body.style.overflow = 'hidden'; }
-function closeBooking() { document.getElementById('booking').classList.remove('active'); document.body.style.overflow = ''; }
+// ── Overlays ──
+function openOverlay(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+function closeOverlay(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
+
+// ── Booking System ──
+var selectedDay = null;
+var selectedSlot = null;
+var dayNames = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+var monthNames = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+var slots = ['10:00','11:00','12:00','14:00','15:00','16:00'];
+
+function openBooking() {
+  openOverlay('booking');
+  document.getElementById('bookingFormWrap').classList.remove('hidden');
+  document.getElementById('bookingConfirm').classList.remove('active');
+  document.getElementById('bookingName').value = '';
+  document.getElementById('bookingEmail').value = '';
+  document.getElementById('bookingPhone').value = '';
+  document.getElementById('bookingMessage').value = '';
+  selectedDay = null; selectedSlot = null;
+  buildDays(); buildSlots();
+  checkSubmit();
+}
+
+function buildDays() {
+  var wrap = document.getElementById('bookingDays');
+  wrap.innerHTML = '';
+  var today = new Date();
+  var offset = 0;
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(today);
+    d.setDate(today.getDate() + i + 1);
+    var dow = d.getDay();
+    if (dow === 0 || dow === 6) continue;
+    var div = document.createElement('div');
+    div.className = 'booking-day';
+    div.dataset.date = d.toISOString().slice(0,10);
+    div.innerHTML = '<div class="booking-day-name">' + dayNames[dow] + '</div><div class="booking-day-num">' + d.getDate() + '</div><div class="booking-day-month">' + monthNames[d.getMonth()] + '</div>';
+    div.addEventListener('click', function() {
+      document.querySelectorAll('.booking-day').forEach(function(el) { el.classList.remove('selected'); });
+      this.classList.add('selected');
+      selectedDay = this.dataset.date;
+      checkSubmit();
+    });
+    if (!selectedDay && offset === 0) { div.classList.add('selected'); selectedDay = div.dataset.date; }
+    offset++;
+    wrap.appendChild(div);
+  }
+}
+
+function buildSlots() {
+  var wrap = document.getElementById('bookingSlots');
+  wrap.innerHTML = '';
+  slots.forEach(function(s) {
+    var div = document.createElement('div');
+    div.className = 'booking-slot';
+    div.textContent = s + ' Uhr';
+    div.dataset.time = s;
+    div.addEventListener('click', function() {
+      document.querySelectorAll('.booking-slot').forEach(function(el) { el.classList.remove('selected'); });
+      this.classList.add('selected');
+      selectedSlot = this.dataset.time;
+      checkSubmit();
+    });
+    wrap.appendChild(div);
+  });
+}
+
+function checkSubmit() {
+  var name = document.getElementById('bookingName').value.trim();
+  var email = document.getElementById('bookingEmail').value.trim();
+  document.getElementById('bookingSubmit').disabled = !(selectedDay && selectedSlot && name && email);
+}
+document.addEventListener('input', function(e) {
+  if (e.target.closest('.booking-form')) checkSubmit();
+});
+
+function submitBooking() {
+  var name = document.getElementById('bookingName').value.trim();
+  var email = document.getElementById('bookingEmail').value.trim();
+  var phone = document.getElementById('bookingPhone').value.trim();
+  var msg = document.getElementById('bookingMessage').value.trim();
+  if (!selectedDay || !selectedSlot || !name || !email) return;
+
+  var dateObj = new Date(selectedDay);
+  var dateStr = dayNames[dateObj.getDay()] + ', ' + dateObj.getDate() + '. ' + monthNames[dateObj.getMonth()] + ' ' + dateObj.getFullYear();
+
+  var subject = encodeURIComponent('Terminanfrage – ' + name + ' – ' + dateStr + ' ' + selectedSlot + ' Uhr');
+  var body = 'Neue Terminanfrage über paluna.ai\n\n';
+  body += 'Name: ' + name + '\n';
+  body += 'E-Mail: ' + email + '\n';
+  if (phone) body += 'Telefon: ' + phone + '\n';
+  body += 'Wunschtermin: ' + dateStr + ' um ' + selectedSlot + ' Uhr\n';
+  if (msg) body += '\nNachricht:\n' + msg + '\n';
+
+  var mailtoLink = 'mailto:polina.jeske@gymbsb.net?subject=' + subject + '&body=' + encodeURIComponent(body);
+  var a = document.createElement('a');
+  a.href = mailtoLink;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  document.getElementById('bookingFormWrap').classList.add('hidden');
+  document.getElementById('bookingConfirm').classList.add('active');
+}
 
 // ── Smooth scroll ──
 document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   anchor.addEventListener('click', function(e) {
     var targetId = this.getAttribute('href');
-    if (targetId === '#') return;
+    if (!targetId || targetId === '#') return;
     var target = document.querySelector(targetId);
-    if (target) {
-      e.preventDefault();
-      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - nav.offsetHeight, behavior: 'smooth' });
-    }
+    if (target) { e.preventDefault(); window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - nav.offsetHeight, behavior: 'smooth' }); }
   });
 });
 </script>
