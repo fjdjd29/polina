@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>paluna.ai – KI-Webseiten für dein Business</title>
-  <meta name="description" content="paluna.ai erstellt beeindruckende Webseiten mit KI – schneller, günstiger und besser. Ab 500 €. Kostenloses Erstgespräch.">
+  <meta name="description" content="paluna.ai entwickelt hochwertige Webseiten mit KI-Technologie – maßgeschneidert, professionell und individuell. Kostenloses Erstgespräch.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -14,7 +14,7 @@
     :root {
       --accent: #FCB02F;
       --accent-glow: rgba(252, 176, 47, 0.4);
-      --bg: #0a0a0f;
+      --bg: #07070c;
       --bg-card: rgba(255, 255, 255, 0.03);
       --bg-card-hover: rgba(255, 255, 255, 0.06);
       --text: #f0f0f5;
@@ -37,825 +37,308 @@
     }
 
     canvas#galaxy {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%; z-index: 0; pointer-events: none;
     }
 
     .content { position: relative; z-index: 1; }
 
-    /* NAV */
     nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       backdrop-filter: blur(20px);
-      background: rgba(10, 10, 15, 0.7);
+      background: rgba(7, 7, 12, 0.6);
       border-bottom: 1px solid var(--border);
-      transition: all 0.3s ease;
+      transition: background 0.3s;
     }
+    nav.scrolled { background: rgba(7, 7, 12, 0.95); }
 
-    nav.scrolled { background: rgba(10, 10, 15, 0.95); }
-
-    .nav-logo {
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: var(--text);
-    }
-
+    .nav-logo { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.03em; color: var(--text); }
     .nav-logo span { color: var(--accent); }
 
     .nav-links { display: flex; gap: 2rem; align-items: center; }
-
     .nav-links a {
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: color 0.2s;
+      color: var(--text-dim); text-decoration: none;
+      font-size: 0.875rem; font-weight: 500; transition: color 0.2s;
     }
-
     .nav-links a:hover { color: var(--text); }
 
     .nav-cta {
-      background: var(--accent) !important;
-      color: #0a0a0f !important;
-      padding: 0.5rem 1.25rem;
-      border-radius: 8px;
-      font-weight: 600 !important;
-      transition: all 0.2s !important;
+      background: var(--accent) !important; color: var(--bg) !important;
+      padding: 0.5rem 1.25rem; border-radius: 8px;
+      font-weight: 600 !important; transition: all 0.2s !important;
     }
+    .nav-cta:hover { box-shadow: 0 0 20px var(--accent-glow); transform: translateY(-1px); }
 
-    .nav-cta:hover {
-      box-shadow: 0 0 20px var(--accent-glow);
-      transform: translateY(-1px);
-    }
+    .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+    .menu-toggle span { display: block; width: 24px; height: 2px; background: var(--text); margin: 5px 0; transition: all 0.3s; }
 
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.5rem;
-    }
-
-    .menu-toggle span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--text);
-      margin: 5px 0;
-      transition: all 0.3s;
-    }
-
-    /* HERO */
     .hero {
       min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 8rem 2rem 4rem;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 8rem 2rem 4rem;
       position: relative;
     }
+    .hero-inner { max-width: 800px; position: relative; z-index: 2; }
 
-    .hero-inner { max-width: 800px; }
+    .hero-orb-wrap {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px; height: 500px; max-width: 90vw; max-height: 90vw;
+      z-index: 0; pointer-events: none;
+    }
+    .hero-orb {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(252,176,47,0.15), rgba(168,85,247,0.1) 50%, transparent 70%);
+      filter: blur(60px);
+      animation: orb-pulse 8s ease-in-out infinite;
+    }
+    @keyframes orb-pulse {
+      0%,100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+      50% { transform: scale(1.15) rotate(180deg); opacity: 0.8; }
+    }
 
     .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.4rem 1rem;
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      margin-bottom: 2rem;
-      background: var(--bg-card);
-      backdrop-filter: blur(10px);
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.4rem 1rem; border: 1px solid var(--border);
+      border-radius: 100px; font-size: 0.8rem; color: var(--text-dim);
+      margin-bottom: 2rem; background: var(--bg-card); backdrop-filter: blur(10px);
     }
-
     .hero-badge-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulse-dot 2s infinite;
+      width: 6px; height: 6px; background: var(--accent);
+      border-radius: 50%; animation: pulse-dot 2s infinite;
     }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
+    @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
 
     .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
+      font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800;
+      letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1.5rem;
     }
-
     .hero h1 .gradient {
       background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-
     .hero p {
-      font-size: 1.125rem;
-      color: var(--text-dim);
-      max-width: 560px;
-      margin: 0 auto 2.5rem;
-      line-height: 1.7;
+      font-size: 1.125rem; color: var(--text-dim);
+      max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7;
     }
-
-    .hero-buttons {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+    .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
     .btn-primary {
-      background: var(--accent);
-      color: #0a0a0f;
-      padding: 0.875rem 2rem;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 0.95rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: all 0.25s;
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
+      background: var(--accent); color: var(--bg);
+      padding: 0.875rem 2rem; border-radius: 12px;
+      font-weight: 700; font-size: 0.95rem; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: all 0.25s; border: none; cursor: pointer; font-family: inherit;
     }
-
-    .btn-primary:hover {
-      box-shadow: 0 0 30px var(--accent-glow), 0 8px 32px rgba(0,0,0,0.3);
-      transform: translateY(-2px);
-    }
+    .btn-primary:hover { box-shadow: 0 0 30px var(--accent-glow), 0 8px 32px rgba(0,0,0,0.3); transform: translateY(-2px); }
 
     .btn-secondary {
-      background: var(--bg-card);
-      color: var(--text);
-      padding: 0.875rem 2rem;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      border: 1px solid var(--border);
-      transition: all 0.25s;
+      background: var(--bg-card); color: var(--text);
+      padding: 0.875rem 2rem; border-radius: 12px;
+      font-weight: 600; font-size: 0.95rem; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      border: 1px solid var(--border); transition: all 0.25s;
     }
+    .btn-secondary:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
 
-    .btn-secondary:hover {
-      border-color: var(--border-hover);
-      background: var(--bg-card-hover);
-    }
+    section { padding: 6rem 2rem; max-width: 1100px; margin: 0 auto; }
 
-    .hero-stats {
-      display: flex;
-      justify-content: center;
-      gap: 3rem;
-      margin-top: 4rem;
-      padding-top: 3rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .stat { text-align: center; }
-
-    .stat-value {
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: var(--accent);
-    }
-
-    .stat-label {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      margin-top: 0.25rem;
-    }
-
-    /* SECTIONS */
-    section {
-      padding: 6rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 4rem;
-    }
-
+    .section-header { text-align: center; margin-bottom: 4rem; }
     .section-tag {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 1rem;
-      display: block;
+      font-size: 0.75rem; font-weight: 600; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem; display: block;
     }
-
     .section-title {
-      font-size: clamp(1.75rem, 4vw, 2.75rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 1rem;
+      font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800;
+      letter-spacing: -0.03em; margin-bottom: 1rem;
     }
+    .section-desc { color: var(--text-dim); max-width: 560px; margin: 0 auto; font-size: 1rem; }
 
-    .section-desc {
-      color: var(--text-dim);
-      max-width: 560px;
-      margin: 0 auto;
-      font-size: 1rem;
+    .scroll-3d {
+      opacity: 0; transform: translateY(60px) rotateX(10deg);
+      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-style: preserve-3d; perspective: 1000px;
     }
+    .scroll-3d.visible { opacity: 1; transform: translateY(0) rotateX(0deg); }
 
-    /* USP */
-    .usp-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
+    .scroll-left {
+      opacity: 0; transform: translateX(-80px) rotateY(8deg);
+      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    .scroll-left.visible { opacity: 1; transform: translateX(0) rotateY(0deg); }
 
+    .scroll-right {
+      opacity: 0; transform: translateX(80px) rotateY(-8deg);
+      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .scroll-right.visible { opacity: 1; transform: translateX(0) rotateY(0deg); }
+
+    .scroll-scale {
+      opacity: 0; transform: scale(0.8) rotateX(5deg);
+      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .scroll-scale.visible { opacity: 1; transform: scale(1) rotateX(0deg); }
+
+    .usp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
     .usp-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2rem;
-      transition: all 0.35s ease;
-      position: relative;
-      overflow: hidden;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem; transition: all 0.4s ease;
+      position: relative; overflow: hidden; transform-style: preserve-3d;
     }
-
     .usp-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
       background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0;
-      transition: opacity 0.35s;
+      opacity: 0; transition: opacity 0.35s;
     }
-
     .usp-card:hover {
-      border-color: var(--border-hover);
-      background: var(--bg-card-hover);
-      transform: translateY(-4px);
+      border-color: var(--border-hover); background: var(--bg-card-hover);
+      transform: translateY(-8px) rotateX(2deg);
+      box-shadow: 0 20px 40px rgba(252,176,47,0.05), 0 0 60px rgba(252,176,47,0.03);
     }
-
     .usp-card:hover::before { opacity: 1; }
 
     .usp-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+      width: 48px; height: 48px; border-radius: 12px;
       background: rgba(252, 176, 47, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      margin-bottom: 1.25rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; margin-bottom: 1.25rem;
+      color: var(--accent); font-weight: 700;
     }
+    .usp-card h3 { font-size: 1.125rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .usp-card p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; }
 
-    .usp-card h3 {
-      font-size: 1.125rem;
-      font-weight: 700;
-      margin-bottom: 0.75rem;
-    }
-
-    .usp-card p {
-      color: var(--text-dim);
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-
-    /* HOW IT WORKS */
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 2rem;
-      counter-reset: step;
-    }
-
-    .step {
-      text-align: center;
-      position: relative;
-      counter-increment: step;
-    }
-
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
+    .step { text-align: center; }
     .step-number {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      border: 2px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--accent);
-      margin: 0 auto 1.25rem;
+      width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; font-weight: 800; color: var(--accent);
+      margin: 0 auto 1.25rem; transition: all 0.4s;
+    }
+    .step:hover .step-number {
+      background: var(--accent); color: var(--bg);
+      box-shadow: 0 0 30px var(--accent-glow); transform: scale(1.1);
+    }
+    .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .step p { color: var(--text-dim); font-size: 0.875rem; line-height: 1.6; }
+
+    .space-divider {
+      position: relative; height: 300px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; margin: 2rem 0;
+    }
+    .space-divider-text {
+      font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; letter-spacing: -0.05em;
+      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      opacity: 0.12; position: relative; z-index: 1; user-select: none;
+    }
+    .space-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(252,176,47,0.08);
+      animation: ring-expand 12s ease-in-out infinite;
+    }
+    .space-ring:nth-child(2) { width: 200px; height: 200px; animation-delay: 0s; }
+    .space-ring:nth-child(3) { width: 350px; height: 350px; animation-delay: -4s; }
+    .space-ring:nth-child(4) { width: 500px; height: 500px; animation-delay: -8s; }
+    @keyframes ring-expand {
+      0%,100% { transform: scale(0.9) rotate(0deg); opacity: 0.3; }
+      50% { transform: scale(1.1) rotate(180deg); opacity: 0.8; }
     }
 
-    .step h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .step p {
-      color: var(--text-dim);
-      font-size: 0.875rem;
-      line-height: 1.6;
-    }
-
-    /* PORTFOLIO */
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .portfolio-card {
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      transition: all 0.35s;
-      background: var(--bg-card);
-      cursor: pointer;
-    }
-
-    .portfolio-card:hover {
-      border-color: var(--border-hover);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
-
-    .portfolio-preview {
-      height: 200px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .portfolio-preview-inner {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 4rem;
-      font-weight: 900;
-      letter-spacing: -0.05em;
-    }
-
-    .preview-visita {
-      background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-      color: #e94560;
-    }
-
-    .preview-print {
-      background: #fafafa;
-      color: #111;
-    }
-
-    .preview-brutalism {
-      background: #ff0;
-      color: #000;
-      border: 4px solid #000;
-    }
-
-    .portfolio-info { padding: 1.25rem; }
-
-    .portfolio-info h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-
-    .portfolio-info p {
-      color: var(--text-dim);
-      font-size: 0.8rem;
-    }
-
-    .portfolio-tag {
-      display: inline-block;
-      padding: 0.2rem 0.6rem;
-      border-radius: 6px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      background: rgba(252, 176, 47, 0.1);
-      color: var(--accent);
-      margin-top: 0.5rem;
-    }
-
-    /* PRICING */
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .pricing-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2.5rem;
-      transition: all 0.35s;
-      position: relative;
-    }
-
-    .pricing-card.featured {
-      border-color: var(--accent);
-      background: rgba(252, 176, 47, 0.03);
-    }
-
-    .pricing-card.featured::before {
-      content: 'Beliebt';
-      position: absolute;
-      top: -12px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--accent);
-      color: #0a0a0f;
-      padding: 0.25rem 1rem;
-      border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
-    .pricing-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    }
-
-    .pricing-name {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.75rem;
-    }
-
-    .pricing-price {
-      font-size: 2.5rem;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 0.25rem;
-    }
-
-    .pricing-price span {
-      font-size: 1rem;
-      font-weight: 500;
-      color: var(--text-dim);
-    }
-
-    .pricing-desc {
-      color: var(--text-dim);
-      font-size: 0.85rem;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .pricing-features {
-      list-style: none;
-      margin-bottom: 2rem;
-    }
-
-    .pricing-features li {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.5rem 0;
-      font-size: 0.9rem;
-      color: var(--text-dim);
-    }
-
-    .pricing-features li::before {
-      content: '✓';
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 0.85rem;
-    }
-
-    .pricing-card .btn-primary,
-    .pricing-card .btn-secondary { width: 100%; justify-content: center; }
-
-    /* ABOUT */
-    .about-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-
-    .about-text h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .about-text p {
-      color: var(--text-dim);
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
-      line-height: 1.7;
-    }
-
-    .about-values {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1.5rem;
-    }
-
+    .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .about-text h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+    .about-text p { color: var(--text-dim); margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.7; }
+    .about-text strong { color: var(--text); font-weight: 600; }
+    .about-values { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
     .value-tag {
-      padding: 0.4rem 0.9rem;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      color: var(--text-dim);
-      transition: all 0.2s;
+      padding: 0.4rem 0.9rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600;
+      background: var(--bg-card); border: 1px solid var(--border); color: var(--text-dim); transition: all 0.2s;
     }
-
-    .value-tag:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
+    .value-tag:hover { border-color: var(--accent); color: var(--accent); }
 
     .about-visual {
-      position: relative;
-      height: 400px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: relative; height: 400px;
+      display: flex; align-items: center; justify-content: center; perspective: 800px;
+    }
+    .about-sphere {
+      width: 220px; height: 220px; border-radius: 50%; position: relative;
+      background: radial-gradient(circle at 30% 30%, rgba(252,176,47,0.3), rgba(255,107,53,0.15) 40%, rgba(168,85,247,0.1) 70%, transparent 100%);
+      box-shadow: 0 0 80px rgba(252,176,47,0.15), inset 0 0 60px rgba(252,176,47,0.05);
+      animation: sphere-rotate 20s linear infinite;
+    }
+    .about-sphere::before {
+      content: ''; position: absolute; top: -30px; left: -30px; right: -30px; bottom: -30px;
+      border-radius: 50%; border: 1px solid rgba(252,176,47,0.1);
+      animation: ring-spin 15s linear infinite reverse;
+    }
+    .about-sphere::after {
+      content: ''; position: absolute; top: -60px; left: -60px; right: -60px; bottom: -60px;
+      border-radius: 50%; border: 1px solid rgba(168,85,247,0.08);
+      animation: ring-spin 25s linear infinite;
+    }
+    @keyframes sphere-rotate { 0% { transform: rotateY(0deg) rotateX(5deg); } 100% { transform: rotateY(360deg) rotateX(5deg); } }
+    @keyframes ring-spin { 0% { transform: rotateX(60deg) rotateZ(0deg); } 100% { transform: rotateX(60deg) rotateZ(360deg); } }
+
+    .about-sphere-label {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-size: 2rem; font-weight: 900; letter-spacing: -0.05em; color: var(--accent); opacity: 0.9;
     }
 
-    .about-orb {
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, var(--gradient-1), var(--gradient-2), var(--gradient-3));
-      opacity: 0.15;
-      filter: blur(40px);
-      animation: orb-float 6s ease-in-out infinite;
-    }
-
-    @keyframes orb-float {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(20px, -20px) scale(1.05); }
-      66% { transform: translate(-10px, 10px) scale(0.95); }
-    }
-
-    .about-orb-text {
-      position: absolute;
-      font-size: 5rem;
-      font-weight: 900;
-      letter-spacing: -0.05em;
-      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* CTA */
-    .cta-section {
-      text-align: center;
-      padding: 6rem 2rem;
-      position: relative;
-    }
-
+    .cta-section { text-align: center; padding: 6rem 2rem; position: relative; }
     .cta-section::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 600px;
-      height: 600px;
+      content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 600px; height: 600px; max-width: 100%;
       background: radial-gradient(circle, var(--accent-glow), transparent 70%);
-      opacity: 0.15;
-      pointer-events: none;
+      opacity: 0.12; pointer-events: none;
     }
+    .cta-section h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; }
+    .cta-section p { color: var(--text-dim); margin-bottom: 2rem; font-size: 1.05rem; }
 
-    .cta-section h2 {
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 1rem;
-    }
-
-    .cta-section p {
-      color: var(--text-dim);
-      margin-bottom: 2rem;
-      font-size: 1.05rem;
-    }
-
-    /* FOOTER */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 3rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 2rem;
-    }
-
-    .footer-brand {
-      font-size: 1.25rem;
-      font-weight: 800;
-    }
-
+    footer { border-top: 1px solid var(--border); padding: 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .footer-content { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem; }
+    .footer-brand { font-size: 1.25rem; font-weight: 800; }
     .footer-brand span { color: var(--accent); }
-
-    .footer-brand p {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      margin-top: 0.5rem;
-      font-weight: 400;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 3rem;
-    }
-
-    .footer-col h4 {
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-dim);
-      margin-bottom: 0.75rem;
-    }
-
-    .footer-col a {
-      display: block;
-      color: var(--text-dim);
-      text-decoration: none;
-      font-size: 0.85rem;
-      padding: 0.25rem 0;
-      transition: color 0.2s;
-    }
-
+    .footer-brand p { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem; font-weight: 400; }
+    .footer-links { display: flex; gap: 3rem; flex-wrap: wrap; }
+    .footer-col h4 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 0.75rem; }
+    .footer-col a { display: block; color: var(--text-dim); text-decoration: none; font-size: 0.85rem; padding: 0.25rem 0; transition: color 0.2s; }
     .footer-col a:hover { color: var(--text); }
+    .footer-bottom { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--text-dim); text-align: center; }
 
-    .footer-bottom {
-      margin-top: 2rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      text-align: center;
-    }
-
-    /* SCROLL ANIMATIONS */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* IMPRESSUM / DATENSCHUTZ */
     .legal-page {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 200;
-      background: var(--bg);
-      overflow-y: auto;
-      padding: 6rem 2rem 4rem;
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 200; background: var(--bg); overflow-y: auto; padding: 6rem 2rem 4rem;
     }
-
     .legal-page.active { display: block; }
-
-    .legal-content {
-      max-width: 720px;
-      margin: 0 auto;
-    }
-
-    .legal-content h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 2rem;
-    }
-
-    .legal-content h2 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-top: 2rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .legal-content p, .legal-content li {
-      color: var(--text-dim);
-      font-size: 0.9rem;
-      line-height: 1.7;
-      margin-bottom: 0.75rem;
-    }
-
+    .legal-content { max-width: 720px; margin: 0 auto; }
+    .legal-content h1 { font-size: 2rem; font-weight: 800; margin-bottom: 2rem; }
+    .legal-content h2 { font-size: 1.25rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem; }
+    .legal-content p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.7; margin-bottom: 0.75rem; }
     .legal-close {
-      position: fixed;
-      top: 1.5rem;
-      right: 2rem;
-      z-index: 201;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      color: var(--text);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      font-size: 1.25rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
+      position: fixed; top: 1.5rem; right: 2rem; z-index: 201;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text); width: 40px; height: 40px; border-radius: 50%;
+      font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
     }
-
     .legal-close:hover { border-color: var(--accent); }
 
-    /* MOBILE */
     @media (max-width: 768px) {
       nav { padding: 1rem; }
-
       .nav-links {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(10, 10, 15, 0.98);
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 2rem;
-        z-index: 99;
+        display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(7, 7, 12, 0.98); flex-direction: column;
+        align-items: center; justify-content: center; gap: 2rem; z-index: 99;
       }
-
       .nav-links.open { display: flex; }
       .nav-links a { font-size: 1.25rem; }
       .menu-toggle { display: block; z-index: 101; }
-
-      .hero-stats {
-        gap: 1.5rem;
-        flex-wrap: wrap;
-      }
-
-      .about-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
-      .about-visual { height: 200px; }
-      .about-orb { width: 180px; height: 180px; }
-      .about-orb-text { font-size: 3rem; }
-
+      .about-content { grid-template-columns: 1fr; gap: 2rem; }
+      .about-visual { height: 250px; }
       .footer-content { flex-direction: column; }
       .footer-links { flex-direction: column; gap: 1.5rem; }
-
+      .space-divider { height: 200px; }
       section { padding: 4rem 1rem; }
     }
   </style>
@@ -866,258 +349,116 @@
 
 <div class="content">
 
-  <!-- NAV -->
   <nav id="nav">
     <div class="nav-logo">paluna<span>.ai</span></div>
     <div class="nav-links" id="navLinks">
-      <a href="#vorteile">Vorteile</a>
+      <a href="#leistungen">Leistungen</a>
       <a href="#ablauf">Ablauf</a>
-      <a href="#portfolio">Portfolio</a>
-      <a href="#preise">Preise</a>
       <a href="#ueber">Über uns</a>
-      <a href="#kontakt" class="nav-cta">Erstgespräch buchen</a>
+      <a href="mailto:polina.jeske@gymbsb.net?subject=Erstgespr%C3%A4ch%20%E2%80%93%20paluna.ai" class="nav-cta">Erstgespräch buchen</a>
     </div>
     <button class="menu-toggle" id="menuToggle" aria-label="Menü">
       <span></span><span></span><span></span>
     </button>
   </nav>
 
-  <!-- HERO -->
   <section class="hero" id="start">
+    <div class="hero-orb-wrap"><div class="hero-orb"></div></div>
     <div class="hero-inner">
-      <div class="hero-badge reveal">
+      <div class="hero-badge">
         <div class="hero-badge-dot"></div>
         KI-gestützte Webentwicklung
       </div>
-      <h1 class="reveal">Deine Webseite.<br><span class="gradient">Schneller. Günstiger. Besser.</span></h1>
-      <p class="reveal">Wir bauen beeindruckende Webseiten mit KI-Technologie – in einem Bruchteil der Zeit und zu einem Bruchteil der Kosten. Ab 500 €.</p>
-      <div class="hero-buttons reveal">
-        <a href="#kontakt" class="btn-primary">
+      <h1>Deine Webseite.<br><span class="gradient">Professionell. Individuell. Mit KI.</span></h1>
+      <p>Wir entwickeln hochwertige Webseiten mit modernster KI-Technologie – maßgeschneidert für dein Business, mit Design das beeindruckt.</p>
+      <div class="hero-buttons">
+        <a href="mailto:polina.jeske@gymbsb.net?subject=Erstgespr%C3%A4ch%20%E2%80%93%20paluna.ai" class="btn-primary">
           Kostenloses Erstgespräch
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
-        <a href="#portfolio" class="btn-secondary">Portfolio ansehen</a>
-      </div>
-      <div class="hero-stats reveal">
-        <div class="stat">
-          <div class="stat-value">80%</div>
-          <div class="stat-label">schneller als traditionell</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">ab 500€</div>
-          <div class="stat-label">für deine Webseite</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">24/7</div>
-          <div class="stat-label">immer erreichbar</div>
-        </div>
+        <a href="#leistungen" class="btn-secondary">Mehr erfahren</a>
       </div>
     </div>
   </section>
 
-  <!-- USP -->
-  <section id="vorteile">
-    <div class="section-header reveal">
-      <span class="section-tag">Warum paluna.ai</span>
+  <div class="space-divider scroll-scale">
+    <div class="space-ring"></div>
+    <div class="space-ring"></div>
+    <div class="space-ring"></div>
+    <div class="space-divider-text">paluna.ai</div>
+  </div>
+
+  <section id="leistungen">
+    <div class="section-header scroll-3d">
+      <span class="section-tag">Was wir machen</span>
       <h2 class="section-title">Webseiten, die beeindrucken</h2>
-      <p class="section-desc">KI-gestützte Entwicklung bedeutet nicht nur schneller und günstiger – sondern auch besseres Design und mehr Möglichkeiten.</p>
+      <p class="section-desc">Von der Idee bis zum Launch – wir bauen Webseiten, die dein Business auf das nächste Level bringen.</p>
     </div>
     <div class="usp-grid">
-      <div class="usp-card reveal">
-        <div class="usp-icon">⚡</div>
-        <h3>Blitzschnell</h3>
-        <p>Deine Webseite steht in Tagen, nicht Wochen. KI beschleunigt jeden Schritt der Entwicklung.</p>
-      </div>
-      <div class="usp-card reveal">
-        <div class="usp-icon">💰</div>
-        <h3>Unschlagbar günstig</h3>
-        <p>Professionelle Webseiten ab 500 €. Kein Kompromiss bei der Qualität – nur bei den Kosten.</p>
-      </div>
-      <div class="usp-card reveal">
-        <div class="usp-icon">🎨</div>
-        <h3>Besseres Design</h3>
-        <p>Beeindruckende Designs mit 3D-Elementen, Animationen und Interaktivität, die im Gedächtnis bleiben.</p>
-      </div>
-      <div class="usp-card reveal">
-        <div class="usp-icon">🤖</div>
-        <h3>Automatisierung</h3>
-        <p>Intelligente Automatisierungen direkt in deine Webseite integriert – spart dir Zeit und Aufwand.</p>
-      </div>
-      <div class="usp-card reveal">
-        <div class="usp-icon">🛠</div>
-        <h3>Verwaltung inklusive</h3>
-        <p>Wir kümmern uns um Updates, Hosting und Änderungen. Du konzentrierst dich auf dein Business.</p>
-      </div>
-      <div class="usp-card reveal">
-        <div class="usp-icon">📱</div>
-        <h3>Responsive</h3>
-        <p>Perfekt auf jedem Gerät – Smartphone, Tablet oder Desktop. Keine Kompromisse.</p>
-      </div>
+      <div class="usp-card scroll-left"><div class="usp-icon">01</div><h3>Individuelles Design</h3><p>Jede Webseite wird maßgeschneidert für dich entwickelt. Kein Template, kein Standard – nur deine Vision, professionell umgesetzt.</p></div>
+      <div class="usp-card scroll-3d"><div class="usp-icon">02</div><h3>KI-Technologie</h3><p>Durch den Einsatz von KI entwickeln wir effizienter – das bedeutet mehr Qualität und mehr Möglichkeiten für dein Projekt.</p></div>
+      <div class="usp-card scroll-right"><div class="usp-icon">03</div><h3>3D & Animationen</h3><p>Beeindruckende 3D-Elemente, flüssige Animationen und interaktive Designs, die deine Besucher fesseln.</p></div>
+      <div class="usp-card scroll-left"><div class="usp-icon">04</div><h3>Automatisierung</h3><p>Intelligente Funktionen direkt in deine Webseite integriert – von Kontaktformularen bis zu automatisierten Workflows.</p></div>
+      <div class="usp-card scroll-3d"><div class="usp-icon">05</div><h3>Laufende Betreuung</h3><p>Wir lassen dich nach dem Launch nicht allein. Updates, Änderungen, Support – wir sind immer für dich da.</p></div>
+      <div class="usp-card scroll-right"><div class="usp-icon">06</div><h3>Responsive</h3><p>Perfekt auf jedem Gerät. Smartphone, Tablet, Desktop – deine Webseite sieht überall großartig aus.</p></div>
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
   <section id="ablauf">
-    <div class="section-header reveal">
-      <span class="section-tag">So funktioniert's</span>
-      <h2 class="section-title">In 4 Schritten zur Webseite</h2>
-      <p class="section-desc">Unkompliziert, transparent und schnell – so arbeiten wir.</p>
+    <div class="section-header scroll-3d">
+      <span class="section-tag">Unser Prozess</span>
+      <h2 class="section-title">So entsteht deine Webseite</h2>
+      <p class="section-desc">Unkompliziert, persönlich und transparent.</p>
     </div>
     <div class="steps">
-      <div class="step reveal">
-        <div class="step-number">1</div>
-        <h3>Erstgespräch</h3>
-        <p>Kostenlos und unverbindlich. Wir besprechen deine Wünsche und Ziele.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-number">2</div>
-        <h3>Konzept & Design</h3>
-        <p>Wir erstellen ein maßgeschneidertes Konzept und Designvorschlag für dich.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-number">3</div>
-        <h3>Entwicklung</h3>
-        <p>Deine Webseite wird mit KI-Unterstützung blitzschnell umgesetzt.</p>
-      </div>
-      <div class="step reveal">
-        <div class="step-number">4</div>
-        <h3>Launch & Betreuung</h3>
-        <p>Wir bringen deine Seite online und betreuen sie kontinuierlich.</p>
-      </div>
+      <div class="step scroll-left"><div class="step-number">1</div><h3>Erstgespräch</h3><p>Kostenlos und unverbindlich. Wir lernen dich und dein Projekt kennen und besprechen deine Vorstellungen.</p></div>
+      <div class="step scroll-3d"><div class="step-number">2</div><h3>Konzept & Design</h3><p>Wir erstellen ein individuelles Konzept und Design, das perfekt zu dir und deiner Marke passt.</p></div>
+      <div class="step scroll-3d"><div class="step-number">3</div><h3>Entwicklung</h3><p>Deine Webseite wird mit KI-Unterstützung professionell umgesetzt – mit allen Features die du brauchst.</p></div>
+      <div class="step scroll-right"><div class="step-number">4</div><h3>Launch & Betreuung</h3><p>Wir bringen deine Seite online und betreuen sie langfristig. Du konzentrierst dich auf dein Business.</p></div>
     </div>
   </section>
 
-  <!-- PORTFOLIO -->
-  <section id="portfolio">
-    <div class="section-header reveal">
-      <span class="section-tag">Portfolio</span>
-      <h2 class="section-title">Design-Beispiele</h2>
-      <p class="section-desc">Verschiedene Stile für verschiedene Branchen. Jede Webseite ist einzigartig.</p>
-    </div>
-    <div class="portfolio-grid">
-      <div class="portfolio-card reveal">
-        <div class="portfolio-preview">
-          <div class="portfolio-preview-inner preview-visita">VISITA</div>
-        </div>
-        <div class="portfolio-info">
-          <h3>Visita</h3>
-          <p>Elegantes, immersives Design für Premium-Marken</p>
-          <span class="portfolio-tag">Immersiv</span>
-        </div>
-      </div>
-      <div class="portfolio-card reveal">
-        <div class="portfolio-preview">
-          <div class="portfolio-preview-inner preview-print">PRINT</div>
-        </div>
-        <div class="portfolio-info">
-          <h3>Print</h3>
-          <p>Typografie-fokussiertes Layout, klar und editorial</p>
-          <span class="portfolio-tag">Editorial</span>
-        </div>
-      </div>
-      <div class="portfolio-card reveal">
-        <div class="portfolio-preview">
-          <div class="portfolio-preview-inner preview-brutalism">BRUTAL</div>
-        </div>
-        <div class="portfolio-info">
-          <h3>Brutalism</h3>
-          <p>Mutig, laut und unkonventionell – für Marken, die auffallen</p>
-          <span class="portfolio-tag">Bold</span>
-        </div>
-      </div>
-    </div>
-  </section>
+  <div class="space-divider scroll-scale">
+    <div class="space-ring"></div>
+    <div class="space-ring"></div>
+    <div class="space-ring"></div>
+    <div class="space-divider-text">Design</div>
+  </div>
 
-  <!-- PRICING -->
-  <section id="preise">
-    <div class="section-header reveal">
-      <span class="section-tag">Preise</span>
-      <h2 class="section-title">Transparent & fair</h2>
-      <p class="section-desc">Keine versteckten Kosten. Wähle das Paket, das zu dir passt.</p>
-    </div>
-    <div class="pricing-grid">
-      <div class="pricing-card reveal">
-        <div class="pricing-name">Starter</div>
-        <div class="pricing-price">500€</div>
-        <div class="pricing-desc">Perfekt für Gründer und kleine Unternehmen, die online durchstarten wollen.</div>
-        <ul class="pricing-features">
-          <li>One-Page Webseite</li>
-          <li>Responsives Design</li>
-          <li>SEO-Grundlagen</li>
-          <li>Kontaktformular</li>
-          <li>Hosting-Einrichtung</li>
-        </ul>
-        <a href="#kontakt" class="btn-secondary">Erstgespräch buchen</a>
-      </div>
-      <div class="pricing-card featured reveal">
-        <div class="pricing-name">Professional</div>
-        <div class="pricing-price">1.200€</div>
-        <div class="pricing-desc">Für Unternehmen, die mit ihrer Webseite Kunden gewinnen wollen.</div>
-        <ul class="pricing-features">
-          <li>Mehrseitige Webseite</li>
-          <li>3D-Elemente & Animationen</li>
-          <li>CMS-Integration</li>
-          <li>Erweiterte SEO</li>
-          <li>Automatisierungen</li>
-          <li>3 Monate Betreuung</li>
-        </ul>
-        <a href="#kontakt" class="btn-primary">Erstgespräch buchen</a>
-      </div>
-      <div class="pricing-card reveal">
-        <div class="pricing-name">Monatsbetreuung</div>
-        <div class="pricing-price">99€ <span>/ Monat</span></div>
-        <div class="pricing-desc">Laufende Betreuung, Updates und Änderungen – wir kümmern uns um alles.</div>
-        <ul class="pricing-features">
-          <li>Regelmäßige Updates</li>
-          <li>Inhaltliche Änderungen</li>
-          <li>Performance-Monitoring</li>
-          <li>Technischer Support</li>
-          <li>Monatlich kündbar</li>
-        </ul>
-        <a href="#kontakt" class="btn-secondary">Erstgespräch buchen</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
   <section id="ueber">
-    <div class="section-header reveal">
+    <div class="section-header scroll-3d">
       <span class="section-tag">Über uns</span>
-      <h2 class="section-title">Das steckt hinter paluna.ai</h2>
+      <h2 class="section-title">Die Menschen hinter paluna.ai</h2>
     </div>
     <div class="about-content">
-      <div class="about-text reveal">
+      <div class="about-text scroll-left">
         <h3>Webentwicklung, neu gedacht.</h3>
-        <p>paluna.ai ist ein Softwarestudio, das mit KI-Technologie arbeitet. Wir glauben, dass jedes Unternehmen eine beeindruckende Webpräsenz verdient – unabhängig vom Budget.</p>
-        <p>Durch den Einsatz modernster KI-Tools können wir Webseiten schneller entwickeln, ohne bei Qualität und Design Kompromisse zu machen. Das Ergebnis: professionelle Webseiten zu einem Bruchteil der üblichen Kosten.</p>
-        <p>Wir sind immer erreichbar und begleiten dich vom Erstgespräch bis weit über den Launch hinaus.</p>
+        <p>Hinter paluna.ai steckt <strong>Polina Jeske</strong> – gemeinsam mit ihrer Mutter hat sie ein KI-Unternehmen gegründet, das Webentwicklung auf ein neues Level hebt.</p>
+        <p>Als Teil von <strong>Akquise und Heartbeat</strong> von Tim Krasenbrink vereinen wir unternehmerisches Know-how mit modernster Technologie. Wir glauben, dass jedes Unternehmen eine beeindruckende Webpräsenz verdient.</p>
+        <p>Unser Ansatz: Persönliche Beratung, individuelle Umsetzung und langfristige Betreuung. Wir sind immer erreichbar und begleiten dich vom ersten Gespräch bis weit über den Launch hinaus.</p>
         <div class="about-values">
-          <span class="value-tag">Konkretheit</span>
-          <span class="value-tag">Produktivität</span>
-          <span class="value-tag">Proaktivität</span>
-          <span class="value-tag">Hilfsbereitschaft</span>
-          <span class="value-tag">Authentizität</span>
-          <span class="value-tag">Überzeugung</span>
+          <span class="value-tag">Konkretheit</span><span class="value-tag">Produktivität</span>
+          <span class="value-tag">Proaktivität</span><span class="value-tag">Hilfsbereitschaft</span>
+          <span class="value-tag">Authentizität</span><span class="value-tag">Überzeugung</span>
         </div>
       </div>
-      <div class="about-visual reveal">
-        <div class="about-orb"></div>
-        <div class="about-orb-text">p.ai</div>
+      <div class="about-visual scroll-right">
+        <div class="about-sphere">
+          <div class="about-sphere-label">p.ai</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
   <section class="cta-section" id="kontakt">
-    <h2 class="reveal">Bereit für deine neue Webseite?</h2>
-    <p class="reveal">Kostenloses Erstgespräch – unverbindlich, persönlich und direkt.</p>
-    <a href="mailto:hallo@paluna.ai" class="btn-primary reveal" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
-      Jetzt Erstgespräch vereinbaren
+    <h2 class="scroll-3d">Bereit für deine neue Webseite?</h2>
+    <p class="scroll-3d">Lass uns reden – kostenloses Erstgespräch, ganz unverbindlich.</p>
+    <a href="mailto:polina.jeske@gymbsb.net?subject=Erstgespr%C3%A4ch%20%E2%80%93%20paluna.ai" class="btn-primary scroll-scale" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+      Erstgespräch vereinbaren
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-content">
       <div>
@@ -1125,50 +466,32 @@
         <p>KI-Webseiten für dein Business.</p>
       </div>
       <div class="footer-links">
-        <div class="footer-col">
-          <h4>Navigation</h4>
-          <a href="#vorteile">Vorteile</a>
-          <a href="#ablauf">Ablauf</a>
-          <a href="#portfolio">Portfolio</a>
-          <a href="#preise">Preise</a>
-        </div>
-        <div class="footer-col">
-          <h4>Kontakt</h4>
-          <a href="mailto:hallo@paluna.ai">hallo@paluna.ai</a>
-          <a href="#kontakt">Erstgespräch buchen</a>
-        </div>
-        <div class="footer-col">
-          <h4>Rechtliches</h4>
-          <a href="#" onclick="openLegal('impressum'); return false;">Impressum</a>
-          <a href="#" onclick="openLegal('datenschutz'); return false;">Datenschutz</a>
-        </div>
+        <div class="footer-col"><h4>Navigation</h4><a href="#leistungen">Leistungen</a><a href="#ablauf">Ablauf</a><a href="#ueber">Über uns</a></div>
+        <div class="footer-col"><h4>Kontakt</h4><a href="mailto:polina.jeske@gymbsb.net?subject=Erstgespr%C3%A4ch%20%E2%80%93%20paluna.ai">Erstgespräch buchen</a></div>
+        <div class="footer-col"><h4>Rechtliches</h4><a href="#" onclick="openLegal('impressum'); return false;">Impressum</a><a href="#" onclick="openLegal('datenschutz'); return false;">Datenschutz</a></div>
       </div>
     </div>
-    <div class="footer-bottom">
-      &copy; 2024 paluna.ai – Alle Rechte vorbehalten.
-    </div>
+    <div class="footer-bottom">&copy; 2024 paluna.ai – Alle Rechte vorbehalten.</div>
   </footer>
 </div>
 
-<!-- IMPRESSUM -->
 <div class="legal-page" id="impressum">
   <button class="legal-close" onclick="closeLegal('impressum')">&times;</button>
   <div class="legal-content">
     <h1>Impressum</h1>
     <h2>Angaben gemäß § 5 TMG</h2>
-    <p>paluna.ai<br>[Vollständiger Name des Inhabers]<br>[Straße und Hausnummer]<br>[PLZ Ort]</p>
+    <p>paluna.ai<br>Polina Jeske<br>[Straße und Hausnummer]<br>[PLZ Ort]</p>
     <h2>Kontakt</h2>
-    <p>E-Mail: hallo@paluna.ai</p>
+    <p>E-Mail: polina.jeske@gymbsb.net</p>
     <h2>Umsatzsteuer-ID</h2>
     <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br>[USt-IdNr.]</p>
     <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
-    <p>[Vollständiger Name]<br>[Adresse]</p>
+    <p>Polina Jeske<br>[Adresse]</p>
     <h2>Streitschlichtung</h2>
     <p>Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit. Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
   </div>
 </div>
 
-<!-- DATENSCHUTZ -->
 <div class="legal-page" id="datenschutz">
   <button class="legal-close" onclick="closeLegal('datenschutz')">&times;</button>
   <div class="legal-content">
@@ -1178,153 +501,112 @@
     <h2>2. Allgemeine Hinweise</h2>
     <p>Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst. Wir behandeln Ihre personenbezogenen Daten vertraulich und entsprechend der gesetzlichen Datenschutzvorschriften sowie dieser Datenschutzerklärung.</p>
     <h2>3. Datenerfassung auf dieser Webseite</h2>
-    <p><strong>Server-Log-Dateien:</strong> Der Provider der Seiten erhebt und speichert automatisch Informationen in Server-Log-Dateien, die Ihr Browser automatisch übermittelt. Dies sind: Browsertyp und -version, verwendetes Betriebssystem, Referrer URL, Hostname des zugreifenden Rechners, Uhrzeit der Serveranfrage, IP-Adresse.</p>
+    <p><strong>Server-Log-Dateien:</strong> Der Provider der Seiten erhebt und speichert automatisch Informationen in Server-Log-Dateien, die Ihr Browser automatisch übermittelt.</p>
     <h2>4. Kontaktaufnahme</h2>
-    <p>Wenn Sie uns per E-Mail kontaktieren, werden Ihre Angaben inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert.</p>
+    <p>Wenn Sie uns per E-Mail kontaktieren, werden Ihre Angaben inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage bei uns gespeichert.</p>
     <h2>5. Ihre Rechte</h2>
     <p>Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung sowie ein Recht auf Berichtigung, Sperrung oder Löschung dieser Daten.</p>
   </div>
 </div>
 
 <script>
-// GALAXY PARTICLE BACKGROUND
 (function() {
-  const canvas = document.getElementById('galaxy');
-  const ctx = canvas.getContext('2d');
-  let w, h, particles, mouse;
+  var canvas = document.getElementById('galaxy');
+  var ctx = canvas.getContext('2d');
+  var w, h, particles, scrollSpeed = 0, lastScroll = 0;
 
-  function resize() {
-    w = canvas.width = window.innerWidth;
-    h = canvas.height = window.innerHeight;
+  function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+
+  function Particle() {
+    this.x = Math.random() * w; this.y = Math.random() * h;
+    this.z = Math.random() * 3 + 0.5; this.size = Math.random() * 1.5 + 0.3;
+    this.baseSpeed = Math.random() * 0.2 + 0.05; this.opacity = Math.random() * 0.5 + 0.1;
+    this.hue = Math.random() > 0.85 ? 38 : Math.random() > 0.5 ? 270 : 220;
+    this.sat = this.hue === 38 ? 95 : 60;
+    this.drift = (Math.random() - 0.5) * 0.2; this.trail = 0;
   }
-
-  mouse = { x: w / 2, y: h / 2 };
-
-  class Particle {
-    constructor() {
-      this.reset();
+  Particle.prototype.update = function() {
+    var wf = 1 + scrollSpeed * 8;
+    this.y -= this.baseSpeed * this.z * wf; this.x += this.drift;
+    this.trail = Math.min(scrollSpeed * this.z * 15, 30);
+    this.opacity += (Math.random() - 0.5) * 0.008;
+    this.opacity = Math.max(0.05, Math.min(0.6, this.opacity));
+    if (this.y < -20) { this.y = h + 20; this.x = Math.random() * w; }
+    if (this.x < -20 || this.x > w + 20) { this.x = Math.random() * w; this.y = h + 20; }
+  };
+  Particle.prototype.draw = function() {
+    if (this.trail > 1) {
+      ctx.beginPath(); ctx.moveTo(this.x, this.y);
+      ctx.lineTo(this.x - this.drift * 2, this.y + this.trail);
+      ctx.strokeStyle = 'hsla(' + this.hue + ',' + this.sat + '%,70%,' + (this.opacity * 0.4) + ')';
+      ctx.lineWidth = this.size * this.z * 0.5; ctx.stroke();
     }
-    reset() {
-      this.x = Math.random() * w;
-      this.y = Math.random() * h;
-      this.z = Math.random() * 2;
-      this.size = Math.random() * 1.5 + 0.5;
-      this.speed = Math.random() * 0.3 + 0.1;
-      this.opacity = Math.random() * 0.5 + 0.1;
-      this.hue = Math.random() > 0.85 ? 38 : Math.random() > 0.5 ? 270 : 220;
-      this.saturation = this.hue === 38 ? 95 : 60;
-      this.drift = (Math.random() - 0.5) * 0.3;
-    }
-    update() {
-      this.y -= this.speed * this.z;
-      this.x += this.drift * 0.5;
-      this.opacity += (Math.random() - 0.5) * 0.01;
-      this.opacity = Math.max(0.05, Math.min(0.6, this.opacity));
-      if (this.y < -10 || this.x < -10 || this.x > w + 10) {
-        this.reset();
-        this.y = h + 10;
-      }
-    }
-    draw() {
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size * this.z, 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${this.hue}, ${this.saturation}%, 70%, ${this.opacity})`;
-      ctx.fill();
-    }
-  }
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.size * this.z, 0, Math.PI * 2);
+    ctx.fillStyle = 'hsla(' + this.hue + ',' + this.sat + '%,70%,' + this.opacity + ')'; ctx.fill();
+  };
 
   function init() {
     resize();
-    const count = Math.min(200, Math.floor((w * h) / 8000));
-    particles = Array.from({ length: count }, () => new Particle());
+    var count = Math.min(250, Math.floor((w * h) / 6000));
+    particles = [];
+    for (var i = 0; i < count; i++) particles.push(new Particle());
   }
-
   function drawConnections() {
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
+    if (scrollSpeed > 0.3) return;
+    for (var i = 0; i < particles.length; i++) {
+      for (var j = i + 1; j < particles.length; j++) {
+        var dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
+        var dist = dx * dx + dy * dy;
+        if (dist < 14400) {
+          ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(252, 176, 47, ${0.03 * (1 - dist / 120)})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
+          ctx.strokeStyle = 'rgba(252,176,47,' + (0.025 * (1 - Math.sqrt(dist) / 120)) + ')';
+          ctx.lineWidth = 0.5; ctx.stroke();
         }
       }
     }
   }
-
+  window.addEventListener('scroll', function() {
+    var curr = window.scrollY || window.pageYOffset;
+    scrollSpeed = Math.min(Math.abs(curr - lastScroll) / 50, 1);
+    lastScroll = curr;
+  });
   function animate() {
     ctx.clearRect(0, 0, w, h);
-    particles.forEach(p => { p.update(); p.draw(); });
-    drawConnections();
-    requestAnimationFrame(animate);
+    for (var i = 0; i < particles.length; i++) { particles[i].update(); particles[i].draw(); }
+    drawConnections(); scrollSpeed *= 0.92; requestAnimationFrame(animate);
   }
-
-  window.addEventListener('resize', () => { resize(); });
-  init();
-  animate();
+  window.addEventListener('resize', resize);
+  init(); animate();
 })();
 
-// NAV SCROLL
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 50);
-});
+var nav = document.getElementById('nav');
+window.addEventListener('scroll', function() { nav.classList.toggle('scrolled', window.scrollY > 50); });
 
-// MOBILE MENU
-const menuToggle = document.getElementById('menuToggle');
-const navLinks = document.getElementById('navLinks');
+var menuToggle = document.getElementById('menuToggle');
+var navLinks = document.getElementById('navLinks');
+menuToggle.addEventListener('click', function() { navLinks.classList.toggle('open'); });
+navLinks.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', function() { navLinks.classList.remove('open'); }); });
 
-menuToggle.addEventListener('click', () => {
-  navLinks.classList.toggle('open');
-});
-
-navLinks.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', () => {
-    navLinks.classList.remove('open');
+var scrollEls = document.querySelectorAll('.scroll-3d, .scroll-left, .scroll-right, .scroll-scale');
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
   });
-});
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+scrollEls.forEach(function(el) { observer.observe(el); });
 
-// SCROLL REVEAL
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => {
-        entry.target.classList.add('visible');
-      }, i * 80);
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+function openLegal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+function closeLegal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// LEGAL PAGES
-function openLegal(id) {
-  document.getElementById(id).classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLegal(id) {
-  document.getElementById(id).classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-// SMOOTH SCROLL for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   anchor.addEventListener('click', function(e) {
-    const targetId = this.getAttribute('href');
+    var targetId = this.getAttribute('href');
     if (targetId === '#') return;
-    const target = document.querySelector(targetId);
+    var target = document.querySelector(targetId);
     if (target) {
       e.preventDefault();
-      const navHeight = nav.offsetHeight;
-      const targetPos = target.getBoundingClientRect().top + window.scrollY - navHeight;
-      window.scrollTo({ top: targetPos, behavior: 'smooth' });
+      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - nav.offsetHeight, behavior: 'smooth' });
     }
   });
 });
