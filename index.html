@@ -161,6 +161,24 @@
 
     .placeholder-text { font-size: 1.5rem; font-weight: 800; color: rgba(255,255,255,0.15); letter-spacing: -0.03em; }
 
+    /* Portfolio Preview Cards */
+    .portfolio-preview { width: 100%; height: 100%; overflow: hidden; position: relative; transform-origin: top left; }
+    .preview-trucktrade { background: #faf9f5; color: #141413; font-family: 'Inter', sans-serif; }
+    .preview-trucktrade .pv-header { background: #1a1a2e; padding: 6px 12px; display: flex; align-items: center; justify-content: space-between; }
+    .preview-trucktrade .pv-logo { color: #fff; font-size: 9px; font-weight: 800; letter-spacing: 0.5px; }
+    .preview-trucktrade .pv-logo span { color: #e74c3c; }
+    .preview-trucktrade .pv-nav { display: flex; gap: 8px; }
+    .preview-trucktrade .pv-nav span { font-size: 5px; color: rgba(255,255,255,0.6); }
+    .preview-trucktrade .pv-hero { padding: 14px 12px 10px; text-align: center; background: linear-gradient(180deg, #1a1a2e 0%, #2d2d4a 100%); }
+    .preview-trucktrade .pv-hero h2 { font-size: 11px; font-weight: 800; color: #fff; margin-bottom: 4px; letter-spacing: 0.5px; }
+    .preview-trucktrade .pv-hero p { font-size: 5px; color: rgba(255,255,255,0.6); }
+    .preview-trucktrade .pv-hero .pv-btn { display: inline-block; margin-top: 6px; padding: 3px 10px; background: #e74c3c; color: #fff; border-radius: 3px; font-size: 5px; font-weight: 700; }
+    .preview-trucktrade .pv-content { padding: 8px 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .preview-trucktrade .pv-card { background: #fff; border-radius: 4px; padding: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); text-align: center; }
+    .preview-trucktrade .pv-card-icon { width: 16px; height: 16px; border-radius: 50%; background: linear-gradient(135deg, #e74c3c, #c0392b); margin: 0 auto 3px; }
+    .preview-trucktrade .pv-card span { font-size: 4.5px; color: #555; display: block; }
+    .preview-trucktrade .pv-card strong { font-size: 5px; color: #141413; }
+
     /* ── Steps ── */
     .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
     .step { text-align: center; }
@@ -354,7 +372,7 @@
     </div>
     <div class="carousel-wrap">
       <div class="carousel-track" id="carouselTrack">
-        <div class="portfolio-card"><div class="portfolio-card-bg placeholder-1"><span class="placeholder-text">paluna.ai</span></div><div class="portfolio-card-label"><h4>Projekt kommt bald</h4><p>Webseite &middot; 3D Design</p></div></div>
+        <div class="portfolio-card"><div class="portfolio-card-bg"><div class="portfolio-preview preview-trucktrade"><div class="pv-header"><div class="pv-logo">TRUCK<span>TRADE</span></div><div class="pv-nav"><span>Каталог</span><span>Доставка</span><span>Контакты</span></div></div><div class="pv-hero"><h2>ЗАПЧАСТИ ДЛЯ ГРУЗОВИКОВ</h2><p>Оригинальные и аналоговые запчасти для европейских грузовиков</p><div class="pv-btn">Перейти в каталог</div></div><div class="pv-content"><div class="pv-card"><div class="pv-card-icon"></div><strong>MAN</strong><span>Запчасти</span></div><div class="pv-card"><div class="pv-card-icon"></div><strong>Scania</strong><span>Запчасти</span></div><div class="pv-card"><div class="pv-card-icon"></div><strong>Volvo</strong><span>Запчасти</span></div></div></div></div><div class="portfolio-card-label"><h4>Trucktrade</h4><p>Webseite &middot; E-Commerce</p></div></div>
         <div class="portfolio-card"><div class="portfolio-card-bg placeholder-2"><span class="placeholder-text">paluna.ai</span></div><div class="portfolio-card-label"><h4>Projekt kommt bald</h4><p>Webseite &middot; Branding</p></div></div>
         <div class="portfolio-card"><div class="portfolio-card-bg placeholder-3"><span class="placeholder-text">paluna.ai</span></div><div class="portfolio-card-label"><h4>Projekt kommt bald</h4><p>Webseite &middot; Animation</p></div></div>
         <div class="portfolio-card"><div class="portfolio-card-bg placeholder-4"><span class="placeholder-text">paluna.ai</span></div><div class="portfolio-card-label"><h4>Projekt kommt bald</h4><p>Webseite &middot; E-Commerce</p></div></div>
