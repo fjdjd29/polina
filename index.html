@@ -43,6 +43,7 @@
 
     .content { position: relative; z-index: 1; }
 
+    /* ── Nav ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       padding: 1rem 2rem;
@@ -53,57 +54,129 @@
       transition: background 0.3s;
     }
     nav.scrolled { background: rgba(7, 7, 12, 0.95); }
-
     .nav-logo { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.03em; color: var(--text); }
     .nav-logo span { color: var(--accent); }
-
     .nav-links { display: flex; gap: 2rem; align-items: center; }
     .nav-links a {
       color: var(--text-dim); text-decoration: none;
       font-size: 0.875rem; font-weight: 500; transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--text); }
-
     .nav-cta {
       background: var(--accent) !important; color: var(--bg) !important;
       padding: 0.5rem 1.25rem; border-radius: 8px;
-      font-weight: 600 !important; transition: all 0.2s !important;
+      font-weight: 600 !important; transition: all 0.2s !important; cursor: pointer;
     }
     .nav-cta:hover { box-shadow: 0 0 20px var(--accent-glow); transform: translateY(-1px); }
-
     .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
     .menu-toggle span { display: block; width: 24px; height: 2px; background: var(--text); margin: 5px 0; transition: all 0.3s; }
 
+    /* ── Hero ── */
     .hero {
       min-height: 100vh;
       display: flex; align-items: center; justify-content: center;
       text-align: center; padding: 8rem 2rem 4rem;
-      position: relative;
+      position: relative; overflow: hidden;
     }
     .hero-inner { max-width: 800px; position: relative; z-index: 2; }
 
-    .hero-orb-wrap {
+    canvas#heroTorus {
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      width: 500px; height: 500px; max-width: 90vw; max-height: 90vw;
-      z-index: 0; pointer-events: none;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
     }
-    .hero-orb {
-      width: 100%; height: 100%; border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, rgba(252,176,47,0.15), rgba(168,85,247,0.1) 50%, transparent 70%);
-      filter: blur(60px);
-      animation: orb-pulse 8s ease-in-out infinite;
+
+    .hero-float {
+      position: absolute; pointer-events: none; z-index: 1;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
     }
-    @keyframes orb-pulse {
-      0%,100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
-      50% { transform: scale(1.15) rotate(180deg); opacity: 0.8; }
+
+    .float-ring {
+      width: 120px; height: 120px; border-radius: 50%;
+      border: 2px solid rgba(252,176,47,0.15);
+      animation: float-drift-1 18s infinite, ring-tilt 12s linear infinite;
+      top: 12%; left: 8%;
     }
+    .float-ring::after {
+      content: ''; position: absolute; inset: 8px; border-radius: 50%;
+      border: 1px solid rgba(252,176,47,0.08);
+    }
+
+    .float-cube {
+      width: 60px; height: 60px;
+      border: 1.5px solid rgba(168,85,247,0.2);
+      animation: float-drift-2 22s infinite, cube-spin 15s linear infinite;
+      top: 20%; right: 10%; transform-style: preserve-3d;
+    }
+
+    .float-diamond {
+      width: 40px; height: 40px;
+      border: 1.5px solid rgba(252,176,47,0.2);
+      animation: float-drift-3 16s infinite;
+      bottom: 25%; left: 12%;
+      transform: rotate(45deg);
+    }
+
+    .float-circle-sm {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(252,176,47,0.3), transparent);
+      animation: float-drift-1 14s infinite reverse;
+      bottom: 30%; right: 15%;
+    }
+
+    .float-hexagon {
+      width: 80px; height: 80px; position: absolute;
+      top: 65%; left: 5%;
+      animation: float-drift-2 20s infinite reverse;
+    }
+    .float-hexagon::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(168,85,247,0.06);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      border: 1px solid rgba(168,85,247,0.12);
+    }
+
+    .float-tri {
+      width: 0; height: 0;
+      border-left: 25px solid transparent; border-right: 25px solid transparent;
+      border-bottom: 43px solid rgba(255,107,53,0.08);
+      top: 70%; right: 8%;
+      animation: float-drift-3 24s infinite, tri-spin 20s linear infinite;
+    }
+
+    @keyframes float-drift-1 {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      25% { transform: translateY(-30px) translateX(15px); }
+      50% { transform: translateY(-10px) translateX(-10px); }
+      75% { transform: translateY(-40px) translateX(5px); }
+    }
+    @keyframes float-drift-2 {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      33% { transform: translateY(-25px) translateX(-20px); }
+      66% { transform: translateY(-45px) translateX(10px); }
+    }
+    @keyframes float-drift-3 {
+      0%, 100% { transform: translateY(0) rotate(45deg); }
+      50% { transform: translateY(-35px) rotate(45deg); }
+    }
+    @keyframes ring-tilt {
+      0% { transform: rotateX(0deg) rotateY(0deg); }
+      100% { transform: rotateX(360deg) rotateY(180deg); }
+    }
+    @keyframes cube-spin {
+      0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+      100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg); }
+    }
+    @keyframes tri-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: 0.5rem;
       padding: 0.4rem 1rem; border: 1px solid var(--border);
       border-radius: 100px; font-size: 0.8rem; color: var(--text-dim);
       margin-bottom: 2rem; background: var(--bg-card); backdrop-filter: blur(10px);
+      opacity: 0; animation: hero-fade-in 0.8s 0.3s forwards;
     }
     .hero-badge-dot {
       width: 6px; height: 6px; background: var(--accent);
@@ -114,6 +187,7 @@
     .hero h1 {
       font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800;
       letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1.5rem;
+      opacity: 0; animation: hero-rise 1s 0.5s forwards;
     }
     .hero h1 .gradient {
       background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
@@ -122,9 +196,23 @@
     .hero p {
       font-size: 1.125rem; color: var(--text-dim);
       max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7;
+      opacity: 0; animation: hero-fade-in 0.8s 0.9s forwards;
     }
-    .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .hero-buttons {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      opacity: 0; animation: hero-fade-in 0.8s 1.1s forwards;
+    }
 
+    @keyframes hero-rise {
+      from { opacity: 0; transform: translateY(40px) rotateX(8deg); }
+      to { opacity: 1; transform: translateY(0) rotateX(0deg); }
+    }
+    @keyframes hero-fade-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Buttons ── */
     .btn-primary {
       background: var(--accent); color: var(--bg);
       padding: 0.875rem 2rem; border-radius: 12px;
@@ -143,8 +231,8 @@
     }
     .btn-secondary:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
 
+    /* ── Sections ── */
     section { padding: 6rem 2rem; max-width: 1100px; margin: 0 auto; }
-
     .section-header { text-align: center; margin-bottom: 4rem; }
     .section-tag {
       font-size: 0.75rem; font-weight: 600; color: var(--accent);
@@ -156,31 +244,44 @@
     }
     .section-desc { color: var(--text-dim); max-width: 560px; margin: 0 auto; font-size: 1rem; }
 
+    /* ── Scroll animations ── */
     .scroll-3d {
       opacity: 0; transform: translateY(60px) rotateX(10deg);
       transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
       transform-style: preserve-3d; perspective: 1000px;
     }
     .scroll-3d.visible { opacity: 1; transform: translateY(0) rotateX(0deg); }
-
     .scroll-left {
       opacity: 0; transform: translateX(-80px) rotateY(8deg);
       transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .scroll-left.visible { opacity: 1; transform: translateX(0) rotateY(0deg); }
-
     .scroll-right {
       opacity: 0; transform: translateX(80px) rotateY(-8deg);
       transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .scroll-right.visible { opacity: 1; transform: translateX(0) rotateY(0deg); }
-
     .scroll-scale {
       opacity: 0; transform: scale(0.8) rotateX(5deg);
       transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .scroll-scale.visible { opacity: 1; transform: scale(1) rotateX(0deg); }
 
+    .scroll-flip {
+      opacity: 0; transform: perspective(800px) rotateY(-60deg);
+      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: left center;
+    }
+    .scroll-flip.visible { opacity: 1; transform: perspective(800px) rotateY(0deg); }
+
+    .scroll-flip-right {
+      opacity: 0; transform: perspective(800px) rotateY(60deg);
+      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: right center;
+    }
+    .scroll-flip-right.visible { opacity: 1; transform: perspective(800px) rotateY(0deg); }
+
+    /* ── USP Grid ── */
     .usp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
     .usp-card {
       background: var(--bg-card); border: 1px solid var(--border);
@@ -198,7 +299,6 @@
       box-shadow: 0 20px 40px rgba(252,176,47,0.05), 0 0 60px rgba(252,176,47,0.03);
     }
     .usp-card:hover::before { opacity: 1; }
-
     .usp-icon {
       width: 48px; height: 48px; border-radius: 12px;
       background: rgba(252, 176, 47, 0.1);
@@ -209,6 +309,7 @@
     .usp-card h3 { font-size: 1.125rem; font-weight: 700; margin-bottom: 0.75rem; }
     .usp-card p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; }
 
+    /* ── Steps ── */
     .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
     .step { text-align: center; }
     .step-number {
@@ -224,29 +325,25 @@
     .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
     .step p { color: var(--text-dim); font-size: 0.875rem; line-height: 1.6; }
 
+    /* ── Space Divider ── */
     .space-divider {
-      position: relative; height: 300px; overflow: hidden;
+      position: relative; height: 200px; overflow: hidden;
       display: flex; align-items: center; justify-content: center; margin: 2rem 0;
-    }
-    .space-divider-text {
-      font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; letter-spacing: -0.05em;
-      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      opacity: 0.12; position: relative; z-index: 1; user-select: none;
     }
     .space-ring {
       position: absolute; border-radius: 50%;
       border: 1px solid rgba(252,176,47,0.08);
       animation: ring-expand 12s ease-in-out infinite;
     }
-    .space-ring:nth-child(2) { width: 200px; height: 200px; animation-delay: 0s; }
-    .space-ring:nth-child(3) { width: 350px; height: 350px; animation-delay: -4s; }
-    .space-ring:nth-child(4) { width: 500px; height: 500px; animation-delay: -8s; }
+    .space-ring:nth-child(1) { width: 200px; height: 200px; animation-delay: 0s; }
+    .space-ring:nth-child(2) { width: 350px; height: 350px; animation-delay: -4s; }
+    .space-ring:nth-child(3) { width: 500px; height: 500px; animation-delay: -8s; }
     @keyframes ring-expand {
       0%,100% { transform: scale(0.9) rotate(0deg); opacity: 0.3; }
       50% { transform: scale(1.1) rotate(180deg); opacity: 0.8; }
     }
 
+    /* ── About ── */
     .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
     .about-text h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
     .about-text p { color: var(--text-dim); margin-bottom: 1rem; font-size: 0.95rem; line-height: 1.7; }
@@ -283,9 +380,11 @@
 
     .about-sphere-label {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      font-size: 2rem; font-weight: 900; letter-spacing: -0.05em; color: var(--accent); opacity: 0.9;
+      font-size: 1.1rem; font-weight: 900; letter-spacing: -0.03em; color: var(--accent); opacity: 0.9;
+      white-space: nowrap;
     }
 
+    /* ── CTA ── */
     .cta-section { text-align: center; padding: 6rem 2rem; position: relative; }
     .cta-section::before {
       content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
@@ -296,6 +395,7 @@
     .cta-section h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; }
     .cta-section p { color: var(--text-dim); margin-bottom: 2rem; font-size: 1.05rem; }
 
+    /* ── Footer ── */
     footer { border-top: 1px solid var(--border); padding: 3rem 2rem; max-width: 1100px; margin: 0 auto; }
     .footer-content { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem; }
     .footer-brand { font-size: 1.25rem; font-weight: 800; }
@@ -303,27 +403,88 @@
     .footer-brand p { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem; font-weight: 400; }
     .footer-links { display: flex; gap: 3rem; flex-wrap: wrap; }
     .footer-col h4 { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 0.75rem; }
-    .footer-col a { display: block; color: var(--text-dim); text-decoration: none; font-size: 0.85rem; padding: 0.25rem 0; transition: color 0.2s; }
+    .footer-col a { display: block; color: var(--text-dim); text-decoration: none; font-size: 0.85rem; padding: 0.25rem 0; transition: color 0.2s; cursor: pointer; }
     .footer-col a:hover { color: var(--text); }
     .footer-bottom { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--text-dim); text-align: center; }
 
-    .legal-page {
+    /* ── Legal & Booking Overlays ── */
+    .legal-page, .booking-page {
       display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
       z-index: 200; background: var(--bg); overflow-y: auto; padding: 6rem 2rem 4rem;
     }
-    .legal-page.active { display: block; }
+    .legal-page.active, .booking-page.active { display: block; }
     .legal-content { max-width: 720px; margin: 0 auto; }
     .legal-content h1 { font-size: 2rem; font-weight: 800; margin-bottom: 2rem; }
     .legal-content h2 { font-size: 1.25rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem; }
     .legal-content p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.7; margin-bottom: 0.75rem; }
-    .legal-close {
+    .legal-close, .booking-close {
       position: fixed; top: 1.5rem; right: 2rem; z-index: 201;
       background: var(--bg-card); border: 1px solid var(--border);
       color: var(--text); width: 40px; height: 40px; border-radius: 50%;
       font-size: 1.25rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
     }
-    .legal-close:hover { border-color: var(--accent); }
+    .legal-close:hover, .booking-close:hover { border-color: var(--accent); }
 
+    /* ── Booking Page ── */
+    .booking-inner {
+      max-width: 640px; margin: 0 auto; text-align: center;
+      position: relative;
+    }
+    .booking-inner h1 {
+      font-size: clamp(2rem, 5vw, 3rem); font-weight: 800;
+      letter-spacing: -0.03em; margin-bottom: 1rem;
+    }
+    .booking-inner h1 .gradient {
+      background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .booking-inner > p {
+      color: var(--text-dim); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2.5rem;
+    }
+    .booking-steps {
+      display: grid; grid-template-columns: 1fr; gap: 1.25rem;
+      text-align: left; margin-bottom: 3rem;
+    }
+    .booking-step {
+      display: flex; gap: 1.25rem; align-items: flex-start;
+      padding: 1.25rem 1.5rem; border-radius: 12px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .booking-step:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+    .booking-step-num {
+      width: 36px; height: 36px; min-width: 36px; border-radius: 50%;
+      border: 2px solid var(--accent); display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 800; color: var(--accent);
+    }
+    .booking-step-text h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .booking-step-text p { color: var(--text-dim); font-size: 0.875rem; line-height: 1.5; margin: 0; }
+    .booking-email-box {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 2rem; margin-bottom: 2rem; position: relative; overflow: hidden;
+    }
+    .booking-email-box::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(252,176,47,0.06), transparent 60%);
+      pointer-events: none;
+    }
+    .booking-email-box p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1rem; position: relative; }
+    .booking-email-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 1.15rem; font-weight: 700; color: var(--accent);
+      text-decoration: none; position: relative; transition: all 0.2s;
+    }
+    .booking-email-link:hover { text-shadow: 0 0 20px var(--accent-glow); }
+    .booking-hint { color: var(--text-dim); font-size: 0.8rem; margin-top: 1rem; }
+
+    .booking-glow {
+      position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(252,176,47,0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ── Mobile ── */
     @media (max-width: 768px) {
       nav { padding: 1rem; }
       .nav-links {
@@ -338,8 +499,12 @@
       .about-visual { height: 250px; }
       .footer-content { flex-direction: column; }
       .footer-links { flex-direction: column; gap: 1.5rem; }
-      .space-divider { height: 200px; }
       section { padding: 4rem 1rem; }
+      .float-ring { width: 70px; height: 70px; left: 3%; }
+      .float-cube { width: 35px; height: 35px; right: 5%; }
+      .float-diamond { width: 25px; height: 25px; }
+      .float-hexagon { width: 50px; height: 50px; }
+      .booking-steps { gap: 1rem; }
     }
   </style>
 </head>
@@ -355,7 +520,7 @@
       <a href="#leistungen">Leistungen</a>
       <a href="#ablauf">Ablauf</a>
       <a href="#ueber">Über uns</a>
-      <a href="mailto:polina.jeske@gymbsb.net?subject=Erstgespr%C3%A4ch%20%E2%80%93%20paluna.ai" class="nav-cta">Erstgespräch buchen</a>
+      <a href="#" onclick="openBooking(); return false;" class="nav-cta">Erstgespräch buchen</a>
     </div>
     <button class="menu-toggle" id="menuToggle" aria-label="Menü">
       <span></span><span></span><span></span>
@@ -363,7 +528,15 @@
   </nav>
 
   <section class="hero" id="start">
-    <div class="hero-orb-wrap"><div class="hero-orb"></div></div>
+    <canvas id="heroTorus"></canvas>
+
+    <div class="hero-float float-ring"></div>
+    <div class="hero-float float-cube"></div>
+    <div class="hero-float float-diamond"></div>
+    <div class="hero-float float-circle-sm"></div>
+    <div class="hero-float float-hexagon"></div>
+    <div class="hero-float float-tri"></div>
+
     <div class="hero-inner">
       <div class="hero-badge">
         <div class="hero-badge-dot"></div>
@@ -372,10 +545,10 @@
       <h1>Deine Webseite.<br><span class="gradient">Professionell. Individuell. Mit KI.</span></h1>
       <p>Wir entwickeln hochwertige Webseiten mit modernster KI-Technologie – maßgeschneidert für dein Business, mit Design das beeindruckt.</p>
       <div class="hero-buttons">
-        <a href="mailto:polina.jeske@gymbsb.net?subject=Erstgespr%C3%A4ch%20%E2%80%93%20paluna.ai" class="btn-primary">
+        <button onclick="openBooking()" class="btn-primary">
           Kostenloses Erstgespräch
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
+        </button>
         <a href="#leistungen" class="btn-secondary">Mehr erfahren</a>
       </div>
     </div>
@@ -385,7 +558,6 @@
     <div class="space-ring"></div>
     <div class="space-ring"></div>
     <div class="space-ring"></div>
-    <div class="space-divider-text">paluna.ai</div>
   </div>
 
   <section id="leistungen">
@@ -395,12 +567,12 @@
       <p class="section-desc">Von der Idee bis zum Launch – wir bauen Webseiten, die dein Business auf das nächste Level bringen.</p>
     </div>
     <div class="usp-grid">
-      <div class="usp-card scroll-left"><div class="usp-icon">01</div><h3>Individuelles Design</h3><p>Jede Webseite wird maßgeschneidert für dich entwickelt. Kein Template, kein Standard – nur deine Vision, professionell umgesetzt.</p></div>
-      <div class="usp-card scroll-3d"><div class="usp-icon">02</div><h3>KI-Technologie</h3><p>Durch den Einsatz von KI entwickeln wir effizienter – das bedeutet mehr Qualität und mehr Möglichkeiten für dein Projekt.</p></div>
-      <div class="usp-card scroll-right"><div class="usp-icon">03</div><h3>3D & Animationen</h3><p>Beeindruckende 3D-Elemente, flüssige Animationen und interaktive Designs, die deine Besucher fesseln.</p></div>
-      <div class="usp-card scroll-left"><div class="usp-icon">04</div><h3>Automatisierung</h3><p>Intelligente Funktionen direkt in deine Webseite integriert – von Kontaktformularen bis zu automatisierten Workflows.</p></div>
-      <div class="usp-card scroll-3d"><div class="usp-icon">05</div><h3>Laufende Betreuung</h3><p>Wir lassen dich nach dem Launch nicht allein. Updates, Änderungen, Support – wir sind immer für dich da.</p></div>
-      <div class="usp-card scroll-right"><div class="usp-icon">06</div><h3>Responsive</h3><p>Perfekt auf jedem Gerät. Smartphone, Tablet, Desktop – deine Webseite sieht überall großartig aus.</p></div>
+      <div class="usp-card scroll-flip" style="transition-delay:0s"><div class="usp-icon">01</div><h3>Individuelles Design</h3><p>Jede Webseite wird maßgeschneidert für dich entwickelt. Kein Template, kein Standard – nur deine Vision, professionell umgesetzt.</p></div>
+      <div class="usp-card scroll-flip-right" style="transition-delay:0.1s"><div class="usp-icon">02</div><h3>KI-Technologie</h3><p>Durch den Einsatz von KI entwickeln wir effizienter – das bedeutet mehr Qualität und mehr Möglichkeiten für dein Projekt.</p></div>
+      <div class="usp-card scroll-flip" style="transition-delay:0.2s"><div class="usp-icon">03</div><h3>3D & Animationen</h3><p>Beeindruckende 3D-Elemente, flüssige Animationen und interaktive Designs, die deine Besucher fesseln.</p></div>
+      <div class="usp-card scroll-flip-right" style="transition-delay:0.3s"><div class="usp-icon">04</div><h3>Automatisierung</h3><p>Intelligente Funktionen direkt in deine Webseite integriert – von Kontaktformularen bis zu automatisierten Workflows.</p></div>
+      <div class="usp-card scroll-flip" style="transition-delay:0.4s"><div class="usp-icon">05</div><h3>Laufende Betreuung</h3><p>Wir lassen dich nach dem Launch nicht allein. Updates, Änderungen, Support – wir sind immer für dich da.</p></div>
+      <div class="usp-card scroll-flip-right" style="transition-delay:0.5s"><div class="usp-icon">06</div><h3>Responsive</h3><p>Perfekt auf jedem Gerät. Smartphone, Tablet, Desktop – deine Webseite sieht überall großartig aus.</p></div>
     </div>
   </section>
 
@@ -418,24 +590,17 @@
     </div>
   </section>
 
-  <div class="space-divider scroll-scale">
-    <div class="space-ring"></div>
-    <div class="space-ring"></div>
-    <div class="space-ring"></div>
-    <div class="space-divider-text">Design</div>
-  </div>
-
   <section id="ueber">
     <div class="section-header scroll-3d">
-      <span class="section-tag">Über uns</span>
-      <h2 class="section-title">Die Menschen hinter paluna.ai</h2>
+      <span class="section-tag">Über mich</span>
+      <h2 class="section-title">Hi, ich bin Polina.</h2>
     </div>
     <div class="about-content">
       <div class="about-text scroll-left">
         <h3>Webentwicklung, neu gedacht.</h3>
-        <p>Hinter paluna.ai steckt <strong>Polina Jeske</strong> – gemeinsam mit ihrer Mutter hat sie ein KI-Unternehmen gegründet, das Webentwicklung auf ein neues Level hebt.</p>
-        <p>Als Teil von <strong>Akquise und Heartbeat</strong> von Tim Krasenbrink vereinen wir unternehmerisches Know-how mit modernster Technologie. Wir glauben, dass jedes Unternehmen eine beeindruckende Webpräsenz verdient.</p>
-        <p>Unser Ansatz: Persönliche Beratung, individuelle Umsetzung und langfristige Betreuung. Wir sind immer erreichbar und begleiten dich vom ersten Gespräch bis weit über den Launch hinaus.</p>
+        <p>Hallo, mein Name ist <strong>Polina Jeske</strong>. Zusammen mit meiner Mutter habe ich paluna.ai gegründet – ein KI-Unternehmen, das Webentwicklung auf ein neues Level hebt.</p>
+        <p>Wir sind Teil von <strong>Akquise und Heartbeat</strong> von Tim Krasenbrink. Dort verbinde ich unternehmerisches Know-how mit modernster Technologie. Ich glaube, dass jedes Unternehmen eine beeindruckende Webpräsenz verdient – egal wie groß oder klein.</p>
+        <p>Mein Ansatz: Persönliche Beratung, individuelle Umsetzung und langfristige Betreuung. Ich bin immer erreichbar und begleite dich vom ersten Gespräch bis weit über den Launch hinaus.</p>
         <div class="about-values">
           <span class="value-tag">Konkretheit</span><span class="value-tag">Produktivität</span>
           <span class="value-tag">Proaktivität</span><span class="value-tag">Hilfsbereitschaft</span>
@@ -444,7 +609,7 @@
       </div>
       <div class="about-visual scroll-right">
         <div class="about-sphere">
-          <div class="about-sphere-label">p.ai</div>
+          <div class="about-sphere-label">paluna.ai</div>
         </div>
       </div>
     </div>
@@ -453,10 +618,10 @@
   <section class="cta-section" id="kontakt">
     <h2 class="scroll-3d">Bereit für deine neue Webseite?</h2>
     <p class="scroll-3d">Lass uns reden – kostenloses Erstgespräch, ganz unverbindlich.</p>
-    <a href="mailto:polina.jeske@gymbsb.net?subject=Erstgespr%C3%A4ch%20%E2%80%93%20paluna.ai" class="btn-primary scroll-scale" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
+    <button onclick="openBooking()" class="btn-primary scroll-scale" style="font-size: 1.1rem; padding: 1rem 2.5rem;">
       Erstgespräch vereinbaren
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </a>
+    </button>
   </section>
 
   <footer>
@@ -466,15 +631,59 @@
         <p>KI-Webseiten für dein Business.</p>
       </div>
       <div class="footer-links">
-        <div class="footer-col"><h4>Navigation</h4><a href="#leistungen">Leistungen</a><a href="#ablauf">Ablauf</a><a href="#ueber">Über uns</a></div>
-        <div class="footer-col"><h4>Kontakt</h4><a href="mailto:polina.jeske@gymbsb.net?subject=Erstgespr%C3%A4ch%20%E2%80%93%20paluna.ai">Erstgespräch buchen</a></div>
-        <div class="footer-col"><h4>Rechtliches</h4><a href="#" onclick="openLegal('impressum'); return false;">Impressum</a><a href="#" onclick="openLegal('datenschutz'); return false;">Datenschutz</a></div>
+        <div class="footer-col"><h4>Navigation</h4><a href="#leistungen">Leistungen</a><a href="#ablauf">Ablauf</a><a href="#ueber">Über mich</a></div>
+        <div class="footer-col"><h4>Kontakt</h4><a onclick="openBooking()">Erstgespräch buchen</a></div>
+        <div class="footer-col"><h4>Rechtliches</h4><a onclick="openLegal('impressum')">Impressum</a><a onclick="openLegal('datenschutz')">Datenschutz</a></div>
       </div>
     </div>
     <div class="footer-bottom">&copy; 2024 paluna.ai – Alle Rechte vorbehalten.</div>
   </footer>
 </div>
 
+<!-- Booking Overlay -->
+<div class="booking-page" id="booking">
+  <button class="booking-close" onclick="closeBooking()">&times;</button>
+  <div class="booking-glow"></div>
+  <div class="booking-inner">
+    <h1>Lass uns <span class="gradient">reden.</span></h1>
+    <p>Dein kostenloses Erstgespräch ist der erste Schritt zu deiner neuen Webseite. Wir lernen uns kennen, ich höre mir deine Ideen an und wir schauen gemeinsam, wie ich dir helfen kann.</p>
+
+    <div class="booking-steps">
+      <div class="booking-step">
+        <div class="booking-step-num">1</div>
+        <div class="booking-step-text">
+          <h3>Du schreibst mir</h3>
+          <p>Schick mir einfach eine E-Mail – erzähl mir kurz, wer du bist und was du vorhast.</p>
+        </div>
+      </div>
+      <div class="booking-step">
+        <div class="booking-step-num">2</div>
+        <div class="booking-step-text">
+          <h3>Wir telefonieren</h3>
+          <p>Ich melde mich bei dir und wir besprechen alles in Ruhe. Kostenlos und unverbindlich.</p>
+        </div>
+      </div>
+      <div class="booking-step">
+        <div class="booking-step-num">3</div>
+        <div class="booking-step-text">
+          <h3>Ich lege los</h3>
+          <p>Wenn es passt, starte ich direkt mit dem Konzept. Du lehnst dich zurück.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="booking-email-box">
+      <p>Schreib mir direkt an:</p>
+      <a href="mailto:polina.jeske@gymbsb.net?subject=Erstgespr%C3%A4ch%20%E2%80%93%20paluna.ai" class="booking-email-link">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 5l8 5 8-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="3" width="18" height="14" rx="3" stroke="currentColor" stroke-width="1.5"/></svg>
+        polina.jeske@gymbsb.net
+      </a>
+      <p class="booking-hint">Ich antworte in der Regel innerhalb von 24 Stunden.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Legal overlays -->
 <div class="legal-page" id="impressum">
   <button class="legal-close" onclick="closeLegal('impressum')">&times;</button>
   <div class="legal-content">
@@ -510,6 +719,7 @@
 </div>
 
 <script>
+// ── Galaxy Background ──
 (function() {
   var canvas = document.getElementById('galaxy');
   var ctx = canvas.getContext('2d');
@@ -580,6 +790,94 @@
   init(); animate();
 })();
 
+// ── 3D Wireframe Torus in Hero ──
+(function() {
+  var c = document.getElementById('heroTorus');
+  var ctx = c.getContext('2d');
+  var R = 160, r = 55, segsR = 32, segsr = 16;
+  var angleX = 0.4, angleY = 0, angleZ = 0.15;
+  var w, h;
+
+  function resize() {
+    var rect = c.parentElement.getBoundingClientRect();
+    c.width = w = rect.width; c.height = h = rect.height;
+  }
+
+  function project(x, y, z) {
+    var d = 600;
+    var scale = d / (d + z);
+    return { x: x * scale + w / 2, y: y * scale + h / 2, s: scale };
+  }
+
+  function rotatePoint(x, y, z) {
+    var cosX = Math.cos(angleX), sinX = Math.sin(angleX);
+    var y1 = y * cosX - z * sinX, z1 = y * sinX + z * cosX;
+    var cosY = Math.cos(angleY), sinY = Math.sin(angleY);
+    var x1 = x * cosY + z1 * sinY, z2 = -x * sinY + z1 * cosY;
+    var cosZ = Math.cos(angleZ), sinZ = Math.sin(angleZ);
+    var x2 = x1 * cosZ - y1 * sinZ, y2 = x1 * sinZ + y1 * cosZ;
+    return { x: x2, y: y2, z: z2 };
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    angleY += 0.004;
+    angleX += 0.001;
+
+    for (var i = 0; i < segsR; i++) {
+      var theta = (i / segsR) * Math.PI * 2;
+      var thetaNext = ((i + 1) / segsR) * Math.PI * 2;
+
+      for (var j = 0; j < segsr; j++) {
+        var phi = (j / segsr) * Math.PI * 2;
+        var phiNext = ((j + 1) / segsr) * Math.PI * 2;
+
+        var x0 = (R + r * Math.cos(phi)) * Math.cos(theta);
+        var y0 = (R + r * Math.cos(phi)) * Math.sin(theta);
+        var z0 = r * Math.sin(phi);
+
+        var x1 = (R + r * Math.cos(phiNext)) * Math.cos(theta);
+        var y1 = (R + r * Math.cos(phiNext)) * Math.sin(theta);
+        var z1 = r * Math.sin(phiNext);
+
+        var x2 = (R + r * Math.cos(phi)) * Math.cos(thetaNext);
+        var y2 = (R + r * Math.cos(phi)) * Math.sin(thetaNext);
+        var z2 = r * Math.sin(phi);
+
+        var p0 = rotatePoint(x0, y0, z0);
+        var p1 = rotatePoint(x1, y1, z1);
+        var p2 = rotatePoint(x2, y2, z2);
+
+        var s0 = project(p0.x, p0.y, p0.z);
+        var s1 = project(p1.x, p1.y, p1.z);
+        var s2 = project(p2.x, p2.y, p2.z);
+
+        var alpha = 0.08 + s0.s * 0.12;
+
+        ctx.beginPath();
+        ctx.moveTo(s0.x, s0.y);
+        ctx.lineTo(s1.x, s1.y);
+        ctx.strokeStyle = 'rgba(252,176,47,' + alpha + ')';
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(s0.x, s0.y);
+        ctx.lineTo(s2.x, s2.y);
+        ctx.strokeStyle = 'rgba(168,85,247,' + (alpha * 0.6) + ')';
+        ctx.lineWidth = 0.4;
+        ctx.stroke();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  draw();
+})();
+
+// ── Nav ──
 var nav = document.getElementById('nav');
 window.addEventListener('scroll', function() { nav.classList.toggle('scrolled', window.scrollY > 50); });
 
@@ -588,7 +886,8 @@ var navLinks = document.getElementById('navLinks');
 menuToggle.addEventListener('click', function() { navLinks.classList.toggle('open'); });
 navLinks.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', function() { navLinks.classList.remove('open'); }); });
 
-var scrollEls = document.querySelectorAll('.scroll-3d, .scroll-left, .scroll-right, .scroll-scale');
+// ── Scroll animations ──
+var scrollEls = document.querySelectorAll('.scroll-3d, .scroll-left, .scroll-right, .scroll-scale, .scroll-flip, .scroll-flip-right');
 var observer = new IntersectionObserver(function(entries) {
   entries.forEach(function(entry) {
     if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
@@ -596,9 +895,13 @@ var observer = new IntersectionObserver(function(entries) {
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 scrollEls.forEach(function(el) { observer.observe(el); });
 
+// ── Overlay functions ──
 function openLegal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
 function closeLegal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
+function openBooking() { document.getElementById('booking').classList.add('active'); document.body.style.overflow = 'hidden'; }
+function closeBooking() { document.getElementById('booking').classList.remove('active'); document.body.style.overflow = ''; }
 
+// ── Smooth scroll ──
 document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   anchor.addEventListener('click', function(e) {
     var targetId = this.getAttribute('href');
