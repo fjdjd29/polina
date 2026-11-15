@@ -1,0 +1,1102 @@
+<title>Bäckerei Herkenhoff</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* Layout: centered single-column, alternating warm sections, generous spacing for readability */
+  :root {
+    --bg: #FFF9F1;
+    --bg-warm: #F0E4D2;
+    --surface: #FFFFFF;
+    --text: #2E1B0E;
+    --text-soft: #6F5B48;
+    --accent: #B0722A;
+    --accent-hover: #965F1F;
+    --accent-light: rgba(176, 114, 42, 0.1);
+    --border: #E2D2BC;
+    --shadow: rgba(60, 30, 10, 0.07);
+    --shadow-lg: rgba(60, 30, 10, 0.12);
+    --sage: #6E8650;
+    --radius: 14px;
+    --radius-lg: 22px;
+    --font-display: 'Lora', 'Georgia', 'Times New Roman', serif;
+    --font-body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17110C;
+      --bg-warm: #211913;
+      --surface: #2A1F16;
+      --text: #F0E4D4;
+      --text-soft: #B09880;
+      --accent: #D4A04A;
+      --accent-hover: #E5B660;
+      --accent-light: rgba(212, 160, 74, 0.12);
+      --border: #3A2E22;
+      --shadow: rgba(0, 0, 0, 0.2);
+      --shadow-lg: rgba(0, 0, 0, 0.35);
+      --sage: #8FA06A;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #17110C;
+    --bg-warm: #211913;
+    --surface: #2A1F16;
+    --text: #F0E4D4;
+    --text-soft: #B09880;
+    --accent: #D4A04A;
+    --accent-hover: #E5B660;
+    --accent-light: rgba(212, 160, 74, 0.12);
+    --border: #3A2E22;
+    --shadow: rgba(0, 0, 0, 0.2);
+    --shadow-lg: rgba(0, 0, 0, 0.35);
+    --sage: #8FA06A;
+    color-scheme: dark;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; height: 100%; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.7;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0 0 auto;
+    height: env(safe-area-inset-top, 0px);
+    z-index: 1000;
+    background: var(--bg);
+  }
+
+  h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.25; color: var(--text); text-wrap: balance; }
+  h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; letter-spacing: -0.01em; }
+  h2 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 600; }
+  h3 { font-size: clamp(1.15rem, 2.5vw, 1.4rem); font-weight: 600; }
+  p { max-width: 65ch; }
+  img { max-width: 100%; }
+  a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+  a:hover { color: var(--accent-hover); }
+
+  .section-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* ── Navigation ── */
+  .nav {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding-block: 0;
+  }
+  .nav-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 0.85rem;
+    gap: 1rem;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--text);
+    flex-shrink: 0;
+  }
+  .nav-brand-icon {
+    width: 38px;
+    height: 38px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .nav-brand-text {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+  }
+  .nav-brand-sub {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: var(--text-soft);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: block;
+    margin-top: -2px;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+  }
+  .nav-links a {
+    color: var(--text-soft);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent) !important;
+    color: #fff !important;
+    padding: 0.5rem 1.15rem;
+    border-radius: 10px;
+    font-weight: 700 !important;
+    font-size: 0.85rem !important;
+    transition: background 0.2s, transform 0.15s !important;
+    white-space: nowrap;
+  }
+  .nav-cta:hover { background: var(--accent-hover) !important; transform: translateY(-1px); }
+
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.4rem;
+    cursor: pointer;
+    color: var(--text);
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+  }
+  .nav-toggle svg { display: block; }
+
+  /* ── Hero ── */
+  .hero {
+    padding-block: 4.5rem 3.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140%;
+    height: 100%;
+    background: radial-gradient(ellipse, var(--accent-light) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .hero-stamp {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2.5px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .hero-stamp::before,
+  .hero-stamp::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    opacity: 0.35;
+  }
+  .hero-stamp::before { inset: 4px; }
+  .hero-stamp::after { inset: -6px; border-style: dashed; opacity: 0.2; }
+  .hero-stamp-year {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .hero-stamp-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-soft);
+    font-weight: 700;
+    margin-top: 2px;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    color: var(--text-soft);
+    max-width: 520px;
+    line-height: 1.7;
+  }
+  .hero-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.8rem 1.6rem;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--accent-hover); color: #fff; transform: translateY(-1px); box-shadow: 0 6px 20px var(--shadow-lg); }
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Wheat Divider ── */
+  .wheat-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding-block: 1rem;
+  }
+  .wheat-divider-line {
+    height: 1px;
+    width: 60px;
+    background: var(--border);
+  }
+  .wheat-divider svg { flex-shrink: 0; color: var(--accent); opacity: 0.5; }
+
+  /* ── Sections ── */
+  .section { padding-block: 4rem; }
+  .section-warm { background: var(--bg-warm); margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
+  .section-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .section-header {
+    margin-bottom: 2.5rem;
+  }
+  .section-header p {
+    color: var(--text-soft);
+    margin-top: 0.75rem;
+    font-size: 1.05rem;
+  }
+
+  /* ── About ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .about-text p {
+    color: var(--text-soft);
+    margin-bottom: 1rem;
+  }
+  .about-text strong { color: var(--text); }
+  .about-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .about-badge {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    border: 2px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+  }
+  .about-badge::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    border: 1.5px dashed var(--accent);
+    opacity: 0.25;
+  }
+  .about-badge-num {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .about-badge-text {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    font-weight: 600;
+    margin-top: 0.25rem;
+  }
+  .about-badge-sub {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    margin-top: 0.3rem;
+  }
+  .about-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+  .about-tag {
+    padding: 0.35rem 0.85rem;
+    background: var(--accent-light);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-soft);
+  }
+
+  /* ── Sortiment ── */
+  .sortiment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  .sortiment-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .sortiment-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px var(--shadow);
+  }
+  .sortiment-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+  .sortiment-card h3 { margin-bottom: 0.5rem; }
+  .sortiment-card p {
+    color: var(--text-soft);
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  /* ── Café ── */
+  .cafe-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  .cafe-text p {
+    color: var(--text-soft);
+    margin-bottom: 1rem;
+  }
+  .cafe-features {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .cafe-feature {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .cafe-feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .cafe-feature-text strong {
+    display: block;
+    font-size: 0.95rem;
+  }
+  .cafe-feature-text span {
+    font-size: 0.82rem;
+    color: var(--text-soft);
+  }
+
+  /* ── Filialen ── */
+  .filialen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  .filiale-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.35rem;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .filiale-card:hover { border-color: var(--accent); }
+  .filiale-card.hauptgeschaeft {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .filiale-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    margin-bottom: 0.25rem;
+  }
+  .filiale-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    font-weight: 700;
+    background: var(--accent-light);
+    padding: 0.15rem 0.55rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+  }
+  .filiale-addr {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    line-height: 1.5;
+  }
+
+  /* ── Öffnungszeiten ── */
+  .hours-table {
+    width: 100%;
+    max-width: 500px;
+    border-collapse: collapse;
+  }
+  .hours-table tr { border-bottom: 1px solid var(--border); }
+  .hours-table tr:last-child { border-bottom: none; }
+  .hours-table td {
+    padding: 0.85rem 0;
+    font-size: 0.95rem;
+  }
+  .hours-table td:first-child {
+    font-weight: 600;
+    color: var(--text);
+  }
+  .hours-table td:last-child {
+    text-align: right;
+    color: var(--text-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .hours-note {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    font-style: italic;
+  }
+
+  /* ── Kontakt ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  .contact-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+  }
+  .contact-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+  .contact-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-soft);
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+  }
+  .contact-value {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  /* ── CTA Banner ── */
+  .cta-banner {
+    background: var(--accent);
+    color: #fff;
+    border-radius: var(--radius-lg);
+    padding: 3rem 2rem;
+    text-align: center;
+    margin-block: 2rem;
+  }
+  .cta-banner h2 { color: #fff; margin-bottom: 0.75rem; }
+  .cta-banner p { color: rgba(255,255,255,0.85); margin: 0 auto 1.5rem; }
+  .cta-banner .btn {
+    background: #fff;
+    color: var(--accent);
+  }
+  .cta-banner .btn:hover {
+    background: rgba(255,255,255,0.9);
+    color: var(--accent-hover);
+    transform: translateY(-1px);
+  }
+
+  /* ── Footer ── */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-block: 2.5rem 2rem;
+    margin-top: 2rem;
+  }
+  .footer-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+  .footer-brand {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  .footer-brand p {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    color: var(--text-soft);
+    font-weight: 400;
+    margin-top: 0.25rem;
+  }
+  .footer-links {
+    display: flex;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .footer-col h4 {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-soft);
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .footer-col a {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    padding-block: 0.2rem;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--accent); }
+  .footer-bottom {
+    max-width: 1000px;
+    margin: 1.5rem auto 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--text-soft);
+    text-align: center;
+  }
+
+  /* ── Mobile Menu Overlay ── */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: var(--bg);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+  }
+  .mobile-menu[hidden] { display: none !important; }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--accent); }
+  .mobile-menu-close {
+    position: absolute;
+    top: 1.25rem;
+    right: max(16px, env(safe-area-inset-right, 0px));
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-toggle { display: flex; }
+    .hero { padding-block: 3rem 2.5rem; }
+    .hero h1 { font-size: clamp(1.8rem, 7vw, 2.6rem); }
+    .hero-stamp { width: 80px; height: 80px; }
+    .hero-stamp-year { font-size: 1.2rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .about-visual { order: -1; }
+    .about-badge { width: 180px; height: 180px; }
+    .about-badge-num { font-size: 2.5rem; }
+    .cafe-content { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .section { padding-block: 3rem; }
+    .sortiment-grid { grid-template-columns: 1fr; }
+    .filialen-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+    .footer-inner { flex-direction: column; }
+    .footer-links { flex-direction: column; gap: 1.5rem; }
+    .cta-banner { padding: 2rem 1.25rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#start" class="nav-brand">
+      <div class="nav-brand-icon">H</div>
+      <div>
+        <div class="nav-brand-text">Bäckerei Herkenhoff</div>
+        <span class="nav-brand-sub">Seit 1895</span>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#sortiment">Sortiment</a>
+      <a href="#cafe">Café</a>
+      <a href="#filialen">Filialen</a>
+      <a href="#kontakt" class="nav-cta">Kontakt</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menü öffnen">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="19" y2="6"/><line x1="3" y1="11" x2="19" y2="11"/><line x1="3" y1="16" x2="19" y2="16"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu" hidden>
+  <button class="mobile-menu-close" id="mobileClose" aria-label="Menü schließen">&times;</button>
+  <a href="#start" class="mobile-link">Startseite</a>
+  <a href="#ueber" class="mobile-link">Über uns</a>
+  <a href="#sortiment" class="mobile-link">Sortiment</a>
+  <a href="#cafe" class="mobile-link">Café</a>
+  <a href="#filialen" class="mobile-link">Filialen</a>
+  <a href="#kontakt" class="mobile-link">Kontakt</a>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="start">
+  <div class="hero-inner">
+    <div class="hero-stamp">
+      <span class="hero-stamp-year">1895</span>
+      <span class="hero-stamp-label">Gegründet</span>
+    </div>
+    <h1>Willkommen bei<br>Bäckerei Herkenhoff</h1>
+    <p class="hero-sub">Handwerkliche Backkunst aus Bersenbrück — seit über 125 Jahren backen wir täglich frisch für Sie und Ihre Familie.</p>
+    <div class="hero-buttons">
+      <a href="#sortiment" class="btn btn-primary">Unser Sortiment</a>
+      <a href="#filialen" class="btn btn-outline">Filialen finden</a>
+    </div>
+  </div>
+</section>
+
+<!-- Wheat Divider -->
+<div class="wheat-divider">
+  <div class="wheat-divider-line"></div>
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+    <ellipse cx="14" cy="8" rx="4" ry="7" stroke="currentColor" stroke-width="1.2"/>
+    <ellipse cx="8" cy="13" rx="3.5" ry="6" stroke="currentColor" stroke-width="1" transform="rotate(-20 8 13)" opacity="0.6"/>
+    <ellipse cx="20" cy="13" rx="3.5" ry="6" stroke="currentColor" stroke-width="1" transform="rotate(20 20 13)" opacity="0.6"/>
+    <line x1="14" y1="15" x2="14" y2="27" stroke="currentColor" stroke-width="1.2"/>
+  </svg>
+  <div class="wheat-divider-line"></div>
+</div>
+
+<!-- Über uns -->
+<section class="section" id="ueber">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-header">
+          <span class="section-label">Über uns</span>
+          <h2>Tradition trifft Leidenschaft</h2>
+        </div>
+        <p>Seit <strong>1895</strong> steht der Name Herkenhoff in Bersenbrück für handwerkliche Backkunst und beste Qualität. Was als kleine Dorfbäckerei begann, ist heute ein fester Bestandteil der Region — mit mehreren Filialen im Osnabrücker Land.</p>
+        <p>Bei uns wird noch <strong>echtes Handwerk</strong> gelebt. Jeden Morgen stehen unsere Bäckermeister in der Backstube, damit Sie frische Brötchen, knuspriges Brot und feinste Kuchen genießen können — so wie es schon unsere Urgroßeltern getan haben.</p>
+        <p>Unser Café in Bersenbrück lädt Sie ein, bei einer Tasse Kaffee und einem Stück hausgemachtem Kuchen die Seele baumeln zu lassen.</p>
+        <div class="about-values">
+          <span class="about-tag">Handwerk</span>
+          <span class="about-tag">Frische</span>
+          <span class="about-tag">Tradition</span>
+          <span class="about-tag">Regionalität</span>
+          <span class="about-tag">Familie</span>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-badge">
+          <div class="about-badge-num">125+</div>
+          <div class="about-badge-text">Jahre Backtradition</div>
+          <div class="about-badge-sub">aus Bersenbrück</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sortiment -->
+<section class="section section-warm" id="sortiment">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-label">Unser Sortiment</span>
+      <h2>Täglich frisch aus der Backstube</h2>
+      <p>Von knusprigem Brot über herzhafte Brötchen bis zu feinen Torten — alles aus eigener Herstellung.</p>
+    </div>
+    <div class="sortiment-grid">
+      <div class="sortiment-card">
+        <div class="sortiment-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><ellipse cx="12" cy="14" rx="9" ry="6"/><path d="M6 14c0-5 2.5-9 6-9s6 4 6 9"/><line x1="12" y1="5" x2="12" y2="8" opacity="0.5"/></svg>
+        </div>
+        <h3>Brot</h3>
+        <p>Rustikales Bauernbrot, kräftiges Vollkornbrot, klassisches Roggenmischbrot und viele weitere Sorten — langsam geführt und mit Liebe gebacken.</p>
+      </div>
+      <div class="sortiment-card">
+        <div class="sortiment-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="8" cy="14" r="4"/><circle cx="16" cy="14" r="4"/><circle cx="12" cy="10" r="4"/></svg>
+        </div>
+        <h3>Brötchen</h3>
+        <p>Knusprige Weizenbrötchen, herzhafte Körnerbrötchen, weiche Milchbrötchen — jeden Morgen ofenfrisch für Ihren perfekten Start in den Tag.</p>
+      </div>
+      <div class="sortiment-card">
+        <div class="sortiment-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M4 14h16"/><path d="M8 10V8a4 4 0 0 1 8 0v2"/></svg>
+        </div>
+        <h3>Kuchen &amp; Torten</h3>
+        <p>Cremige Sahnetorten, fruchtiger Obstkuchen, saftiger Käsekuchen und saisonale Spezialitäten — für jeden Anlass das richtige Stück Glück.</p>
+      </div>
+      <div class="sortiment-card">
+        <div class="sortiment-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3l1.5 5H19l-4 3.5 1.5 5.5-4.5-3-4.5 3 1.5-5.5L5 8h5.5z"/></svg>
+        </div>
+        <h3>Feingebäck</h3>
+        <p>Butterplunder, Nussecken, Rosinenschnecken und knusprige Teilchen — handgemachtes Feingebäck, das den Nachmittag versüßt.</p>
+      </div>
+      <div class="sortiment-card">
+        <div class="sortiment-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3c-2 4-2 8 0 12s-2 3 0 6" opacity="0.5"/><path d="M8 6c2 3 2 6 0 9" opacity="0.4"/><path d="M16 6c-2 3-2 6 0 9" opacity="0.4"/></svg>
+        </div>
+        <h3>Saisonales</h3>
+        <p>Christstollen zur Weihnachtszeit, Osterzopf im Frühling, frische Berliner zum Karneval — das ganze Jahr über besondere Leckereien.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Café -->
+<section class="section" id="cafe">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-label">Unser Café</span>
+      <h2>Café Herkenhoff 1895</h2>
+      <p>Ein Ort zum Wohlfühlen — genießen Sie frischen Kuchen und aromatischen Kaffee in gemütlicher Atmosphäre.</p>
+    </div>
+    <div class="cafe-content">
+      <div class="cafe-text">
+        <p>Unser Café in der Bramscher Straße in Bersenbrück ist mehr als nur eine Bäckerei. Hier treffen sich Freunde zum Frühstück, Familien zum Sonntagskuchen und Nachbarn auf einen Plausch bei Kaffee und frischem Gebäck.</p>
+        <p>Bei schönem Wetter lädt unser <strong>Biergarten mit 40 Plätzen</strong> zum Verweilen unter freiem Himmel ein. Drinnen finden Sie <strong>50 gemütliche Sitzplätze</strong> — und immer eine herzliche Bedienung.</p>
+        <p>Ob ein schnelles Frühstücksbrötchen oder ein ausgedehnter Nachmittagskaffee: Bei Herkenhoff sind Sie immer willkommen.</p>
+      </div>
+      <div class="cafe-features">
+        <div class="cafe-feature">
+          <div class="cafe-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          </div>
+          <div class="cafe-feature-text">
+            <strong>Frühstück &amp; Kaffee</strong>
+            <span>Täglich frisch zubereitet</span>
+          </div>
+        </div>
+        <div class="cafe-feature">
+          <div class="cafe-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="9"/></svg>
+          </div>
+          <div class="cafe-feature-text">
+            <strong>50 Innenplätze</strong>
+            <span>Gemütliches Ambiente</span>
+          </div>
+        </div>
+        <div class="cafe-feature">
+          <div class="cafe-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+          </div>
+          <div class="cafe-feature-text">
+            <strong>40 Biergartenplätze</strong>
+            <span>Sonnenterrasse im Grünen</span>
+          </div>
+        </div>
+        <div class="cafe-feature">
+          <div class="cafe-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="cafe-feature-text">
+            <strong>Hausgemachte Torten</strong>
+            <span>Jeden Tag frische Auswahl</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Filialen & Öffnungszeiten -->
+<section class="section section-warm" id="filialen">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-label">Unsere Filialen</span>
+      <h2>Immer in Ihrer Nähe</h2>
+      <p>Besuchen Sie uns an einem unserer Standorte im Osnabrücker Land.</p>
+    </div>
+    <div class="filialen-grid">
+      <div class="filiale-card hauptgeschaeft">
+        <span class="filiale-tag">Hauptgeschäft &amp; Café</span>
+        <div class="filiale-name">Bersenbrück</div>
+        <div class="filiale-addr">Bramscher Str. 5–7<br>49593 Bersenbrück</div>
+      </div>
+      <div class="filiale-card">
+        <div class="filiale-name">Badbergen</div>
+        <div class="filiale-addr">Filiale im Ort</div>
+      </div>
+      <div class="filiale-card">
+        <div class="filiale-name">Quakenbrück</div>
+        <div class="filiale-addr">Filiale im Ort</div>
+      </div>
+      <div class="filiale-card">
+        <div class="filiale-name">Nortrup</div>
+        <div class="filiale-addr">Filiale im Ort</div>
+      </div>
+      <div class="filiale-card">
+        <div class="filiale-name">Kettenkamp</div>
+        <div class="filiale-addr">Filiale im Ort</div>
+      </div>
+      <div class="filiale-card">
+        <div class="filiale-name">Berge</div>
+        <div class="filiale-addr">Filiale im Ort</div>
+      </div>
+    </div>
+
+    <div style="margin-top:3rem">
+      <div class="section-header">
+        <span class="section-label">Öffnungszeiten</span>
+        <h2>Wann Sie uns finden</h2>
+      </div>
+      <table class="hours-table">
+        <tr><td>Montag – Freitag</td><td>06:00 – 18:00 Uhr</td></tr>
+        <tr><td>Samstag</td><td>06:00 – 12:30 Uhr</td></tr>
+        <tr><td>Sonntag</td><td>08:00 – 17:00 Uhr</td></tr>
+      </table>
+      <p class="hours-note">Öffnungszeiten können je nach Filiale leicht abweichen. Im Café gelten die angegebenen Zeiten.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Banner -->
+<section class="section" style="padding-block:2rem">
+  <div class="section-inner">
+    <div class="cta-banner">
+      <h2>Besuchen Sie uns!</h2>
+      <p>Kommen Sie vorbei und überzeugen Sie sich selbst — wir freuen uns auf Sie.</p>
+      <a href="#kontakt" class="btn">Kontakt aufnehmen</a>
+    </div>
+  </div>
+</section>
+
+<!-- Kontakt -->
+<section class="section" id="kontakt">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-label">Kontakt</span>
+      <h2>Wir sind für Sie da</h2>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Adresse</div>
+            <div class="contact-value">Bramscher Str. 5–7<br>49593 Bersenbrück</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Telefon</div>
+            <div class="contact-value">05439 / 420</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Instagram</div>
+            <div class="contact-value">@baeckerei_herkenhoff</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div>
+            <div class="contact-label">Region</div>
+            <div class="contact-value">Osnabrücker Land<br>Niedersachsen</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Bäckerei Herkenhoff</div>
+      <p>Handwerkliche Backkunst seit 1895.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Seiten</h4>
+        <a href="#sortiment">Sortiment</a>
+        <a href="#cafe">Café</a>
+        <a href="#filialen">Filialen</a>
+        <a href="#kontakt">Kontakt</a>
+      </div>
+      <div class="footer-col">
+        <h4>Filialen</h4>
+        <a href="#filialen">Bersenbrück</a>
+        <a href="#filialen">Badbergen</a>
+        <a href="#filialen">Quakenbrück</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 Bäckerei Herkenhoff — Alle Rechte vorbehalten.</div>
+</footer>
+
+<script>
+(function() {
+  var toggle = document.getElementById('navToggle');
+  var menu = document.getElementById('mobileMenu');
+  var close = document.getElementById('mobileClose');
+
+  toggle.addEventListener('click', function() {
+    menu.hidden = false;
+    requestAnimationFrame(function() { menu.classList.add('open'); });
+  });
+
+  function closeMenu() {
+    menu.classList.remove('open');
+    setTimeout(function() { menu.hidden = true; }, 200);
+  }
+
+  close.addEventListener('click', closeMenu);
+  menu.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', closeMenu);
+  });
+})();
+</script>
